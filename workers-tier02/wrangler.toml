@@ -13,3 +13,8 @@ compatibility_date = "2026-11-11"
 #
 # No routes / custom domains: this Worker is reachable on its workers.dev
 # subdomain only, so deploying it cannot shadow any live path.
+
+# Daily retention purge (03:00 UTC): the scheduled handler calls
+# purge_telemetry_90d(), deleting telemetry rows older than 90 days.
+[triggers]
+crons = ["0 3 * * *"]

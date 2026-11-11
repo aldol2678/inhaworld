@@ -14,7 +14,7 @@ Vercel + Supabase에서 돌던 텔레메트리 핸들러 3개를 Cloudflare Work
 |---|---|---|
 | `POST /api/hub-entry` (+ `OPTIONS`) | `api/hub-entry.js` → RPC `log_inhagame_game_entry_v1` | 게임 유입 퍼널 단계 기록. Origin allowlist 5개, UUID 2종, 이벤트 7종, 본문 512자. `204` 저장됨 / `409` 거절됨. |
 | `POST /api/hub-event` | `api/hub-event.js` → RPC `log_inhagame_hub_event_v2` | 허브·캠퍼스 텔레메트리 기록. same-host Origin, UUID 3종, 이벤트 33종, 본문 1024자. `204` 저장됨 / `400` 거절됨. |
-| `GET /api/asset-canary-flag` | `api/asset-canary-flag.js` → `world_runtime_flags` | `asset_glb_canary_v1` 1행 조회. `200 {"enabled":bool}` / 실패는 전부 `503` (클라이언트는 카나리 off로 처리). |
+| `GET /api/asset-canary-flag` | `api/asset-canary-flag.js` → `world_runtime_flags` | `asset_glb_canary_v1` 1행 조회. `200 {"enabled":bool}` / 실패는 전부 `503` (클라이언트는 카나리 off로 처리). 200 응답은 Cache API에 5초 캐시(원본 Vercel CDN `s-maxage=5`와 같음). |
 
 가드 순서는 원본과 같다.
 
@@ -51,9 +51,9 @@ DB 단계의 상태코드:
 |---|---|
 | `schema.sql` | Neon 스키마: 테이블 3개, 뷰 1개, 함수 2개, 최소 권한 그룹 역할. 여러 번 실행해도 안전. |
 | `worker.js` | Worker 본체. Tier 01과 같은 단일 파일·핸들러별 함수·정확한 경로 일치 라우터. |
-| `wrangler.toml` | Worker 이름 `inha-world-tier02-test`. `[vars]`·라우트 없음. |
-| `test-parity.mjs` | 패리티 테스트 (`node test-parity.mjs`). DB 없이 실행되고, `TEST_PG_URL`을 주면 실제 Postgres로 end-to-end까지 확인. |
-| `test-schema.sql` | DB 쪽 동등성 오라클. 원본 pgTAP 2개를 plain SQL로 옮긴 것. |
+| `wrangler.toml` | Worker 이름 `inha-world-tier02-test`. `[vars]`·라우트 없음. 매일 03:00 UTC Cron Trigger(`[triggers] crons`) 있음. |
+| `test-parity.mjs` | 패리티 테스트 (`node test-parity.mjs`). DB 없이 실행되고, `TEST_PG_URL`을 주면 실제 Postgres로 end-to-end까지 확인. 카나리 5초 캐시와 scheduled purge 핸들러 테스트 포함. |
+| `test-schema.sql` | DB 쪽 동등성 오라클. 원본 pgTAP 2개를 plain SQL로 옮긴 것 + `purge_telemetry_90d` 신규 검증 5건. |
 | `package.json`, `package-lock.json` | `@neondatabase/serverless` 0.10.4 고정. `pg`는 선택적 통합 테스트용 devDependency. |
 
 ## 스키마
@@ -72,6 +72,9 @@ DB 단계의 상태코드:
 - **`log_hub_event_v2(...)`, `log_game_entry_v1(...)`** — 원본 RPC의 plpgsql 이식. `security definer`,
   `search_path = ''`. 한 번의 호출이 한 트랜잭션이라 검증·순서 확인·삽입이 원자적이다.
   세션당 시간당 120건 제한은 원본처럼 두 종류의 행을 합쳐서 센다.
+- **`purge_telemetry_90d()`** — 원본 `private.purge_inhagame_hub_events_90d()`의 이식. 90일 지난
+  행을 두 테이블에서 각각 최대 5000건씩 지우고 지운 총건수를 돌려준다. Worker의 매일 03:00 UTC
+  Cron Trigger(scheduled 핸들러)가 호출한다. 멱등이라 실패 시 재시도해도 안전하다.
 - **`inha_world_tier2_app`** (NOLOGIN 그룹 역할) — 원본의 `anon` 권한 범위와 같다. 두 함수 실행과
   `runtime_flags` 조회만 가능하고, 이벤트 테이블을 직접 읽거나 쓰거나 플래그를 바꿀 수 없다.
   Worker가 접속할 로그인 역할은 Neon 콘솔에서 만들고(비밀번호는 파일에 두지 않음)
@@ -107,9 +110,9 @@ TEST_PG_URL="$TEST_PG_URL" node test-parity.mjs                # 만든 행은 �
 
 | 검증 | 결과 |
 |---|---|
-| `node test-parity.mjs` (DB 없음) | **180/180 통과** |
-| `TEST_PG_URL=<로컬 Postgres 16.15> node test-parity.mjs` | **194/194 통과** (위 180 + DB end-to-end 14) |
-| `test-schema.sql` (로컬 Postgres 16.15) | **96/96 통과** — 슈퍼유저, 그리고 Neon 소유자처럼 슈퍼유저가 아닌 `CREATEROLE` 역할 양쪽에서 |
+| `node test-parity.mjs` (DB 없음) | **185/185 통과** (카나리 캐시 3건 + scheduled purge 2건 포함) |
+| `TEST_PG_URL=<로컬 Postgres 16.15> node test-parity.mjs` | 미측정 — 이 환경에서는 pg TCP 연결이 안 돼 end-to-end를 실행할 수 없다(아래 참고). 구조는 DB-less 185 + end-to-end 14건. |
+| `test-schema.sql` (격리 Neon, HTTP 드라이버 경유) | **101/101 통과** (purge 신규 5건 포함) |
 | 원본 핸들러와 차등 비교 | 요청 1,734개 × 업스트림 응답 조합 2,825쌍에서 **상태코드·헤더·본문·업스트림 호출 여부 전부 일치**. 유일한 차이는 아래 "원본과 달라진 점" 7번의 파라미터 직렬화 160쌍(상태코드는 같음). |
 | 변형 검사 | `worker.js`에 결함 9개를 하나씩 넣었을 때 8개를 테스트가 잡음. 남은 1개는 동작이 같은 변형(`target` 대신 이미 같은 값으로 검증된 `body.target` 사용). |
 | `wrangler deploy --dry-run` (4.160.0) | 번들 성공, 201 KiB / gzip 53 KiB |
@@ -121,7 +124,8 @@ TEST_PG_URL="$TEST_PG_URL" node test-parity.mjs                # 만든 행은 �
 
 패리티 테스트가 다루는 것: 메서드, Origin(allowlist·same-host·prototype 키), UUID, 이벤트 화이트리스트,
 본문 크기 경계(512/513, 1024/1025), JSON 오류, 가드 순서, 함수 반환값별 상태코드, DB 오류 502, 연결 실패·
-타임아웃·`DATABASE_URL` 미설정 503, 계정 필드·Authorization·Cookie가 DB로 넘어가지 않는 것.
+타임아웃·`DATABASE_URL` 미설정 503, 계정 필드·Authorization·Cookie가 DB로 넘어가지 않는 것,
+카나리 5초 캐시(적중·미적중·만료·503 미캐시), scheduled purge 핸들러(호출·실패 전파).
 
 ## 격리 배포 방법 (아직 실행하지 않음)
 
@@ -164,8 +168,10 @@ TEST_PG_URL="$TEST_PG_URL" node test-parity.mjs                # 만든 행은 �
 6. **권한 모델** — Supabase의 `anon` + RLS 대신 `inha_world_tier2_app` 그룹 역할의 권한만으로 같은 범위를 만든다.
 7. **UUID 정규식의 암묵적 형변환** — `UUID.test()`가 `["<uuid>"]` 같은 1원소 배열을 통과시키는 것은 원본과 같다.
    원본은 PostgREST가, 여기서는 Postgres 캐스트가 거부해서 둘 다 502다. DB로 넘어가는 값의 직렬화만 다르다.
-8. **`Vercel-CDN-Cache-Control` 헤더** — 원본과 같은 값으로 내보내지만 Cloudflare에서는 효과가 없다.
-   원본은 Vercel CDN이 플래그 응답을 5초 캐시했고, 이 Worker는 요청마다 Neon을 조회한다.
+8. **`Vercel-CDN-Cache-Control` 헤더** — 원본과 같은 값으로 내보낸다. Cloudflare CDN이 이 헤더를
+   보지는 않지만, Worker가 Cache API(`caches.default`)로 200 응답을 직접 5초 캐시하므로 원본과
+   같은 5초 의미가 유지된다. 200 응답의 `Cache-Control`은 원본의 `no-store`에서
+   `public, max-age=5`로 바뀌었다(503·405는 그대로 `no-store`).
 
 ## 아직 안 된 것
 
@@ -175,8 +181,9 @@ TEST_PG_URL="$TEST_PG_URL" node test-parity.mjs                # 만든 행은 �
 - **실제 배포 미실시.** Worker는 `wrangler deploy --dry-run`과 로컬 `wrangler dev`까지만 했다.
   실제 Neon HTTP 엔드포인트를 통한 왕복(드라이버 → Neon → 함수)은 한 번도 실행되지 않았다.
   DB 연결 경로는 전송 계층을 대체한 테스트로만 확인했다.
-- **OPS 집계 `get_inhagame_hub_ops_v1`, 90일 보존 정리 `purge_inhagame_hub_events_90d`** — 핸들러가
-  호출하지 않아 이식하지 않았다. 정리 작업이 없으면 `hub_events`·`game_entries`는 계속 쌓인다.
+- **OPS 집계 `get_inhagame_hub_ops_v1`** — 핸들러가 호출하지 않아 이식하지 않았다.
+- **90일 보존 정리** — `purge_telemetry_90d()`와 매일 03:00 UTC Cron Trigger로 이식했다.
+  Cron은 배포된 Worker에 등록되며, 처음 실행은 다음 03:00 UTC다.
 - **라우팅·컷오버** — 클라이언트는 `https://inhagame.app/api/hub-entry`와 상대 경로 `/api/hub-event`를
   호출한다. 이 Worker를 그 경로에 붙이는 일과 기존 Supabase 데이터 이전은 이 작업 범위가 아니다.
 - **Tier 3(낚시·도감·Auth·랭크·메일), Tier 4(브랜드)** — 범위 밖. Auth 설계는 별도 승인 게이트다.

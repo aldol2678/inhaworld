@@ -549,7 +549,7 @@ await t('asset-canary-flag: enabled row maps to 200 {"enabled":true}', async () 
   assert.equal(res.status, 200);
   assert.equal(await res.text(), '{"enabled":true}');
   assert.equal(res.headers.get('content-type'), 'application/json; charset=utf-8');
-  assert.equal(res.headers.get('cache-control'), 'no-store, max-age=0');
+  assert.equal(res.headers.get('cache-control'), 'public, max-age=5');
   assert.equal(res.headers.get('vercel-cdn-cache-control'), 'public, s-maxage=5, stale-while-revalidate=5');
   assert.equal(calls.length, 1);
   assert.equal(calls[0].query, FLAG_SQL);
@@ -607,6 +607,82 @@ for (const method of ['POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD']) {
     assert.equal(calls.length, 0);
   });
 }
+
+// =====================================================================
+// asset-canary-flag 5-second cache (Cache API) and the daily purge cron
+// =====================================================================
+// Node has no `caches`; install a tiny mock so the wiring is testable, and
+// remove it again afterwards so later sections see the plain-Node path.
+const cacheStore = new Map();
+globalThis.caches = {
+  default: {
+    async match(req) {
+      const hit = cacheStore.get(req.url);
+      if (hit && Date.now() - hit.at < 5000) return hit.res.clone();
+      cacheStore.delete(req.url);
+      return undefined;
+    },
+    async put(req, res) { cacheStore.set(req.url, { res: res.clone(), at: Date.now() }); },
+  },
+};
+
+await t('asset-canary-flag: a 200 is cached for 5s and the second read hits no DB', async () => {
+  cacheStore.clear();
+  stubDb(neonRows('enabled', [true]));
+  const first = await flag();
+  assert.equal(first.status, 200);
+  assert.deepEqual(await first.json(), { enabled: true });
+  assert.equal(calls.length, 1);
+  stubDb(neonRows('enabled', [false])); // the stored value changes underneath
+  const second = await flag();
+  assert.equal(second.status, 200);
+  assert.deepEqual(await second.json(), { enabled: true }); // still the cached value
+  assert.equal(calls.length, 0);
+});
+
+await t('asset-canary-flag: a 503 is not cached', async () => {
+  cacheStore.clear();
+  stubDb(neonDbError('42P01'));
+  assert.equal((await flag()).status, 503);
+  stubDb(neonRows('enabled', [true]));
+  const res = await flag();
+  assert.equal(res.status, 200);
+  assert.equal(calls.length, 1);
+});
+
+await t('asset-canary-flag: after 5s the cache expires and the DB is read again', async () => {
+  cacheStore.clear();
+  stubDb(neonRows('enabled', [true]));
+  assert.equal((await flag()).status, 200);
+  cacheStore.get('https://inhagame.app/api/asset-canary-flag').at = Date.now() - 6000;
+  stubDb(neonRows('enabled', [false]));
+  const res = await flag();
+  assert.equal(res.status, 200);
+  assert.deepEqual(await res.json(), { enabled: false });
+  assert.equal(calls.length, 1);
+});
+
+delete globalThis.caches;
+
+// ---- scheduled purge ----
+const intRows = (column, values) => () => new Response(JSON.stringify({
+  fields: [{ name: column, dataTypeID: 23 }],
+  rows: values.map((v) => [String(v)]),
+  command: 'SELECT', rowCount: values.length, rowAsArray: true,
+}), { status: 200, headers: { 'content-type': 'application/json' } });
+
+await t('scheduled: purge calls purge_telemetry_90d and logs the count', async () => {
+  stubDb(intRows('deleted', [7]));
+  await worker.scheduled({ cron: '0 3 * * *', scheduledTime: Date.now() }, ENV, {});
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].query, 'select public.purge_telemetry_90d() as deleted');
+  assert.deepEqual(calls[0].params, []);
+});
+
+await t('scheduled: a database failure propagates so the cron retries', async () => {
+  stubDb(unreachable);
+  await assert.rejects(worker.scheduled({ cron: '0 3 * * *', scheduledTime: Date.now() }, ENV, {}));
+});
 
 // =====================================================================
 // router (same convention as Tier 01)
