@@ -1,0 +1,12 @@
+name = "inha-world-tier01-test"
+main = "worker.js"
+compatibility_date = "2026-11-11"
+
+# No [vars] on purpose: this isolated test deploy runs with env UNSET,
+# so the handlers exercise their disabled/unconfigured paths
+# (world-time works; public-supabase-config -> 503 JS; npc-* -> 404).
+# Real values are NEVER committed here. For a production Worker, set them
+# via the Cloudflare dashboard or `wrangler secret put` from the real
+# deployment config: SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY,
+# NPC_AI_CLOUD_RUN_URL, NPC_AI_ENABLED, NPC_RELATIONSHIP_ENABLED,
+# NPC_QUEST_ENABLED.
