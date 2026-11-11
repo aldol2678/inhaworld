@@ -298,9 +298,52 @@ end;
 $$;
 
 -- ---------------------------------------------------------------------------
+-- purge_telemetry_90d: port of private.purge_inhagame_hub_events_90d.
+-- Same 90-day cutoff and 5000-row batch (per table now, the original had one
+-- table), FOR UPDATE SKIP LOCKED so concurrent runs do not block each other.
+-- Returns the total number of rows deleted. Called only by the Worker's
+-- daily Cron Trigger (scheduled handler); the app role may execute it and
+-- nothing else. Idempotent: a second run in the same day deletes 0.
+-- ---------------------------------------------------------------------------
+create or replace function public.purge_telemetry_90d()
+returns integer
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare v_deleted integer := 0;
+declare v_batch integer;
+begin
+  with due as (
+    select event_id from public.hub_events
+    where created_at < now() - interval '90 days'
+    order by created_at, event_id limit 5000 for update skip locked
+  )
+  delete from public.hub_events e using due where e.event_id = due.event_id;
+  get diagnostics v_batch = row_count;
+  v_deleted := v_deleted + v_batch;
+
+  with due as (
+    select event_id from public.game_entries
+    where created_at < now() - interval '90 days'
+    order by created_at, event_id limit 5000 for update skip locked
+  )
+  delete from public.game_entries e using due where e.event_id = due.event_id;
+  get diagnostics v_batch = row_count;
+  v_deleted := v_deleted + v_batch;
+
+  return v_deleted;
+end;
+$$;
+
+revoke all on function public.purge_telemetry_90d() from public;
+grant execute on function public.purge_telemetry_90d() to inha_world_tier2_app;
+
+-- ---------------------------------------------------------------------------
 -- Least privilege, mirroring the original anon surface: the Worker may call
--- the two logging functions and read runtime_flags, and nothing else (it can
--- neither read nor write the event tables directly, nor change a flag).
+-- the two logging functions and the retention purge, and read runtime_flags,
+-- and nothing else (it can neither read nor write the event tables directly,
+-- nor change a flag).
 -- `inha_world_tier2_app` is a NOLOGIN group role. Create the login role the
 -- Worker connects as in the Neon console (its password never goes in a file),
 -- then:  grant inha_world_tier2_app to <that login role>;

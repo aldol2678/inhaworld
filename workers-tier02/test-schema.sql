@@ -316,6 +316,27 @@ reset role;
 select public._t_is((select count(*)::int from public.hub_events where session_id = :s), 4,
   'exactly four canonical asset canary telemetry events are stored');
 
+-- ---- retention purge (new in Tier 2, not in the ported pgTAP suites) ----
+reset role;
+insert into public.hub_events(event_id, session_id, visitor_id, event_type, surface, target, created_at)
+values ('f0000000-0000-4000-8000-000000000001', :s2, :v2, 'hub_visit', 'home', null, now() - interval '100 days'),
+       ('f0000000-0000-4000-8000-000000000002', :s2, :v2, 'hub_visit', 'home', null, now());
+insert into public.game_entries(event_id, entry_id, session_id, visitor_id, event_type, target, created_at)
+values ('f0000000-0000-4000-8000-000000000003', :c_induckup, :s2, :v2, 'game_landing', 'induckup', now() - interval '100 days'),
+       ('f0000000-0000-4000-8000-000000000004', :c_induckup, :s2, :v2, 'game_play_start', 'induckup', now());
+set local role inha_world_tier2_app;
+select public._t_is(public.purge_telemetry_90d(), 2,
+  'purge deletes one old row from each table');
+select public._t_is(public.purge_telemetry_90d(), 0,
+  'purge is idempotent on a second run');
+reset role;
+select public._t_is((select count(*)::int from public.hub_events where event_id = 'f0000000-0000-4000-8000-000000000001'), 0,
+  'the old hub row is gone');
+select public._t_is((select count(*)::int from public.hub_events where event_id = 'f0000000-0000-4000-8000-000000000002'), 1,
+  'the young hub row is kept');
+select public._t_is((select count(*)::int from public.game_entries where event_id = 'f0000000-0000-4000-8000-000000000004'), 1,
+  'the young game row is kept');
+
 -- ---- report ----
 \o
 \pset tuples_only on

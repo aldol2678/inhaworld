@@ -143,20 +143,50 @@ async function handleAssetCanaryFlag(request, env) {
     headers.set('Allow', 'GET');
     return new Response(null, { status: 405, headers });
   }
+  // 5-second cache, matching the original's Vercel CDN s-maxage=5: a flag
+  // change takes at most 5 seconds to reach readers, and Neon is not hit on
+  // every request. The Cache API exists in Workers/workerd but not in plain
+  // Node (where the parity tests run), so guard it and skip caching there.
+  // Only 200s are cached; failures stay fail-closed and uncached.
+  const cache = typeof caches !== 'undefined' ? caches.default : undefined;
+  const cacheKey = cache ? new Request(request.url, { method: 'GET' }) : undefined;
+  if (cache) {
+    const cached = await cache.match(cacheKey);
+    if (cached) return cached;
+  }
   try {
     const sql = connect(env, 1200);
     const rows = await sql`select enabled from public.runtime_flags where flag = ${CANARY_FLAG} limit 1`;
     if (!Array.isArray(rows) || rows.length !== 1 || typeof rows[0]?.enabled !== 'boolean') {
       return new Response(null, { status: 503, headers });
     }
-    headers.set('Content-Type', 'application/json; charset=utf-8');
-    return new Response(JSON.stringify({ enabled: rows[0].enabled === true }), {
-      status: 200,
-      headers,
+    const okHeaders = new Headers({
+      'Cache-Control': 'public, max-age=5',
+      'Vercel-CDN-Cache-Control': 'public, s-maxage=5, stale-while-revalidate=5',
+      'Content-Type': 'application/json; charset=utf-8',
     });
+    const response = new Response(JSON.stringify({ enabled: rows[0].enabled === true }), {
+      status: 200,
+      headers: okHeaders,
+    });
+    if (cache) await cache.put(cacheKey, response.clone());
+    return response;
   } catch {
     return new Response(null, { status: 503, headers });
   }
+}
+
+// ---- retention purge: daily Cron Trigger, port of
+// private.purge_inhagame_hub_events_90d (single table) to the split tables.
+// Deletes rows older than 90 days (5000 per table per run) and logs the
+// count. The purge is idempotent, so a throw on DB failure is safe: the
+// Cron Trigger retries it.
+async function handleScheduled(event, env) {
+  const sql = connect(env, 4000);
+  const rows = await sql`select public.purge_telemetry_90d() as deleted`;
+  const deleted = rows[0]?.deleted;
+  if (typeof deleted !== 'number') throw new Error('purge_telemetry_90d returned no count');
+  console.log(`purge_telemetry_90d deleted ${deleted} rows (cron: ${event?.cron ?? 'unknown'})`);
 }
 
 export default {
@@ -166,5 +196,8 @@ export default {
     if (pathname === '/api/hub-event') return handleHubEvent(request, env);
     if (pathname === '/api/asset-canary-flag') return handleAssetCanaryFlag(request, env);
     return new Response('Not found', { status: 404 });
+  },
+  async scheduled(event, env, ctx) {
+    await handleScheduled(event, env);
   },
 };
