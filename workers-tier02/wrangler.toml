@@ -1,0 +1,15 @@
+name = "inha-world-tier02-test"
+main = "worker.js"
+compatibility_date = "2026-11-11"
+
+# No [vars] on purpose, same as Tier 01. With DATABASE_URL unset the handlers
+# still run every guard (405 / 403 / 413 / 400) and then fail closed:
+# hub-entry / hub-event -> 503, asset-canary-flag -> 503 (canary off).
+#
+# DATABASE_URL is a secret and is NEVER committed here or put in [vars].
+# Set it only with `wrangler secret put DATABASE_URL` (or the dashboard), and
+# only to the connection string of an ISOLATED Neon branch that has
+# schema.sql applied — never the live `inha-world-sync` database.
+#
+# No routes / custom domains: this Worker is reachable on its workers.dev
+# subdomain only, so deploying it cannot shadow any live path.
