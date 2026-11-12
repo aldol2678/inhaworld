@@ -9,8 +9,10 @@
 -- Adapted, not copied:
 --  * auth.users fixtures became public.sessions rows; the Supabase roles (anon,
 --    authenticated, service_role) became the Worker role inha_world_tier3_app.
---  * "anonymous accounts are refused" assertions are gone (decision A): a session
---    with an unbanned profile is a full account here.
+--  * "anonymous accounts are refused" assertions are gone (decision A), and so are the
+--    "no profile / banned profile is refused" ones for the five world account gates
+--    (guest-open decision, 2026-11-12): any existing session is a full account there.
+--    Ranked runs and the mail badge still read public.profiles.
 --  * RLS assertions became table-privilege assertions.
 --  * Not ported because the function is outside Tier 3: my_inha_mail_badge(),
 --    abandon_ranked_session_v1(), world_life_node_unlock_v1(), world_life_tree_reset_v1()
@@ -76,13 +78,20 @@ select public._t_throws(format($$insert into public.ranked_sessions (user_id) va
   '23503', 'a ranked session needs an existing session');
 select public._t_throws(format($$insert into private.world_player_items (user_id, item_id, quantity) values (%L, 'material.fish_carp', 1)$$, :stranger),
   '23503', 'world state needs an existing session');
-select public._t_is(private.world_activity_account_ok_v1(:alice), true, 'session + unbanned profile is an account');
-select public._t_is(private.world_activity_account_ok_v1(:noprofile), false, 'a session without a profile is not (profile row still required)');
-select public._t_is(private.world_activity_account_ok_v1(:banned), false, 'a banned profile is not');
+select public._t_is(private.world_activity_account_ok_v1(:alice), true, 'a session with a profile is an account');
+select public._t_is(private.world_activity_account_ok_v1(:noprofile), true, 'guest-open: a session without a profile row is an account');
+select public._t_is(private.world_activity_account_ok_v1(:banned), true, 'guest-open: the world gates no longer read the ban flag');
 select public._t_is(private.world_activity_account_ok_v1(:stranger), false, 'an unknown id is not');
-select public._t_is(private.world_collection_account_ok_v1(:alice) and private.world_inventory_account_ok_v1(:alice)
-  and private.world_life_skill_account_ok_v1(:alice) and private.world_creature_account_ok_v1(:alice), true,
-  'all five account gates agree');
+select public._t_is(private.world_activity_account_ok_v1(null), false, 'a null id is not');
+select public._t_is(array[private.world_activity_account_ok_v1(u), private.world_collection_account_ok_v1(u), private.world_creature_account_ok_v1(u),
+  private.world_inventory_account_ok_v1(u), private.world_life_skill_account_ok_v1(u)], array[ok, ok, ok, ok, ok],
+  format('all five account gates agree for %s', label))
+  from (values (:alice::uuid, true, 'alice'), (:noprofile::uuid, true, 'a guest'), (:banned::uuid, true, 'a banned profile'),
+    (:stranger::uuid, false, 'an unknown id')) t(u, ok, label);
+select public._t_is((select count(*)::int from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+  where n.nspname = 'private' and p.proname ~ '^world_[a-z_]+_account_ok_v1$'
+    and regexp_replace(p.prosrc, '--[^\n]*', '', 'g') ~ 'profiles'), 0,
+  'no world account gate reads public.profiles (comments aside)');
 select public._t_is((select count(*)::int from pg_proc p join pg_namespace n on n.oid = p.pronamespace
   where n.nspname in ('public', 'private') and regexp_replace(p.prosrc, '--[^\n]*', '', 'g') ~ '\mauth\.(uid|role|jwt|users)'), 0,
   'no function reads the Supabase auth schema (comments aside)');
@@ -101,9 +110,9 @@ select public._t_is((select array_agg(p.proname::text order by p.proname) from p
   where n.nspname = 'public' and has_function_privilege('inha_world_tier3_app', p.oid, 'EXECUTE') and p.proname !~ '^_t_'
     and exists (select 1 from aclexplode(p.proacl) a join pg_roles r on r.oid = a.grantee where r.rolname = 'inha_world_tier3_app')),
   array['expire_ranked_sessions_v1', 'get_my_rank_v3', 'record_ranked_result_v4', 'record_ranked_result_v5',
-    'world_collection_list_v1', 'world_fishing_input_v1', 'world_fishing_read_v1', 'world_fishing_settle_v1',
-    'world_fishing_start_v1', 'world_inkyung_duck_observe_v1'],
-  'the Worker role can execute exactly the RPCs its handlers call');
+    'world_collection_list_v1', 'world_fishing_input_v1', 'world_fishing_observe_position_v1', 'world_fishing_read_v1',
+    'world_fishing_settle_v1', 'world_fishing_start_v1', 'world_inkyung_duck_observe_v1'],
+  'the Worker role can execute exactly the RPCs its handlers call (observe_position for the position feed)');
 select public._t_is((select count(*)::int from pg_proc p join pg_namespace n on n.oid = p.pronamespace
   where n.nspname in ('public', 'private') and p.proname !~ '^_t_'
     and exists (select 1 from aclexplode(p.proacl) a where a.grantee = 0 and a.privilege_type = 'EXECUTE')), 0,
@@ -112,7 +121,7 @@ set local role inha_world_tier3_app;
 select public._t_throws($$select public.claim_inha_mail_badge(gen_random_uuid(), gen_random_uuid())$$, '42501',
   'the Worker role cannot claim a mail badge (handler is 501)');
 select public._t_throws($$select public.world_fishing_observe_position_v1(gen_random_uuid(), gen_random_uuid(), 1, 0, 0, 0, 'CAMPUS', 'ON_FOOT', clock_timestamp())$$,
-  '42501', 'the Worker role cannot publish positions (no Tier 3 handler does)');
+  '22023', 'the Worker role may publish positions, but only for an existing session', 'ACCOUNT_UNAVAILABLE');
 select public._t_throws($$select public.world_collection_discover_v1(gen_random_uuid(), 'collection.fish.carp', 'SYSTEM', 'x', null, 'k', null)$$,
   '42501', 'the Worker role cannot write discoveries directly');
 select public._t_throws($$select * from public.inha_mail_badges$$, '42501', 'the Worker role cannot read the badge table');
@@ -173,10 +182,10 @@ select public._t_is((select array_agg((x->>'entryId') || '|' || (x->>'persistenc
 select public._t_is(public.world_collection_list_v1(:alice)->>'userId', :alice, 'the read is stamped with the session id it was made for');
 select public._t_is((select x->>'discoveryState' from jsonb_array_elements(public.world_collection_list_v1(:bob)->'entries') x
   where x->>'entryId' = 'collection.fish.carp'), 'UNKNOWN', 'another session does not inherit discovery');
-select public._t_throws(format($$select public.world_collection_list_v1(%L)$$, :noprofile), '22023',
-  'a session without a profile has no collection book', 'ACCOUNT_UNAVAILABLE');
-select public._t_throws(format($$select public.world_collection_list_v1(%L)$$, :banned), '22023',
-  'a banned profile has no collection book', 'ACCOUNT_UNAVAILABLE');
+select public._t_is(jsonb_array_length(public.world_collection_list_v1(:noprofile)->'entries'), 4,
+  'guest-open: a session without a profile has a collection book');
+select public._t_is(public.world_collection_list_v1(:banned)->>'userId', :banned,
+  'guest-open: a banned profile no longer blocks the collection book');
 select public._t_throws(format($$select public.world_collection_list_v1(%L)$$, :stranger), '22023',
   'an unknown id has no collection book', 'ACCOUNT_UNAVAILABLE');
 reset role;
@@ -188,8 +197,10 @@ select public._t_throws(format($$update private.world_player_collection_discover
 select public._t_throws(format($$update private.world_player_collection_discoveries set discovery_count = discovery_count + 2,
   version = version + 1, last_discovered_at = now(), updated_at = now() where user_id = %L and entry_id = 'collection.fish.carp'$$, :alice),
   '23514', 'projection count/version advance by one verified event', 'COLLECTION_PROJECTION_INVALID');
-select public._t_throws(format($$select public.world_collection_discover_v1(%L, 'collection.fish.carp', 'SYSTEM', 'test', null, 'collection:banned:001', null)$$, :banned),
-  '22023', 'banned account has no persistent Collection Discovery', 'ACCOUNT_UNAVAILABLE');
+select public._t_is(public.world_collection_discover_v1(:noprofile, 'collection.fish.carp', 'SYSTEM', 'test', null, 'collection:guest:001', null)->>'status',
+  'DISCOVERED', 'guest-open: a session without a profile can be credited a discovery');
+select public._t_throws(format($$select public.world_collection_discover_v1(%L, 'collection.fish.carp', 'SYSTEM', 'test', null, 'collection:stranger:001', null)$$, :stranger),
+  '22023', 'an unknown id has no persistent Collection Discovery', 'ACCOUNT_UNAVAILABLE');
 
 -- =====================================================================
 -- 87 / 99: fishing runtime, policy, presence, skill effects
@@ -265,8 +276,10 @@ select public._t_is(private.world_fishing_skill_effects_v1(:bob),
 update private.world_fishing_runtime set presence_required = false, minimum_start_interval_ms = 1,
   policy = '{"policyVersion":"fishing.oracle.v1","minWaitMs":1,"maxWaitMs":1,"responseWindowMs":20000,"attemptTtlMs":30000,"lifeXp":20}';
 set local role inha_world_tier3_app;
-select public._t_throws(format($$select public.world_fishing_start_v1(%L, %L, %L)$$, :noprofile, :north, :k1), '22023',
-  'start: a session without a profile is refused', 'ACCOUNT_UNAVAILABLE');
+select public._t_throws(format($$select public.world_fishing_start_v1(%L, %L, %L)$$, :stranger, :north, :k1), '22023',
+  'start: an unknown id is refused', 'ACCOUNT_UNAVAILABLE');
+select public._t_is(public.world_fishing_read_v1(:noprofile)->'inventory'->>'itemId', 'material.fish_carp',
+  'guest-open: a session without a profile can read its fishing state');
 select public._t_throws(format($$select public.world_fishing_start_v1(%L, 'fishing.inkyung.west_01', %L)$$, :alice, :k1), '22023',
   'start: unknown spot', 'INVALID_FISHING_IDENTITY');
 select public._t_throws(format($$select public.world_fishing_read_v1(%L, %L)$$, :alice, :k1), 'P0002', 'read: unknown attempt', 'ATTEMPT_NOT_FOUND');
@@ -408,10 +421,12 @@ select public._t_throws(format($$select public.world_inkyung_duck_observe_v1(%L,
   'an unknown duck is not observable (handler: 409)', 'INKYUNG_DUCK_NOT_OBSERVABLE');
 select public._t_throws(format($$select public.world_inkyung_duck_observe_v1(%L, 'Not A Duck', 'r', 'k')$$, :alice), '22023',
   'a malformed duck id is refused', 'INVALID_INKYUNG_DUCK_ID');
-select public._t_throws(format($$select public.world_inkyung_duck_observe_v1(%L, 'inkyung_duck_white_03', 'r3', 'k3')$$, :noprofile), '22023',
-  'a session without a profile cannot observe (handler: 403)');
-select public._t_throws(format($$select public.world_inkyung_duck_observe_v1(%L, 'inkyung_duck_white_03', 'r4', 'k4')$$, :banned), '22023',
-  'a banned profile cannot observe');
+select public._t_is(public.world_inkyung_duck_observe_v1(:noprofile, 'inkyung_duck_white_03', 'r3', 'k3')->>'status', 'SUCCESS',
+  'guest-open: a session without a profile can observe');
+select public._t_is(public.world_inkyung_duck_observe_v1(:banned, 'inkyung_duck_white_03', 'r4', 'k4')->>'status', 'SUCCESS',
+  'guest-open: a banned profile no longer blocks observation');
+select public._t_throws(format($$select public.world_inkyung_duck_observe_v1(%L, 'inkyung_duck_white_03', 'r5', 'k5')$$, :stranger), '22023',
+  'an unknown id cannot observe (handler: 403)');
 reset role;
 select public._t_is((select count(*)::int from private.world_creature_observation_events where user_id = :alice), 2, 'two ducks, two ledger rows');
 select public._t_throws($$delete from private.world_creature_observation_events$$, '42501', 'the observation ledger is append-only while the session exists');

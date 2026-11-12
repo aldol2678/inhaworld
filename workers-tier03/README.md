@@ -9,14 +9,12 @@ Cloudflare Workers + Neon으로 옮긴 것이다. 원본은 `aldol2678/inhagame`
 
 먼저 알아야 할 세 가지:
 
-1. **프로필 행이 없는 세션은 낚시·도감·오리 관찰도 전부 403이다.** 원본의 계정 검사
-   (`world_*_account_ok_v1`)는 "익명이 아님"과 함께 "`profiles` 행이 있고 밴이 아님"을 요구한다.
-   A안으로 앞쪽만 세션 존재 검사로 바뀌었고 뒤쪽은 그대로다. Tier 3에는 프로필 생성 흐름이
-   없으므로, 지금 상태로 배포하면 게스트 세션은 랭크(`PROFILE_REQUIRED`)뿐 아니라 이 세 기능도
-   `ACCOUNT_UNAVAILABLE`을 받는다. ("원본과 달라진 점" 5번)
-2. **낚시는 위치 피드가 없으면 시작되지 않는다.** 원본 런타임 기본값이 `presence_required = true`이고,
-   위치를 넣는 `world_fishing_observe_position_v1`을 호출하는 핸들러는 Tier 3 범위에 없다.
-   그 상태에서 `start`는 항상 `409 FISHING_POSITION_UNAVAILABLE`이다. ("아직 안 된 것")
+1. **게스트로 연다 (2026-11-12 결정).** 낚시·도감·오리 관찰은 세션만 있으면 쓸 수 있다. 프로필 행이
+   필요 없고, 이 경로에서는 밴 검사도 없다. **랭크는 그대로** 프로필이 필요하고(`409 PROFILE_REQUIRED`,
+   QA는 통과) 밴도 막는다. ("원본과 달라진 점" 5번)
+2. **낚시 위치는 브라우저가 보고한다.** 새 엔드포인트 `POST /api/fishing-position`이 받는다.
+   **이 위치는 속일 수 있다.** 원본 F3 설계가 요구한 "신뢰된 월드 서버"의 증거가 아니다.
+   ("낚시 위치 피드" 섹션)
 3. **메일 인증은 501이다.** 신원 검증은 이식하지 않았다. ("메일 인증 이식에 필요한 것")
 
 ## 엔드포인트
@@ -29,6 +27,7 @@ Cloudflare Workers + Neon으로 옮긴 것이다. 원본은 `aldol2678/inhagame`
 | `POST /api/ranked-run-finish` (+ `OPTIONS`) | `functions/ranked-run-finish` → RPC `record_ranked_result_v4/v5`, `get_my_rank_v3` | 결과 검증·확정. `200` / `401` / `404 RUN_NOT_FOUND` / `409 RUN_ALREADY_PROCESSED` / `410 RUN_EXPIRED` / `403·422 RUN_REJECTED` / `500 FINISH_FAILED` |
 | `POST /api/world-duck-observe` (+ `OPTIONS`) | `functions/world-duck-observe` → RPC `world_inkyung_duck_observe_v1` | 인경호 오리 4마리 관찰 기록. `200` / `401` / `400 INVALID_DUCK_ID` / `403 ACCOUNT_UNAVAILABLE` / `409 OBSERVATION_REJECTED` / `500 OBSERVATION_FAILED` |
 | `POST /api/verify-inha-mail` (+ `OPTIONS`) | `functions/verify-inha-mail` | **`501 {"error":"NOT_IMPLEMENTED"}`** — 신원 검증 미이식 |
+| `POST /api/fishing-position` (+ `OPTIONS`) | **원본 없음** (신규) → RPC `world_fishing_observe_position_v1` | 브라우저 보고 위치 피드. `200 {status, revision}` / `400` / `401` / `409` / `429` / `503`. 아래 "낚시 위치 피드" |
 
 신원은 전부 `X-Session-Id` 헤더(v0.1 서버 발급 세션 ID)다. `verifySession`은 헤더가 UUID 형태이고
 `public.sessions`에 그 id가 있으면 소문자 id를 actor로 돌려주고, 아니면 null이다.
@@ -65,6 +64,7 @@ Cloudflare Workers + Neon으로 옮긴 것이다. 원본은 `aldol2678/inhagame`
 | `wrangler.toml` | Worker 이름 `inha-world-tier03-test`. `[vars]`·라우트 없음. |
 | `test-parity.mjs` | 패리티 테스트 (`node test-parity.mjs`). DB 없이 실행. `TEST_PG_URL`을 주면 실제 Postgres로 end-to-end까지. |
 | `test-schema.sql` | DB 쪽 오라클. 원본 pgTAP 6개 + 낚시 상태머신·랭크 생명주기·오리 멱등성·메일 뱃지. |
+| `client/fishing-position-reporter.js` | 위치 피드 클라이언트 **참조 모듈**. 어디에도 import·배선되지 않았다. 아래 "클라이언트 모듈" |
 | `package.json`, `package-lock.json` | `@neondatabase/serverless` 0.10.4 고정. `pg`는 선택적 통합 테스트용 devDependency. |
 
 ## 스키마
@@ -84,7 +84,7 @@ Tier 3 RPC는 겉으로는 14개지만, 낚시 정산과 오리 관찰이 활동
 
 | 함수 | 바뀐 점 |
 |---|---|
-| `private.world_{activity,collection,creature,inventory,life_skill}_account_ok_v1` (5) | `auth.users` + `is_anonymous is not true` → `public.sessions` 존재. `profiles` 조인과 `is_banned = false`는 유지 |
+| `private.world_{activity,collection,creature,inventory,life_skill}_account_ok_v1` (5) | `auth.users` + `is_anonymous is not true` + `profiles` 조인 + `is_banned = false` → **`public.sessions`에 행이 있는가, 그것만** (게스트 개방, 2026-11-12) |
 | `private.world_fishing_require_server_v1`, `public.world_collection_list_v1`, `public.world_collection_discover_v1`, `public.world_inkyung_duck_observe_v1` (4) | `auth.role() = 'service_role'` 검사(`SERVER_ONLY`) 제거 |
 | `private.world_activity_settlement_append_only_v1`, `world_creature_append_only_v1`, `world_life_nodes_append_only_v1`, `world_life_sp_append_only_v1`, `world_life_tree_resets_append_only_v1` (5) | DELETE 허용 조건이 "`auth.users` 행이 없음" → "`sessions` 행이 없음" |
 | `public.get_my_rank_v3` | 시그니처 `()` → `(p_user uuid)`, `auth.uid()` → `p_user` |
@@ -110,11 +110,12 @@ Tier 3 RPC는 겉으로는 14개지만, 낚시 정산과 오리 관찰이 활동
 
 - `sessions(id)` 조회, `profiles(user_id, is_banned)` 조회
 - `ranked_sessions` 조회·삽입·수정, `ranked_runs` 삽입 (원본 Edge Function이 service key로 직접 하던 것)
-- RPC 10개 실행: `world_collection_list_v1`, `world_fishing_{start,input,settle,read}_v1`,
-  `world_inkyung_duck_observe_v1`, `expire_ranked_sessions_v1`, `record_ranked_result_v4/v5`, `get_my_rank_v3`
+- RPC 11개 실행: `world_collection_list_v1`, `world_fishing_{start,input,settle,read}_v1`,
+  `world_inkyung_duck_observe_v1`, `expire_ranked_sessions_v1`, `record_ranked_result_v4/v5`, `get_my_rank_v3`,
+  그리고 위치 피드용 `world_fishing_observe_position_v1`
 
 할 수 없는 것: `private` 스키마 전체, 그 외 모든 테이블, `claim_inha_mail_badge`,
-`world_collection_discover_v1`, `world_fishing_observe_position_v1`. Worker가 접속할 로그인 역할은
+`world_collection_discover_v1`. Worker가 접속할 로그인 역할은
 Neon 콘솔에서 만들고 `grant inha_world_tier3_app to <로그인 역할>;`로 붙인다.
 
 ### 시드
@@ -133,11 +134,17 @@ Neon 콘솔에서 만들고 `grant inha_world_tier3_app to <로그인 역할>;`�
    `is_anonymous === false`인 유저만 받았다. 의도된 변경이다.
 3. **오리 관찰의 `403 PERMANENT_ACCOUNT_REQUIRED`가 없어졌다.** 세션이 있으면 통과한다.
 4. **`get_my_rank_v3`가 세션 id를 파라미터로 받는다.** (`auth.uid()` 제거)
-5. **`profiles`는 세션 id 기준이고, 프로필 생성 흐름은 Tier 3 범위 밖이다.**
-   프로필 행이 없는 세션은 랭크 실행 시 원본과 똑같이 `409 PROFILE_REQUIRED`를 받는다(`runType: "qa"`는 통과).
-   **추가로 발견한 것:** 같은 이유로 낚시·도감·오리 관찰도 프로필 행이 없으면
-   `403 ACCOUNT_UNAVAILABLE`이다. 원본에서도 프로필 없는 계정은 그랬다. 프로필 없이 열고 싶다면
-   `private.world_*_account_ok_v1` 5개에서 `profiles` 조인을 빼는 결정이 따로 필요하다. 임의로 풀지 않았다.
+5. **게스트 개방: 월드 계정 검사 5개가 "세션이 있는가"만 본다** (2026-11-12 결정).
+   원본 `private.world_{activity,collection,creature,inventory,life_skill}_account_ok_v1`은
+   `auth.users` 행(익명 아님) + `profiles` 행 + `is_banned = false`를 요구했다. 이제 셋 다 없다.
+   결과:
+   - 프로필 행이 없는 세션도 낚시·도감·오리 관찰(과 그 뒤의 활동·인벤토리·생활 스킬·생물 계층)을 쓴다.
+   - **이 경로에서는 밴 검사가 없다.** 게스트에게는 밴할 프로필이 없기 때문이다. `is_banned = true`인
+     프로필의 세션도 낚시·도감·오리 관찰은 된다.
+   - `profiles` 테이블은 랭크용으로 남는다. 랭크 시작은 그대로 `409 PROFILE_REQUIRED`(프로필 없음,
+     `runType: "qa"`는 통과)와 `403 RANKING_BLOCKED`(밴, QA 포함)를 낸다. `get_my_rank_v3`는 밴된 프로필을
+     순위에서 뺀다. 메일 뱃지의 업적 지급도 밴되지 않은 프로필을 요구한다. 셋 다 바꾸지 않았다.
+   - 프로필 생성 흐름은 여전히 범위 밖이다.
 6. **메일 인증 핸들러는 501이다.**
 
 추가로 발견한 것:
@@ -169,11 +176,91 @@ Neon 콘솔에서 만들고 `grant inha_world_tier3_app to <로그인 역할>;`�
 20. **옮기지 않은 RPC.** 핸들러가 아니라 클라이언트가 `auth.uid()`로 직접 부르던 것:
     `my_inha_mail_badge`, `abandon_ranked_session_v1`, `get_my_duck_companion_v1`, `bond_my_duck_companion_v1`,
     그리고 `world_life_node_unlock_v1`, `world_life_tree_reset_v1`. Tier 3 RPC가 닿지 않는 나머지 객체도 없다.
+21. **신규 엔드포인트 `POST /api/fishing-position`.** 원본에 없다. 원본 F3 설계와 반대 방향이다.
+    아래 "낚시 위치 피드" 섹션 전체가 이 항목의 설명이다.
+22. **Worker 역할이 `world_fishing_observe_position_v1`을 실행할 수 있다.** 원본에서 이 함수는 `service_role`만,
+    그것도 "신뢰된 서버"만 부르도록 되어 있었다. 피드를 위해 이번에 권한을 줬다. (지시서는 `schema.sql`에서
+    계정 검사 5개만 고치라고 했지만, 이 권한 한 줄이 없으면 피드가 동작하지 않는다. 추가한 것은 이 grant
+    한 줄과 주석뿐이다.)
 
 원본과 **같게 유지한** 것(바뀌었을 것 같지만 아닌 것): 랭크 시작·종료는 원본처럼 여러 문장을 따로
 실행한다(한 트랜잭션이 아니다). 프로필·카운트·랭크 조회 실패를 무시하는 것, 거절 기록 쓰기 실패를
 무시하는 것도 원본 그대로다. 응답의 `startedAt`·`expiresAt`은 PostgREST와 같은 형식
 (`2026-11-11T17:00:00.123456+00:00`)이다.
+
+## 낚시 위치 피드 (`POST /api/fishing-position`)
+
+### 원본 F3와의 관계 — 이 피드는 "신뢰된" 피드가 아니다
+
+원본 F3 설계(`fishing-f3.md`)는 낚시 시작·훅에 필요한 위치 증거를 **신뢰된 월드 서버만** 낼 수 있게 했다.
+그 서버가 실제 이동·상태에서 위치를 도출해야 하고, "브라우저 pose를 서비스 키로 중계하는 것은 이 계약을
+만족하지 않는다"고 못 박았다. 원본 테스트(`fishing-f3.test.mjs`)는 플레이어 API가 위치를 낼 수 없음을 단언한다.
+그런 신뢰 서버는 원본 저장소에 없다.
+
+지금 구조에서 붙일 수 있는 것은 **브라우저가 보고하는 위치**뿐이다. 이 엔드포인트가 그것이다.
+게스트친화 게임을 위한 실용적 선택(2026-11-12 결정)이고, 원본 F3 설계와 정반대의 의도된 변경이다.
+
+- **위치를 속일 수 있다.** "내가 낚시터에 있다"는 클라이언트의 말은 검증되지 않는다. 조작된 클라이언트는
+  어디서든 낚시터 좌표를 보내고 낚시를 시작할 수 있다. (end-to-end 테스트
+  `db: the feed cannot tell a spoofed position from a real one`이 이 한계를 그대로 확인한다.)
+- **그래도 돌아가는 검사.** RPC와 시작·훅 게이트 안의 검사는 그대로다: 세션별 리비전 단조 증가(오래된
+  리비전은 `STALE`, 같은 리비전에 다른 내용은 `409`), 5초가 지난 증거는 거절, 좌표 ±10000, 낚시터 반경 3·
+  y −1~4, `CAMPUS`/`ON_FOOT`만 캐스팅 가능, 낚시터당 한 세션(임대), 훅 때 같은 세션의 위치·임대 재확인.
+  막무가내 리플레이·오래된 위치·범위 밖 위치는 걸러진다.
+- 이것은 부정행위 방지 장치가 아니다. 원본 F3도 위치 게이트를 anti-bot이라고 하지 않았다.
+
+`presence_required` 기본값(`true`)은 그대로다. 피드가 있으므로 끌 필요가 없다.
+
+### 동작
+
+- 가드 순서: 낚시 플래그(404) → `OPTIONS`(200) → 메서드(405, `Allow: POST`) → Content-Type JSON(415) →
+  same-host Origin(403) → 본문 1024바이트(413) → JSON(400) → 요청 형태(400 `INVALID_REQUEST`) →
+  세션(401 `AUTH_REQUIRED`, 조회 실패 503 `AUTH_UNAVAILABLE`) → 속도 제한(429 `RATE_LIMITED`) → RPC.
+  - 맨 앞의 **플래그 검사는 지시서에 없던 것을 추가했다.** `WORLD_FISHING_API_ENABLED != "1"`이면 낚시 자체가
+    꺼져 있으므로 위치도 받지 않는다(404).
+- 요청 본문은 정확히 `{ revision, x, y, z, space, mode }` 여섯 필드다. 그 외 필드는 무시하지 않고 400으로
+  거절한다(`observed_at`, `observedAt`, `sessionId`, `userId` 포함).
+  - `revision`: 1 이상의 정수(안전 정수 범위). `x, y, z`: 유한한 숫자, −10000~10000.
+  - `space`: `CAMPUS` | `OTHER`. `mode`: `ON_FOOT` | `INELIGIBLE`.
+- **`observed_at`은 Worker가 요청을 받은 시각이다.** 클라이언트 시계는 틀리거나 마음대로 바꿀 수 있고,
+  RPC는 미래 시각과 5초 이상 지난 시각을 DB 시계 기준으로 거절하기 때문이다.
+- RPC 호출: `world_fishing_observe_position_v1(p_user = 세션 id, p_session_id = 세션 id, revision, x, y, z, space, mode,
+  p_observed_at = Worker 수신 시각)`. 세션 id가 계정이자 임대가 묶이는 presence 세션이다.
+- 응답:
+
+| 상황 | 응답 |
+|---|---|
+| RPC `OBSERVED` / `ALREADY_PROCESSED` / `STALE` | `200 {status, revision}` (`STALE`의 `revision`은 저장된 더 새 리비전) |
+| RPC 예외 `FISHING_POSITION_INVALID` | `400 {error: 'FISHING_POSITION_INVALID'}` |
+| RPC 예외 `FISHING_POSITION_CONFLICT` | `409 {error: 'FISHING_POSITION_CONFLICT'}` |
+| 그 외 DB 오류·연결 실패·알 수 없는 결과 | `503 {error: 'FISHING_UNAVAILABLE'}` |
+
+- **같은 리비전 재전송은 `ALREADY_PROCESSED`가 아니라 `409`가 된다.** RPC는 리비전·좌표·상태·시각이 모두
+  같아야 `ALREADY_PROCESSED`로 보는데, Worker가 매번 새 수신 시각을 찍으므로 같은 본문을 다시 보내도 시각이
+  달라 `FISHING_POSITION_CONFLICT`다. 매핑은 있지만 실제로 `ALREADY_PROCESSED`가 나오는 경우는 사실상 없다.
+  클라이언트는 409를 받으면 다음 리비전으로 넘어가면 된다(참조 모듈이 그렇게 한다).
+- **속도 제한은 세션당 1초 1회, Worker 인스턴스 메모리 기준이다.** Workers 인스턴스끼리 공유되지 않으므로
+  여러 인스턴스에 흩어진 요청은 제한을 넘을 수 있다(최선 노력). 실제로 효과를 묶는 것은 RPC의 리비전·
+  신선도 검사다. 정확한 전역 제한이 필요하면 Durable Object가 필요하다. 거절된 요청(400·401·403 등)은
+  예산을 쓰지 않는다.
+- 낚시 핸들러(`POST /api/world-fishing`)의 op 목록은 그대로다. `observe_position` op은 없고, 낚시 요청에 위치
+  필드를 넣으면 여전히 400이다(원본 F3 테스트의 단언을 패리티 테스트로 옮겨 확인).
+
+### 클라이언트 모듈 (`client/fishing-position-reporter.js`, 배선 안 됨)
+
+월드 클라이언트에 나중에 붙일 참조 모듈이다. 이 브랜치에서는 아무 데서도 import하지 않는다.
+
+- `createPositionReporter({ getSessionId, getPose, getState, fetch, storage, setInterval, clearInterval })`.
+  위치와 상태는 인자로 받는다. 월드 클라이언트 API에 직접 의존하지 않는다.
+- `start()`하면 바로 한 번, 그 뒤 2초마다 보낸다. `stop()`하면 멈춘다. 낚시 패널의
+  `createFishingPanel({ onOpenChange })`에서 열림/닫힘에 맞춰 부르면 된다.
+- 위치는 `src/online/pose-source.js`의 `createPoseSource(...).sample(dt).pose`(`x, y, z`,
+  CampusCoordinateFrame 로컬 좌표 — 서버 낚시터 좌표와 같은 좌표계)를 쓰면 된다.
+- 상태: `getState()`가 `{ indoor, mounted, seated, combat, airborne, disconnected }`를 돌려준다. 전부 명시적으로
+  `false`일 때만 `CAMPUS`/`ON_FOOT`, 하나라도 참이거나 빠지면 `OTHER`/`INELIGIBLE`(실패 시 닫힘).
+- 리비전은 세션별로 sessionStorage에 저장해 새로고침 후에도 이어진다. `STALE`이 오면 서버가 가진 리비전
+  다음으로 건너뛴다. 이전 요청이 끝나기 전에는 다음 요청을 보내지 않는다.
+- 401이면 멈추고 콘솔에 경고를 남긴다. 429·409·그 외 오류·네트워크 실패는 다음 주기에 새 리비전으로 다시 보낸다.
 
 ## 검증 방법
 
@@ -198,14 +285,14 @@ TEST_PG_URL="$TEST_PG_URL" node test-parity.mjs                # 만든 행은 �
 
 | 검증 | 결과 |
 |---|---|
-| `node test-parity.mjs` (DB 없음) | **244/244 통과** |
-| `TEST_PG_URL=<로컬 Postgres 16> node test-parity.mjs` | **253/253 통과** (위 244 + DB end-to-end 9) |
-| `test-schema.sql` 오라클 (로컬 Postgres 16.15) | **169/169 통과** — 슈퍼유저, 그리고 Neon 소유자처럼 슈퍼유저가 아닌 `CREATEROLE` 역할 양쪽에서 |
-| 원본 핸들러·RPC와 직접 대조 | **4,160쌍, 차이 0건** (아래) |
-| 함수 본문 해시 비교 | 78개 중 61개 원본과 동일, 17개는 위 표의 의도한 수정 |
-| 변형 검사 | `worker.js`에 결함 14개를 하나씩 넣었을 때 14개 모두 테스트가 잡음 |
-| `wrangler deploy --dry-run` (4.160.1) | 번들 성공, 228 KiB / gzip 59 KiB |
-| `wrangler dev --local` (workerd, `DATABASE_URL` 없음) | 가드·401·503·501 경로와 낚시 플래그 404 확인 |
+| `node test-parity.mjs` (DB 없음) | **323/323 통과** (게스트 개방 전 244 → +79: 위치 피드 71(원본 F3의 "플레이어 API는 위치를 낼 수 없다" 단언 이식 1건 포함), 클라이언트 모듈 8. 기존 2건은 이름만 바뀜) |
+| `TEST_PG_URL=<로컬 Postgres 16> node test-parity.mjs` | **339/339 통과** (위 323 + DB end-to-end 16, 그중 위치 피드 7) |
+| `test-schema.sql` 오라클 (로컬 Postgres 16.15) | **177/177 통과** (전 169) — 슈퍼유저, 그리고 Neon 소유자처럼 슈퍼유저가 아닌 `CREATEROLE` 역할 양쪽에서 |
+| 원본 핸들러·RPC와 직접 대조 | **4,160쌍, 차이 18건 — 전부 설명됨** (아래) |
+| 함수 본문 해시 비교 | 78개 중 61개 원본과 동일, 17개는 위 표의 의도한 수정 (게스트 개방에서 바뀐 것은 계정 검사 5개뿐) |
+| 변형 검사 (게스트 개방 전) | `worker.js`에 결함 14개를 하나씩 넣었을 때 14개 모두 테스트가 잡음 |
+| `wrangler deploy --dry-run` (4.160.1) | 번들 성공, 232 KiB / gzip 60 KiB |
+| `wrangler dev --local` (workerd, `DATABASE_URL` 없음) | 가드·401·503·501 경로, 낚시·피드 플래그 404, 피드 405/415/403/413/400/401/503 확인 |
 
 **원본 직접 대조**는 이렇게 했다. 원본 쪽은 수정하지 않은 원본 핸들러(Vercel 서비스 모듈 2개, Edge Function
 `index.ts` 3개)를 원본 마이그레이션 52개를 적용한 기준 DB에 물렸다. 포트 쪽은 이 Worker를 `schema.sql`을
@@ -216,15 +303,32 @@ TEST_PG_URL="$TEST_PG_URL" node test-parity.mjs                # 만든 행은 �
 |---|---|---|
 | ranked-run-start | 39 | 0 |
 | ranked-run-finish (고정 사례 + 생성 페이로드 1,200개, 각각 응답과 DB 상태) | 2,429 | 0 |
-| world-duck-observe | 30 | 0 |
+| world-duck-observe | 30 | 8 |
 | verify-inha-mail (`OPTIONS`·잘못된 메서드만; POST는 결정에 따라 다름) | 4 | 0 |
 | world-fishing 가드·요청 형태 (생성 1,500개 포함) | 1,534 | 0 |
-| world-fishing 상태머신 (성공·정산·취소·조기·놓침·만료·충돌·속도 제한·위치·임대) | 101 | 0 |
-| world-collection-book | 23 | 0 |
+| world-fishing 상태머신 (성공·정산·취소·조기·놓침·만료·충돌·속도 제한·위치·임대) | 101 | 8 |
+| world-collection-book | 23 | 2 |
+
+(위 표의 차이는 게스트 개방 후 재실행 결과다. 게스트 개방 전에는 전 구간 0이었다. 아래 칸 기준:
+ranked-run-start 0, ranked-run-finish 0, world-duck-observe 8, verify-inha-mail 0, 낚시 가드 0, 낚시 상태머신 8, 도감 2.)
+
+차이 18건의 내용:
+
+- **12건 — 의도된 게스트 개방.** 원본이 프로필 없는 계정·밴된 계정에 `403 ACCOUNT_UNAVAILABLE`을 주던
+  요청이 이제 통과한다(도감 2, 오리 2, 낚시 시작·읽기 4, 낚시 정산·입력 4 — 정산·입력은 계정 검사를 지나
+  `404 ATTEMPT_NOT_FOUND`).
+- **6건 — 대조 도구의 정규화 부산물.** 위 12건으로 포트 쪽에서 관찰 기록이 더 생기면서, 뒤이은 오리 관찰
+  응답의 id 자리표시자 번호(`<idN>`)가 밀렸다. 자리표시자를 지우면 보이는 내용은 같다(대조 도구가 한 줄을
+  1500자에서 잘라 전체 비교는 못 했다).
+- 랭크 시작·종료 2,468쌍은 여전히 차이 0이다. 랭크 동작은 바뀌지 않았다.
 
 생성 페이로드는 수락 444건과 거절 사유 24종을 밟았다. 이 대조에서 차이가 한 번 나왔고 고쳤다:
 공백으로 8192바이트를 넘긴 유효 JSON을 원본은 처리하는데 초안은 413으로 거절했다.
 대조 스크립트는 원본 코드를 읽기 전용 클론에서 직접 불러오므로 저장소에 넣지 않았다.
+위치 피드는 원본에 대응하는 것이 없어 이 대조에 들어가지 않는다. 피드는 패리티 테스트(DB 없음 63건)와
+로컬 Postgres end-to-end 7건으로 확인했다: 게스트 세션의 피드 → 캐스팅 → 훅 → 정산, 낚시터 임대 경합,
+속도 제한·같은 리비전 재전송(409)·오래된 리비전(STALE, 덮어쓰지 않음), 범위 밖·높이 초과·`INELIGIBLE`
+위치로는 캐스팅 불가, 5초 지난 위치로는 캐스팅 불가, 위조 위치로도 캐스팅됨(한계 확인), 세션 없는 id는 401.
 
 ## 메일 인증 이식에 필요한 것
 
@@ -253,10 +357,11 @@ TEST_PG_URL="$TEST_PG_URL" node test-parity.mjs                # 만든 행은 �
 
 - **격리 Neon 브랜치 적용, 실제 배포.** 스키마와 함수는 로컬 Postgres 16.15에서만 돌렸다(원본은 Postgres 17).
   실제 Neon HTTP 엔드포인트를 통한 왕복은 한 번도 실행되지 않았다.
-- **프로필 생성 흐름.** 없으면 위 5번대로 모든 게스트가 403 / `PROFILE_REQUIRED`다.
-- **낚시 위치 피드.** `world_fishing_observe_position_v1`은 스키마에 있지만 부르는 쪽이 없다.
-  원본에서 누가 불렀는지(신뢰된 실시간 서버)는 Tier 3 입력에 없다. 피드 없이 낚시를 열려면
-  운영자가 `private.world_fishing_runtime.presence_required`를 `false`로 바꿔야 한다.
+- **프로필 생성 흐름.** 게스트 개방으로 낚시·도감·오리 관찰에는 필요 없어졌지만, 랭크는 여전히 프로필이
+  있어야 한다. 프로필이 없는 세션은 ranked runType에서 `409 PROFILE_REQUIRED`다.
+- **클라이언트 배선.** `client/fishing-position-reporter.js`는 참조 모듈일 뿐 월드 클라이언트에 붙이지 않았다.
+  붙이기 전까지는 `presence_required = true`(기본값)에서 낚시 시작이 `409 FISHING_POSITION_UNAVAILABLE`이다.
+- **신뢰된 위치 생산자.** 원본 F3가 요구한 서버 쪽 위치 도출은 여전히 없다. 피드는 그 대체가 아니다.
 - **메일 인증 신원 검증**, **옮기지 않은 클라이언트 RPC**(20번), **분석 미러**(11번).
 - **라우팅·컷오버, 기존 Supabase 데이터 이전.**
 
@@ -272,3 +377,8 @@ TEST_PG_URL="$TEST_PG_URL" node test-parity.mjs                # 만든 행은 �
 - **원본 pgTAP 스위트를 기준 DB에서 직접 실행하지는 못했다**(pgTAP 미설치). 기준 DB는 Supabase 플랫폼 객체
   (`auth`, `realtime`, 역할)를 최소 스텁으로 대체해 만들었다.
 - **v0.1 세션 id가 전부 소문자 UUID인지**는 라이브 DB를 보지 않았으므로 확인하지 않았다.
+- **Cloudflare와 Neon의 시계 차이.** 피드는 Worker 수신 시각을 `observed_at`으로 넘기고, RPC는 DB 시계보다
+  미래면 `FISHING_POSITION_INVALID`(400)로 거절한다. 보통은 Worker → DB 왕복 지연 때문에 DB 시각이 더 늦지만,
+  Worker 시계가 DB보다 앞서 있으면 정상 보고가 400을 받는다. 로컬에서는 같은 기계라 확인할 수 없었다.
+- **피드 속도 제한의 실효성.** 인스턴스 메모리 기준이라 실제 Workers에서 요청이 여러 인스턴스로 흩어질 때
+  얼마나 새는지는 확인하지 않았다.

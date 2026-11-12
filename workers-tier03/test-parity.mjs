@@ -22,6 +22,7 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { neonConfig } from '@neondatabase/serverless';
 import worker from './worker.js';
+import { createPositionReporter, classifyPositionState, createRevisionCounter } from './client/fishing-position-reporter.js';
 
 // ---- mini runner ----
 let passed = 0;
@@ -224,7 +225,7 @@ for (const [name, mutate] of [
   });
 }
 for (const [name, reply, status, error] of [
-  ['RPC says ACCOUNT_UNAVAILABLE (no profile row, or banned)', dbError('ACCOUNT_UNAVAILABLE', '22023'), 403, 'ACCOUNT_UNAVAILABLE'],
+  ['RPC says ACCOUNT_UNAVAILABLE (the session row vanished after the lookup)', dbError('ACCOUNT_UNAVAILABLE', '22023'), 403, 'ACCOUNT_UNAVAILABLE'],
   ['any other database error', dbError('boom', 'XX000'), 503, 'COLLECTION_BOOK_UNAVAILABLE'],
   ['database unreachable', unreachable, 503, 'COLLECTION_BOOK_UNAVAILABLE'],
   ['database timeout', timedOut, 503, 'COLLECTION_BOOK_UNAVAILABLE'],
@@ -890,7 +891,7 @@ await t('duck-observe: no session -> 401, checked before the duck id; there is n
   assert.equal((await call(DUCK, { body: { duckId: 'inkyung_duck_white_01' } })).status, 401, 'failed lookup = no session');
 });
 for (const [name, reply, status, error] of [
-  ['SQLSTATE 22023 (no profile row, banned)', dbError('ACCOUNT_UNAVAILABLE', '22023'), 403, 'ACCOUNT_UNAVAILABLE'],
+  ['SQLSTATE 22023 (the session row vanished after the lookup)', dbError('ACCOUNT_UNAVAILABLE', '22023'), 403, 'ACCOUNT_UNAVAILABLE'],
   ['SQLSTATE P0001 (subject not observable)', dbError('INKYUNG_DUCK_NOT_OBSERVABLE', 'P0001'), 409, 'OBSERVATION_REJECTED'],
   ['any other database error', dbError('boom', '23505'), 500, 'OBSERVATION_FAILED'],
   ['database unreachable', unreachable, 500, 'OBSERVATION_FAILED'],
@@ -970,6 +971,355 @@ await t('verify-inha-mail: CORS preflight and wrong methods keep the original an
 });
 
 // =====================================================================
+// fishing-position: browser-reported position feed (no original counterpart)
+// =====================================================================
+const POS = '/api/fishing-position';
+const POS_RPC = /world_fishing_observe_position_v1/;
+const PH = { ...HOST, 'content-type': 'application/json' };
+const report = (o = {}) => ({ revision: 3, x: 1.5, y: 0, z: -2.25, space: 'CAMPUS', mode: 'ON_FOOT', ...o });
+const posOk = (result = { status: 'OBSERVED', revision: 3 }) => [POS_RPC, rows('result', 'jsonb', [result])];
+// The feed rate-limits per session, in memory: every test uses its own session id.
+const fresh = () => randomUUID();
+const position = (body, options = {}) => call(POS, { headers: PH, body, session: options.session ?? fresh(), ...options });
+const POS_SQL = 'select public.world_fishing_observe_position_v1(\n      $1::uuid, $2::uuid, $3::bigint,\n      $4::float8, $5::float8, $6::float8,\n      $7::text, $8::text, $9::timestamptz) as result';
+
+await t('fishing-position: a valid report is relayed with the session id as account and presence session, stamped with the Worker time', async () => {
+  stubDb(sessionFound, posOk());
+  const session = fresh();
+  const before = Date.now();
+  const res = await position(report(), { session });
+  const after = Date.now();
+  assert.equal(res.status, 200);
+  assert.deepEqual(res.json, { status: 'OBSERVED', revision: 3 });
+  assertCors(res);
+  assert.equal(res.headers.get('cache-control'), 'no-store');
+  assert.equal(res.headers.get('content-type'), 'application/json; charset=utf-8');
+  const [rpc] = callsTo(POS_RPC);
+  assert.equal(rpc.query, POS_SQL);
+  assert.deepEqual(rpc.params.slice(0, 8), [session, session, '3', '1.5', '0', '-2.25', 'CAMPUS', 'ON_FOOT']);
+  const stamped = Date.parse(rpc.params[8]);
+  assert.ok(stamped >= before && stamped <= after, 'observed_at is the time the Worker received the request');
+  assert.ok(rpc.init.signal instanceof AbortSignal);
+});
+for (const [status, revision] of [['ALREADY_PROCESSED', 3], ['STALE', 41]]) {
+  await t(`fishing-position: RPC status ${status} is passed through as 200 with the stored revision`, async () => {
+    stubDb(sessionFound, posOk({ status, revision }));
+    const res = await position(report());
+    assert.equal(res.status, 200);
+    assert.deepEqual(res.json, { status, revision });
+  });
+}
+await t('fishing-position: only status and revision are returned', async () => {
+  stubDb(sessionFound, posOk({ status: 'OBSERVED', revision: 3, x: 1, internal: 'x' }));
+  assert.deepEqual((await position(report())).json, { status: 'OBSERVED', revision: 3 });
+});
+for (const [name, reply, status, error] of [
+  ['FISHING_POSITION_INVALID (bad value, or an observed_at ahead of the DB clock)', dbError('FISHING_POSITION_INVALID', '22023'), 400, 'FISHING_POSITION_INVALID'],
+  ['FISHING_POSITION_CONFLICT (same revision, different payload)', dbError('FISHING_POSITION_CONFLICT', '23505'), 409, 'FISHING_POSITION_CONFLICT'],
+  ['FISHING_POSITION_STALE (the request took 5 s or more to reach the DB)', dbError('FISHING_POSITION_STALE', '22023'), 503, 'FISHING_UNAVAILABLE'],
+  ['ACCOUNT_UNAVAILABLE (the session vanished after the lookup)', dbError('ACCOUNT_UNAVAILABLE', '22023'), 503, 'FISHING_UNAVAILABLE'],
+  ['a permission error', dbError('permission denied for function world_fishing_observe_position_v1', '42501'), 503, 'FISHING_UNAVAILABLE'],
+  ['database unreachable', unreachable, 503, 'FISHING_UNAVAILABLE'],
+  ['database timeout', timedOut, 503, 'FISHING_UNAVAILABLE'],
+  ['unreadable reply', unreadable, 503, 'FISHING_UNAVAILABLE'],
+  ['no row', rows('result', 'jsonb', []), 503, 'FISHING_UNAVAILABLE'],
+  ['an unknown status', rows('result', 'jsonb', [{ status: 'MAYBE', revision: 3 }]), 503, 'FISHING_UNAVAILABLE'],
+  ['a non-integer revision', rows('result', 'jsonb', [{ status: 'OBSERVED', revision: '3' }]), 503, 'FISHING_UNAVAILABLE'],
+]) {
+  await t(`fishing-position: ${name} -> ${status} ${error}`, async () => {
+    stubDb(sessionFound, [POS_RPC, reply]);
+    const res = await position(report());
+    assert.equal(res.status, status);
+    assert.deepEqual(res.json, { error });
+    assertCors(res);
+  });
+}
+await t('fishing-position: a mapped code only counts when the database raised it', async () => {
+  stubDb(sessionFound, [POS_RPC, () => { throw new TypeError('FISHING_POSITION_INVALID'); }]);
+  assert.equal((await position(report())).status, 503);
+});
+await t('fishing-position: WORLD_FISHING_API_ENABLED unset -> 404 for every request, nothing is touched', async () => {
+  stubDb(sessionFound, posOk());
+  for (const env of [{ DATABASE_URL: ENV.DATABASE_URL }, { ...ENV, WORLD_FISHING_API_ENABLED: '0' }]) {
+    for (const init of [{ method: 'OPTIONS' }, { method: 'GET' }, { method: 'POST', headers: PH, body: report() }, { method: 'POST', body: '{' }]) {
+      const res = await call(POS, { ...init, env });
+      assert.equal(res.status, 404);
+      assert.equal(res.text, '');
+    }
+  }
+  assert.equal(calls.length, 0);
+});
+await t('fishing-position: CORS preflight answers like the ranked / duck handlers', async () => {
+  stubDb(sessionFound, posOk());
+  const pre = await call(POS, { method: 'OPTIONS', session: null });
+  assert.deepEqual([pre.status, pre.text], [200, 'ok']);
+  assertCors(pre);
+  assert.equal(calls.length, 0);
+});
+for (const method of ['GET', 'PUT', 'DELETE', 'PATCH']) {
+  await t(`fishing-position: ${method} is 405 with Allow: POST`, async () => {
+    stubDb(sessionFound, posOk());
+    const res = await call(POS, { method, headers: PH });
+    assert.equal(res.status, 405);
+    assert.equal(res.headers.get('allow'), 'POST');
+    assertCors(res);
+    assert.equal(calls.length, 0);
+  });
+}
+for (const type of [undefined, 'text/plain', 'application/jsonx', 'application/x-www-form-urlencoded']) {
+  await t(`fishing-position: content-type ${type} is 415`, async () => {
+    stubDb(sessionFound, posOk());
+    const headers = { ...HOST };
+    if (type) headers['content-type'] = type;
+    assert.equal((await call(POS, { headers, body: JSON.stringify(report()), session: fresh() })).status, 415);
+    assert.equal(calls.length, 0);
+  });
+}
+await t('fishing-position: application/json is matched case-insensitively and with parameters', async () => {
+  for (const type of ['application/json; charset=utf-8', 'APPLICATION/JSON', ' application/json ']) {
+    stubDb(sessionFound, posOk());
+    assert.equal((await call(POS, { headers: { ...HOST, 'content-type': type }, body: report(), session: fresh() })).status, 200, type);
+  }
+});
+for (const headers of [{ origin: 'https://evil.example', host: 'inhagame.app' }, { origin: 'not a url', host: 'inhagame.app' },
+  { origin: 'https://inhagame.app' }, { origin: 'https://inhagame.app:8443', host: 'inhagame.app' }]) {
+  await t(`fishing-position: cross-site ${JSON.stringify(headers)} is 403`, async () => {
+    stubDb(sessionFound, posOk());
+    assert.equal((await position(report(), { headers: { ...headers, 'content-type': 'application/json' } })).status, 403);
+    assert.equal(calls.length, 0);
+  });
+}
+await t('fishing-position: same-origin and Origin-less requests pass', async () => {
+  for (const headers of [{ ...PH, origin: 'https://inhagame.app' }, PH]) {
+    stubDb(sessionFound, posOk());
+    assert.equal((await position(report(), { headers })).status, 200);
+  }
+});
+await t('fishing-position: the body limit is 1024 bytes', async () => {
+  stubDb(sessionFound, posOk());
+  const base = JSON.stringify(report());
+  const at = base + ' '.repeat(1024 - base.length);
+  assert.equal((await position(at)).status, 200, 'exactly 1024 bytes');
+  assert.equal((await position(at + ' ')).status, 413);
+  assert.equal((await position('{'.repeat(2000))).status, 413, '413 before 400');
+  assert.equal((await position('가'.repeat(342))).status, 413, '1026 bytes in 342 characters');
+});
+for (const [name, body] of [
+  ['non-JSON body', '{"revision":'], ['empty body', ''], ['JSON null', 'null'], ['JSON array', '[]'], ['JSON number', '7'],
+  ...['revision', 'x', 'y', 'z', 'space', 'mode'].map((k) => [`missing ${k}`, report({ [k]: undefined })]),
+  ['a client observed_at is refused, not ignored', report({ observed_at: new Date().toISOString() })],
+  ['a client observedAt is refused', report({ observedAt: Date.now() })],
+  ['a client session id is refused', report({ sessionId: randomUUID() })],
+  ['a client user id is refused', report({ userId: randomUUID() })],
+  ['revision 0', report({ revision: 0 })], ['negative revision', report({ revision: -1 })],
+  ['fractional revision', report({ revision: 1.5 })], ['revision as a string', report({ revision: '3' })],
+  ['revision above 2^53', report({ revision: 2 ** 53 })], ['null revision', report({ revision: null })],
+  ['x above 10000', report({ x: 10000.5 })], ['y below -10000', report({ y: -10001 })], ['z as a string', report({ z: '1' })],
+  ['x null', report({ x: null })], ['y boolean', report({ y: true })], ['z as an array', report({ z: [1] })],
+  ['huge exponent', '{"revision":3,"x":1e400,"y":0,"z":0,"space":"CAMPUS","mode":"ON_FOOT"}'],
+  ['lower-case space', report({ space: 'campus' })], ['unknown space', report({ space: 'ROOM' })],
+  ['unknown mode', report({ mode: 'FLYING' })], ['mode null', report({ mode: null })],
+]) {
+  await t(`fishing-position: ${name} -> 400 INVALID_REQUEST before the session is looked up`, async () => {
+    stubDb(sessionFound, posOk());
+    const res = await position(body);
+    assert.equal(res.status, 400);
+    assert.deepEqual(res.json, { error: 'INVALID_REQUEST' });
+    assert.equal(calls.length, 0);
+  });
+}
+await t('fishing-position: coordinate bounds ±10000 and both eligibility values are accepted', async () => {
+  for (const o of [{ x: 10000, y: -10000, z: 0 }, { x: -10000, y: 10000, z: 10000 }, { space: 'OTHER', mode: 'INELIGIBLE' },
+    { space: 'CAMPUS', mode: 'INELIGIBLE' }, { revision: Number.MAX_SAFE_INTEGER }]) {
+    stubDb(sessionFound, posOk());
+    assert.equal((await position(report(o))).status, 200, JSON.stringify(o));
+  }
+});
+await t('fishing-position: no session -> 401 AUTH_REQUIRED; a failed lookup -> 503 AUTH_UNAVAILABLE', async () => {
+  stubDb(sessionMissing, posOk());
+  assert.deepEqual((await position(report())).json, { error: 'AUTH_REQUIRED' });
+  stubDb(sessionFound, posOk());
+  const missing = await call(POS, { headers: PH, body: report(), session: null });
+  assert.deepEqual([missing.status, missing.json], [401, { error: 'AUTH_REQUIRED' }]);
+  assert.equal((await call(POS, { headers: { ...PH, 'x-session-id': 'guest' }, body: report(), session: null })).status, 401);
+  for (const reply of [unreachable, dbError('boom', 'XX000')]) {
+    stubDb([SESSION, reply], posOk());
+    assert.deepEqual((await position(report())).json, { error: 'AUTH_UNAVAILABLE' });
+  }
+  stubDb(sessionFound, posOk());
+  assert.equal((await position(report(), { env: { WORLD_FISHING_API_ENABLED: '1' } })).status, 503, 'DATABASE_URL unset');
+  assert.equal(callsTo(POS_RPC).length, 0);
+});
+await t('fishing-position guard order: flag (404) -> method (405) -> content-type (415) -> Origin (403) -> size (413) -> JSON / shape (400) -> session (401) -> rate (429)', async () => {
+  stubDb(sessionMissing, posOk());
+  const evil = { origin: 'https://evil.example', host: 'inhagame.app' };
+  const session = fresh();
+  assert.equal((await call(POS, { method: 'GET', headers: { ...evil, 'content-type': 'text/plain' }, session, env: { DATABASE_URL: 'x' } })).status, 404);
+  assert.equal((await call(POS, { method: 'GET', headers: { ...evil, 'content-type': 'text/plain' }, session })).status, 405);
+  assert.equal((await call(POS, { headers: { ...evil, 'content-type': 'text/plain' }, body: 'x'.repeat(2000), session })).status, 415);
+  assert.equal((await call(POS, { headers: { ...evil, 'content-type': 'application/json' }, body: 'x'.repeat(2000), session })).status, 403);
+  assert.equal((await call(POS, { headers: PH, body: 'x'.repeat(2000), session })).status, 413);
+  assert.equal((await call(POS, { headers: PH, body: report({ x: 'far' }), session })).status, 400);
+  assert.equal((await call(POS, { headers: PH, body: report(), session })).status, 401);
+  assert.equal(callsTo(POS_RPC).length, 0);
+});
+await t('fishing-position: at most one request per second per session; others are not affected', async () => {
+  stubDb(sessionFound, posOk());
+  const a = fresh(), b = fresh();
+  assert.equal((await position(report(), { session: a })).status, 200);
+  const limited = await position(report({ revision: 4 }), { session: a });
+  assert.deepEqual([limited.status, limited.json], [429, { error: 'RATE_LIMITED' }]);
+  assertCors(limited);
+  assert.equal((await position(report(), { session: b })).status, 200, 'another session has its own budget');
+  assert.equal(callsTo(POS_RPC).length, 2, 'a limited request never reaches the RPC');
+  await new Promise((r) => setTimeout(r, 1050));
+  assert.equal((await position(report({ revision: 5 }), { session: a })).status, 200, 'the window has passed');
+});
+await t('fishing-position: requests refused before the rate check do not use up the budget', async () => {
+  stubDb(sessionFound, posOk());
+  const a = fresh();
+  assert.equal((await position(report({ x: 'far' }), { session: a })).status, 400);
+  assert.equal((await position(report(), { session: a, headers: { ...PH, origin: 'https://evil.example' } })).status, 403);
+  assert.equal((await position(report(), { session: a })).status, 200);
+  stubDb(sessionMissing, posOk());
+  const b = fresh();
+  assert.equal((await position(report(), { session: b })).status, 401);
+  stubDb(sessionFound, posOk());
+  assert.equal((await position(report(), { session: b })).status, 200, 'an unknown-session request did not record a slot');
+});
+await t('fishing-position: the player fishing API still cannot publish or carry a position (original F3 test)', async () => {
+  stubDb(sessionFound, fishOk(), posOk());
+  const responses = [await fish({ op: 'observe_position' })];
+  for (const field of ['position', 'x', 'y', 'z', 'sessionId', 'revision', 'observedAt', 'mode', 'space']) {
+    responses.push(await fish(startBody({ [field]: 0 })));
+  }
+  for (const res of responses) assert.deepEqual([res.status, res.json], [400, { error: 'INVALID_REQUEST' }]);
+  assert.equal(calls.length, 0);
+});
+
+// =====================================================================
+// client/fishing-position-reporter.js (reference module, not wired)
+// =====================================================================
+const memoryStorage = () => {
+  const data = new Map();
+  return { getItem: (k) => (data.has(k) ? data.get(k) : null), setItem: (k, v) => data.set(k, String(v)), data };
+};
+function reporterHarness(o = {}) {
+  const sent = [];
+  const timers = [];
+  const warnings = [];
+  const replies = [...(o.replies ?? [])];
+  const reporter = createPositionReporter({
+    getSessionId: () => o.sessionId ?? SID,
+    getPose: o.getPose ?? (() => ({ x: 10, y: 0.5, z: -3 })),
+    getState: o.getState ?? (() => ({ indoor: false, mounted: false, seated: false, combat: false, airborne: false, disconnected: false })),
+    fetch: async (url, init) => {
+      sent.push({ url, init, body: JSON.parse(init.body) });
+      const next = replies.shift() ?? { status: 200, json: { status: 'OBSERVED', revision: 0 } };
+      if (next instanceof Error) throw next;
+      if (next.wait) await next.wait;
+      return new Response(next.json === undefined ? null : JSON.stringify(next.json), { status: next.status });
+    },
+    storage: o.storage ?? memoryStorage(),
+    setInterval: (fn, ms) => { timers.push({ fn, ms, cleared: false }); return timers.length - 1; },
+    clearInterval: (id) => { timers[id].cleared = true; },
+    logger: { warn: (m) => warnings.push(m) },
+  });
+  return { reporter, sent, timers, warnings };
+}
+const settle = () => new Promise((r) => setTimeout(r, 0));
+
+await t('reporter: only outdoor walking is CAMPUS / ON_FOOT; every other or unknown state is OTHER / INELIGIBLE', async () => {
+  const walking = { indoor: false, mounted: false, seated: false, combat: false, airborne: false, disconnected: false };
+  assert.deepEqual(classifyPositionState(walking), { space: 'CAMPUS', mode: 'ON_FOOT' });
+  for (const key of Object.keys(walking)) {
+    assert.deepEqual(classifyPositionState({ ...walking, [key]: true }), { space: 'OTHER', mode: 'INELIGIBLE' }, key);
+    const partial = { ...walking };
+    delete partial[key];
+    assert.deepEqual(classifyPositionState(partial), { space: 'OTHER', mode: 'INELIGIBLE' }, `missing ${key} fails closed`);
+  }
+  assert.deepEqual(classifyPositionState(undefined), { space: 'OTHER', mode: 'INELIGIBLE' });
+});
+await t('reporter: start sends at once, then every 2 s, to the feed with the session header and no client clock', async () => {
+  const { reporter, sent, timers } = reporterHarness();
+  reporter.start();
+  await settle();
+  assert.equal(sent.length, 1);
+  assert.equal(sent[0].url, '/api/fishing-position');
+  assert.equal(sent[0].init.method, 'POST');
+  assert.deepEqual(sent[0].init.headers, { 'Content-Type': 'application/json', 'X-Session-Id': SID });
+  assert.deepEqual(sent[0].body, { revision: 1, x: 10, y: 0.5, z: -3, space: 'CAMPUS', mode: 'ON_FOOT' });
+  assert.deepEqual(timers.map((x) => x.ms), [2000]);
+  await timers[0].fn();
+  assert.deepEqual(sent.map((x) => x.body.revision), [1, 2]);
+  reporter.start();
+  assert.equal(timers.length, 1, 'start is idempotent');
+  reporter.stop();
+  assert.equal(timers[0].cleared, true);
+  assert.equal(await reporter.tick(), 'skipped', 'nothing is sent after stop');
+  assert.equal(sent.length, 2);
+});
+await t('reporter: the revision survives a reload through sessionStorage and is per session', async () => {
+  const storage = memoryStorage();
+  const first = reporterHarness({ storage });
+  first.reporter.start(); await settle(); await first.timers[0].fn(); first.reporter.stop();
+  const reloaded = reporterHarness({ storage });
+  reloaded.reporter.start(); await settle();
+  assert.equal(reloaded.sent[0].body.revision, 3);
+  const other = reporterHarness({ storage, sessionId: ID.key });
+  other.reporter.start(); await settle();
+  assert.equal(other.sent[0].body.revision, 1);
+  const counter = createRevisionCounter({ storage, sessionId: SID });
+  assert.equal(counter.current(), 3);
+  counter.advanceTo(2);
+  assert.equal(counter.current(), 3, 'never moves backwards');
+});
+await t('reporter: a STALE answer moves the counter past the stored revision', async () => {
+  const { reporter, sent, timers } = reporterHarness({ replies: [{ status: 200, json: { status: 'STALE', revision: 57 } }] });
+  reporter.start(); await settle();
+  await timers[0].fn();
+  assert.deepEqual(sent.map((x) => x.body.revision), [1, 58]);
+});
+await t('reporter: 429, 409, other errors and network failures keep it running with a fresh revision', async () => {
+  const { reporter, sent, timers } = reporterHarness({ replies: [{ status: 429, json: { error: 'RATE_LIMITED' } },
+    { status: 409, json: { error: 'FISHING_POSITION_CONFLICT' } }, { status: 503, json: { error: 'FISHING_UNAVAILABLE' } }, new TypeError('offline')] });
+  reporter.start(); await settle();
+  for (let i = 0; i < 4; i++) await timers[0].fn();
+  assert.equal(reporter.isRunning(), true);
+  assert.deepEqual(sent.map((x) => x.body.revision), [1, 2, 3, 4, 5]);
+});
+await t('reporter: 401 stops it and leaves a console warning', async () => {
+  const { reporter, sent, timers, warnings } = reporterHarness({ replies: [{ status: 401, json: { error: 'AUTH_REQUIRED' } }] });
+  reporter.start(); await settle();
+  assert.equal(reporter.isRunning(), false);
+  assert.equal(timers[0].cleared, true);
+  assert.equal(warnings.length, 1);
+  await timers[0].fn();
+  assert.equal(sent.length, 1);
+});
+await t('reporter: requests never overlap, and a tick without a pose or session sends nothing', async () => {
+  let release;
+  const { reporter, sent, timers } = reporterHarness({ replies: [{ status: 200, json: { status: 'OBSERVED', revision: 1 }, wait: new Promise((r) => { release = r; }) }] });
+  reporter.start();
+  assert.equal(await timers[0].fn(), 'skipped', 'previous request still in flight');
+  release(); await settle(); await settle();
+  assert.equal(sent.length, 1);
+  for (const getPose of [() => null, () => ({ x: Number.NaN, y: 0, z: 0 })]) {
+    const h = reporterHarness({ getPose });
+    h.reporter.start(); await settle();
+    assert.equal(h.sent.length, 0);
+  }
+  const none = reporterHarness({ sessionId: '' });
+  none.reporter.start(); await settle();
+  assert.equal(none.sent.length, 0);
+});
+await t('reporter: an ineligible state is still reported, as OTHER / INELIGIBLE', async () => {
+  const { reporter, sent } = reporterHarness({ getState: () => ({ indoor: false, mounted: true, seated: false, combat: false, airborne: false, disconnected: false }) });
+  reporter.start(); await settle();
+  assert.deepEqual([sent[0].body.space, sent[0].body.mode], ['OTHER', 'INELIGIBLE']);
+});
+
+// =====================================================================
 // router and credentials
 // =====================================================================
 for (const path of ['/', '/api', '/api/nope', '/api/world-fishing/', '/api/ranked-run-start/x', '/API/world-fishing', '/functions/v1/ranked-run-start',
@@ -1045,12 +1395,17 @@ if (PG_URL) {
   const as = (session) => ({ session });
 
   try {
-    await t('db: a session without a profile row is ACCOUNT_UNAVAILABLE for the book, fishing and ducks; PROFILE_REQUIRED for a ranked run', async () => {
-      assert.deepEqual((await book(as(guest))).json, { error: 'ACCOUNT_UNAVAILABLE' });
-      assert.equal((await fish({ op: 'read' }, as(guest))).status, 403);
-      assert.equal((await call(DUCK, { body: { duckId: 'inkyung_duck_white_01' }, ...as(guest) })).status, 403);
-      assert.deepEqual((await call(START, { body: {}, ...as(guest) })).json, { error: 'PROFILE_REQUIRED' });
-      assert.equal((await call(START, { body: { runType: 'qa' }, ...as(guest) })).status, 200);
+    await t('db: guest-open — a session without a profile row reads its book, fishes and observes ducks; a ranked run still needs a profile', async () => {
+      const bookRes = await book(as(guest));
+      assert.equal(bookRes.status, 200);
+      assert.equal(bookRes.json.discoveredCount, 0);
+      const read = await fish({ op: 'read' }, as(guest));
+      assert.equal(read.status, 200);
+      assert.equal(read.json.attempt, null);
+      const duck = await call(DUCK, { body: { duckId: 'inkyung_duck_white_01' }, ...as(guest) });
+      assert.deepEqual([duck.status, duck.json.status], [200, 'SUCCESS']);
+      assert.deepEqual((await call(START, { body: {}, ...as(guest) })).json, { error: 'PROFILE_REQUIRED' }, 'ranked keeps PROFILE_REQUIRED');
+      assert.equal((await call(START, { body: { runType: 'qa' }, ...as(guest) })).status, 200, 'QA runs pass without a profile');
     });
     await t('db: an id that is not a session is 401 everywhere', async () => {
       const ghost = as(randomUUID());
@@ -1060,10 +1415,12 @@ if (PG_URL) {
       assert.equal((await call(FINISH, { body: run21(), ...ghost })).status, 401);
       assert.equal((await call(DUCK, { body: { duckId: 'inkyung_duck_white_01' }, ...ghost })).status, 401);
     });
-    await t('db: banned profiles are refused', async () => {
-      assert.equal((await book(as(bannedId))).status, 403);
-      assert.equal((await fish({ op: 'read' }, as(bannedId))).status, 403);
-      assert.equal((await call(START, { body: {}, ...as(bannedId) })).status, 403);
+    await t('db: the ban flag no longer gates the guest-open paths; ranked start still refuses a banned profile', async () => {
+      assert.equal((await book(as(bannedId))).status, 200);
+      assert.equal((await fish({ op: 'read' }, as(bannedId))).status, 200);
+      assert.equal((await call(DUCK, { body: { duckId: 'inkyung_duck_white_02' }, ...as(bannedId) })).status, 200);
+      assert.deepEqual((await call(START, { body: {}, ...as(bannedId) })).json, { error: 'RANKING_BLOCKED' });
+      assert.equal((await call(START, { body: { runType: 'qa' }, ...as(bannedId) })).status, 403, 'QA runs are blocked for a banned profile too');
     });
     await t('db: fishing start -> HOOK -> settle -> read, and the collection book shows the carp', async () => {
       const before = await book(as(player));
@@ -1133,6 +1490,86 @@ if (PG_URL) {
         await assert.rejects(app.query(statement), { code: '42501' }, statement);
       }
     });
+    // ---- fishing-position feed, with the F3 gate on (presence_required = true, the default) ----
+    const newGuest = async () => {
+      const id = randomUUID();
+      all.push(id);
+      await admin.query(`insert into public.sessions (id, nickname) values ($1, 'guest')`, [id]);
+      return id;
+    };
+    const spot = (await admin.query(`select x, z from private.world_fishing_spots where source_ref = 'fishing.inkyung.north_01'`)).rows[0];
+    const at = (o = {}) => ({ revision: 1, x: Number(spot.x), y: 0, z: Number(spot.z), space: 'CAMPUS', mode: 'ON_FOOT', ...o });
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    await admin.query('update private.world_fishing_runtime set presence_required = true');
+
+    await t('db: feed -> cast -> HOOK -> settle for a guest with no profile row, F3 gate on', async () => {
+      const g = await newGuest();
+      assert.equal((await fish(startBody({ clientAttemptKey: randomUUID() }), as(g))).json.error, 'FISHING_POSITION_UNAVAILABLE', 'no evidence yet');
+      const fed = await position(at(), { session: g });
+      assert.deepEqual([fed.status, fed.json], [200, { status: 'OBSERVED', revision: 1 }]);
+      const { rows: [stored] } = await admin.query('select session_id::text, revision, space, mode, observed_at <= clock_timestamp() as past from private.world_fishing_positions where user_id = $1', [g]);
+      assert.deepEqual(stored, { session_id: g, revision: '1', space: 'CAMPUS', mode: 'ON_FOOT', past: true });
+      const started = await fish(startBody({ clientAttemptKey: randomUUID() }), as(g));
+      assert.equal(started.json.status, 'STARTED');
+      const { rows: [lease] } = await admin.query('select session_id::text from private.world_fishing_spot_leases where user_id = $1', [g]);
+      assert.equal(lease.session_id, g, 'the spot lease binds the session id');
+      await wait(15);
+      const hooked = await fish(inputBody({ attemptId: started.json.attempt.attemptId, nonce: started.json.attempt.nonce }), as(g));
+      assert.equal(hooked.json.attempt.status, 'SUCCEEDED');
+      assert.equal((await fish({ op: 'settle', attemptId: started.json.attempt.attemptId }, as(g))).json.status, 'SETTLED');
+    });
+    await t('db: a second guest cannot take a spot another guest holds', async () => {
+      const a = await newGuest(), b = await newGuest();
+      await position(at(), { session: a });
+      await position(at(), { session: b });
+      assert.equal((await fish(startBody({ clientAttemptKey: randomUUID() }), as(a))).json.status, 'STARTED');
+      assert.deepEqual((await fish(startBody({ clientAttemptKey: randomUUID() }), as(b))).json, { error: 'FISHING_SPOT_OCCUPIED' });
+    });
+    await t('db: rate limit, resent revision (409: the Worker restamps it), older revision (STALE, not overwritten)', async () => {
+      const g = await newGuest();
+      assert.equal((await position(at({ revision: 5 }), { session: g })).json.status, 'OBSERVED');
+      assert.equal((await position(at({ revision: 6 }), { session: g })).status, 429);
+      await wait(1050);
+      const resent = await position(at({ revision: 5 }), { session: g });
+      assert.deepEqual([resent.status, resent.json], [409, { error: 'FISHING_POSITION_CONFLICT' }],
+        'an identical body is a new observed_at, so the RPC sees a different payload');
+      await wait(1050);
+      const older = await position(at({ revision: 4, x: Number(spot.x) + 500 }), { session: g });
+      assert.deepEqual([older.status, older.json], [200, { status: 'STALE', revision: 5 }]);
+      const { rows: [kept] } = await admin.query('select revision, x from private.world_fishing_positions where user_id = $1', [g]);
+      assert.deepEqual([kept.revision, Number(kept.x)], ['5', Number(spot.x)]);
+    });
+    await t('db: out-of-range, too-high and ineligible reports are stored but cannot cast', async () => {
+      const g = await newGuest();
+      const cast = async () => (await fish(startBody({ clientAttemptKey: randomUUID() }), as(g))).json;
+      assert.equal((await position(at({ x: Number(spot.x) + 3.5 }), { session: g })).json.status, 'OBSERVED');
+      assert.deepEqual(await cast(), { error: 'FISHING_OUT_OF_RANGE' });
+      await wait(1050);
+      assert.equal((await position(at({ revision: 2, y: 4.5 }), { session: g })).json.status, 'OBSERVED');
+      assert.deepEqual(await cast(), { error: 'FISHING_OUT_OF_RANGE' });
+      await wait(1050);
+      assert.equal((await position(at({ revision: 3, space: 'OTHER', mode: 'INELIGIBLE' }), { session: g })).json.status, 'OBSERVED');
+      assert.deepEqual(await cast(), { error: 'FISHING_POSITION_INELIGIBLE' });
+    });
+    await t('db: a report older than 5 s no longer lets a guest cast', async () => {
+      const g = await newGuest();
+      await position(at(), { session: g });
+      await wait(5100);
+      assert.deepEqual((await fish(startBody({ clientAttemptKey: randomUUID() }), as(g))).json, { error: 'FISHING_POSITION_STALE' });
+    });
+    await t('db: the feed cannot tell a spoofed position from a real one (documented limitation)', async () => {
+      // Nothing about this guest is near the pond except its own claim, and the claim is enough.
+      // (The south bank: the north one is still leased by the occupancy test above.)
+      const g = await newGuest();
+      const south = (await admin.query(`select x, z from private.world_fishing_spots where source_ref = 'fishing.inkyung.south_01'`)).rows[0];
+      await position(at({ x: Number(south.x), z: Number(south.z) }), { session: g });
+      const started = await fish(startBody({ sourceRef: 'fishing.inkyung.south_01', clientAttemptKey: randomUUID() }), as(g));
+      assert.equal(started.json.status, 'STARTED');
+    });
+    await t('db: an id that is not a session cannot feed positions', async () => {
+      assert.equal((await position(at(), { session: randomUUID() })).status, 401);
+    });
+
     await t('db: verify-inha-mail stays 501 and writes no badge', async () => {
       assert.equal((await call(MAIL, { body: { school_access_token: 'x'.repeat(40) }, ...as(player) })).status, 501);
       const { rows: [{ n }] } = await admin.query('select count(*)::int as n from public.inha_mail_badges where user_id = any($1::uuid[])', [all]);

@@ -4,6 +4,8 @@
 //   apps/world/api/world-fishing.js         + server/fishing-service.mjs
 //   supabase/functions/ranked-run-start, ranked-run-finish, world-duck-observe
 //   supabase/functions/verify-inha-mail     (handler NOT ported: 501, see below)
+// plus POST /api/fishing-position, a browser-reported position feed with no
+// original counterpart (guest-open decision 2026-11-12, see below and README).
 // from Vercel / Supabase Edge Functions + Supabase to the Workers Fetch API + Neon.
 // Status codes, guard order, error bodies and headers follow the originals; the
 // RPCs live in schema.sql.
@@ -713,6 +715,125 @@ function handleVerifyInhaMail(request) {
   return json(501, { error: 'NOT_IMPLEMENTED' }, CORS_JSON);
 }
 
+// =====================================================================
+// fishing-position: browser-reported position feed for the F3 cast/HOOK gate
+// =====================================================================
+// NOT a trusted feed. The original F3 design accepts position evidence only from
+// an authoritative world server and states that browser poses are not evidence;
+// no such server exists. This endpoint relays what the browser says, so a client
+// can claim to stand on a fishing spot. It is a deliberate, guest-friendly
+// trade-off (decision 2026-11-12). What still holds is everything inside
+// world_fishing_observe_position_v1 and the cast/HOOK gates: one strictly
+// increasing revision per session, evidence older than 5 s is refused, bounded
+// coordinates, a 3-unit radius and y between -1 and 4 at the spot, one lease per
+// bank. Replays, stale and out-of-range positions are still filtered out.
+//
+// The fishing op list in /api/world-fishing is unchanged: the player fishing API
+// still cannot carry position (the original's own test forbids it). This is a
+// separate path.
+const POSITION_FIELDS = ['revision', 'x', 'y', 'z', 'space', 'mode'];
+const POSITION_LIMIT = 10000;
+const POSITION_MAX_BODY_BYTES = 1024;
+const POSITION_MIN_INTERVAL_MS = 1000;
+const POSITION_STATUSES = new Set(['OBSERVED', 'ALREADY_PROCESSED', 'STALE']);
+
+// Per-session rate limit, 1 request per second. In-memory per Worker isolate:
+// best effort only. Two isolates (or colos) do not share it, so a client that
+// lands on several isolates can exceed it. The RPC's own revision / freshness
+// checks are what actually bound the effect of extra requests.
+const lastPositionAt = new Map();
+function positionRateLimited(sessionId, nowMs) {
+  const last = lastPositionAt.get(sessionId);
+  if (last !== undefined && nowMs - last < POSITION_MIN_INTERVAL_MS) return true;
+  if (lastPositionAt.size > 10000) {
+    for (const [id, at] of lastPositionAt) {
+      if (nowMs - at >= POSITION_MIN_INTERVAL_MS) lastPositionAt.delete(id);
+    }
+  }
+  lastPositionAt.set(sessionId, nowMs);
+  return false;
+}
+
+const finiteCoordinate = (value) =>
+  typeof value === 'number' && Number.isFinite(value) && value >= -POSITION_LIMIT && value <= POSITION_LIMIT;
+
+function validatePositionReport(body) {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) return null;
+  const keys = Object.keys(body);
+  // Exactly these six fields. observed_at / observedAt / sessionId and anything
+  // else the client sends are refused, not ignored.
+  if (keys.length !== POSITION_FIELDS.length || !POSITION_FIELDS.every((k) => keys.includes(k))) return null;
+  const { revision, x, y, z, space, mode } = body;
+  if (!Number.isSafeInteger(revision) || revision < 1) return null;
+  if (!finiteCoordinate(x) || !finiteCoordinate(y) || !finiteCoordinate(z)) return null;
+  if (space !== 'CAMPUS' && space !== 'OTHER') return null;
+  if (mode !== 'ON_FOOT' && mode !== 'INELIGIBLE') return null;
+  return { revision, x, y, z, space, mode };
+}
+
+async function handleFishingPosition(request, env) {
+  // observed_at is the time the Worker received the request, never a client
+  // value: browser clocks drift and can be set freely, and the RPC refuses
+  // evidence from the future and evidence 5 s old or older against the DB clock.
+  const receivedAt = new Date();
+  const headers = new Headers({ ...CORS, 'Cache-Control': 'no-store' });
+  const reply = (status, body) => (body === undefined
+    ? new Response(null, { status, headers })
+    : json(status, body, headers));
+  // Positions only matter for fishing: closed with the fishing endpoint.
+  if (env.WORLD_FISHING_API_ENABLED !== '1') return reply(404);
+  if (request.method === 'OPTIONS') return new Response('ok', { headers });
+  if (request.method !== 'POST') {
+    headers.set('Allow', 'POST');
+    return reply(405);
+  }
+  if (request.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'application/json') {
+    return reply(415);
+  }
+  if (!sameHostOrigin(request)) return reply(403);
+  const raw = await request.text();
+  if (new TextEncoder().encode(raw).length > POSITION_MAX_BODY_BYTES) return reply(413);
+  let body;
+  try {
+    body = JSON.parse(raw);
+  } catch {
+    return reply(400, { error: 'INVALID_REQUEST' });
+  }
+  const report = validatePositionReport(body);
+  if (!report) return reply(400, { error: 'INVALID_REQUEST' });
+  let actor;
+  try {
+    actor = await verifySession(request, env);
+  } catch {
+    return reply(503, { error: 'AUTH_UNAVAILABLE' });
+  }
+  if (typeof actor !== 'string') return reply(401, { error: 'AUTH_REQUIRED' });
+  if (positionRateLimited(actor, receivedAt.getTime())) return reply(429, { error: 'RATE_LIMITED' });
+  try {
+    // The session id is both the account (p_user) and the presence session the
+    // spot lease binds to (p_session_id).
+    const rows = await connect(env, 5000)`select public.world_fishing_observe_position_v1(
+      ${actor}::uuid, ${actor}::uuid, ${report.revision}::bigint,
+      ${report.x}::float8, ${report.y}::float8, ${report.z}::float8,
+      ${report.space}::text, ${report.mode}::text, ${receivedAt.toISOString()}::timestamptz) as result`;
+    const result = rows[0]?.result;
+    if (!POSITION_STATUSES.has(result?.status) || !Number.isSafeInteger(result?.revision)) {
+      return reply(503, { error: 'FISHING_UNAVAILABLE' });
+    }
+    // OBSERVED, ALREADY_PROCESSED (same revision, same payload) and STALE (an
+    // older revision; the stored position is not overwritten) are all 200.
+    return reply(200, { status: result.status, revision: result.revision });
+  } catch (error) {
+    if (isDbAnswer(error) && error.message === 'FISHING_POSITION_INVALID') {
+      return reply(400, { error: 'FISHING_POSITION_INVALID' });
+    }
+    if (isDbAnswer(error) && error.message === 'FISHING_POSITION_CONFLICT') {
+      return reply(409, { error: 'FISHING_POSITION_CONFLICT' });
+    }
+    return reply(503, { error: 'FISHING_UNAVAILABLE' });
+  }
+}
+
 export default {
   async fetch(request, env) {
     const { pathname } = new URL(request.url);
@@ -722,6 +843,7 @@ export default {
     if (pathname === '/api/ranked-run-finish') return handleRankedRunFinish(request, env);
     if (pathname === '/api/world-duck-observe') return handleDuckObserve(request, env);
     if (pathname === '/api/verify-inha-mail') return handleVerifyInhaMail(request);
+    if (pathname === '/api/fishing-position') return handleFishingPosition(request, env);
     return new Response('Not found', { status: 404 });
   },
 };

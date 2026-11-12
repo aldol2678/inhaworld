@@ -23,12 +23,13 @@
 --     `tier3_session_ref` (private.tier3_require_session_v1): a uuid column cannot
 --     reference a text column. It raises foreign_key_violation (23503) like the
 --     constraint did. There is NO on-delete cascade from sessions.
---  3. private.world_*_account_ok_v1: `auth.users ... is_anonymous is not true` became
---     "the session exists". The rest is kept: a public.profiles row for that id with
---     is_banned = false is STILL REQUIRED. Tier 3 has no profile-creation flow, so a
---     session without a profile row gets ACCOUNT_UNAVAILABLE from fishing, the
---     collection book and duck observation, exactly as an account without a profile
---     did in the original.
+--  3. private.world_*_account_ok_v1 (5 functions): the original required an auth.users
+--     row that is not anonymous AND a public.profiles row with is_banned = false. Both
+--     are gone (guest-open decision, 2026-11-12): the session existing in
+--     public.sessions is the whole check. A session without a profile row can fish,
+--     read its collection book and observe ducks, and these paths no longer check a
+--     ban. public.profiles stays for ranked runs, which keep PROFILE_REQUIRED and
+--     their own is_banned check in the Worker.
 --  4. The `auth.role() = 'service_role'` guard (SERVER_ONLY) is removed from the
 --     functions that had it; EXECUTE is granted to the Worker role only instead.
 --  5. *_append_only triggers allowed DELETE once the auth.users row was gone; they
@@ -957,12 +958,12 @@ create or replace function private.world_activity_account_ok_v1(p_user uuid)
  STABLE SECURITY DEFINER
  SET search_path TO ''
 AS $fn$
+  -- Guest-open (2026-11-12): the session existing is the whole check. The original's
+  -- profiles join and is_banned test are dropped; ranked runs keep their own profile check.
   select p_user is not null and exists (
     select 1
       from public.sessions s
-      join public.profiles p on p.user_id::text = s.id
      where s.id = p_user::text
-       and p.is_banned = false
   );
 $fn$;
 
@@ -1399,12 +1400,12 @@ create or replace function private.world_collection_account_ok_v1(p_user uuid)
  STABLE SECURITY DEFINER
  SET search_path TO ''
 AS $fn$
+  -- Guest-open (2026-11-12): the session existing is the whole check. The original's
+  -- profiles join and is_banned test are dropped; ranked runs keep their own profile check.
   select p_user is not null and exists (
     select 1
       from public.sessions s
-      join public.profiles p on p.user_id::text = s.id
      where s.id = p_user::text
-       and p.is_banned = false
   );
 $fn$;
 
@@ -1710,12 +1711,12 @@ create or replace function private.world_creature_account_ok_v1(p_user uuid)
  STABLE SECURITY DEFINER
  SET search_path TO ''
 AS $fn$
+  -- Guest-open (2026-11-12): the session existing is the whole check. The original's
+  -- profiles join and is_banned test are dropped; ranked runs keep their own profile check.
   select p_user is not null and exists (
     select 1
       from public.sessions s
-      join public.profiles p on p.user_id::text = s.id
      where s.id = p_user::text
-       and p.is_banned = false
   );
 $fn$;
 
@@ -2477,12 +2478,12 @@ create or replace function private.world_inventory_account_ok_v1(p_user uuid)
  STABLE SECURITY DEFINER
  SET search_path TO ''
 AS $fn$
+  -- Guest-open (2026-11-12): the session existing is the whole check. The original's
+  -- profiles join and is_banned test are dropped; ranked runs keep their own profile check.
   select p_user is not null and exists (
     select 1
-    from public.sessions s
-      join public.profiles p on p.user_id::text = s.id
+      from public.sessions s
      where s.id = p_user::text
-       and p.is_banned = false
   );
 $fn$;
 
@@ -2979,12 +2980,12 @@ create or replace function private.world_life_skill_account_ok_v1(p_user uuid)
  STABLE SECURITY DEFINER
  SET search_path TO ''
 AS $fn$
+  -- Guest-open (2026-11-12): the session existing is the whole check. The original's
+  -- profiles join and is_banned test are dropped; ranked runs keep their own profile check.
   select p_user is not null and exists (
     select 1
       from public.sessions s
-      join public.profiles p on p.user_id::text = s.id
      where s.id = p_user::text
-       and p.is_banned = false
   );
 $fn$;
 
@@ -4394,8 +4395,11 @@ create trigger tier3_session_ref before insert or update of user_id on public.us
 -- The Worker role can: check that a session exists, read a profile's ban flag,
 -- create / advance ranked sessions, store a rejected run, and call the RPCs its
 -- handlers use. It cannot read or write any other table, and cannot call
--- claim_inha_mail_badge (the handler is 501), world_collection_discover_v1 or
--- world_fishing_observe_position_v1 (neither is called by a Tier 3 handler).
+-- claim_inha_mail_badge (the handler is 501) or world_collection_discover_v1 (no
+-- handler calls it). It CAN call world_fishing_observe_position_v1: POST
+-- /api/fishing-position relays a browser-reported position to it. That position
+-- is client-reported and can be spoofed; it is not the trusted-producer evidence
+-- the original F3 design asked for (see README).
 -- ===========================================================================
 do $$
 begin
@@ -4553,6 +4557,7 @@ grant execute on function
   public.expire_ranked_sessions_v1(),
   public.record_ranked_result_v4(uuid,uuid,integer,integer,integer,integer,integer,integer,integer,integer,integer,integer,integer,integer,integer,text,integer,integer,integer,boolean,text[]),
   public.record_ranked_result_v5(uuid,uuid,integer,integer,integer,integer,integer,integer,integer,integer,integer,integer,integer,integer,integer,text,integer,integer,integer,integer,integer,integer,integer,integer,integer,integer,boolean,text[]),
-  public.get_my_rank_v3(uuid)
+  public.get_my_rank_v3(uuid),
+  public.world_fishing_observe_position_v1(uuid,uuid,bigint,double precision,double precision,double precision,text,text,timestamp with time zone)
   to inha_world_tier3_app;
 
