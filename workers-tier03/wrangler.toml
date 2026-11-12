@@ -1,0 +1,24 @@
+name = "inha-world-tier03-test"
+main = "worker.js"
+compatibility_date = "2026-11-11"
+
+# No [vars] on purpose, same as Tier 01 / Tier 02. With nothing set:
+#   world-fishing            -> 404 (WORLD_FISHING_API_ENABLED is not "1", as in the original)
+#   fishing-position         -> 404 (same flag: the position feed only exists for fishing)
+#   world-collection-book    -> guards (405 / 400 / 403 / 401), then 503
+#   ranked-run-start/finish,
+#   world-duck-observe       -> 401 (no session can be resolved without a database)
+#   verify-inha-mail         -> 501 NOT_IMPLEMENTED (always; identity verification is not ported)
+#
+# DATABASE_URL is a secret and is NEVER committed here or put in [vars].
+# Set it only with `wrangler secret put DATABASE_URL` (or the dashboard), and
+# only to the connection string of an ISOLATED Neon branch that has
+# schema.sql applied — never the live `inha-world-sync` main branch. Use a login
+# role that is a member of `inha_world_tier3_app`, not the branch owner.
+#
+# WORLD_FISHING_API_ENABLED = "1" turns the fishing endpoint and its position feed on. It is the
+# original's flag, it is not a secret, and it is deliberately left unset here:
+# set it per environment when fishing should be reachable.
+#
+# No routes / custom domains: this Worker is reachable on its workers.dev
+# subdomain only, so deploying it cannot shadow any live path.
