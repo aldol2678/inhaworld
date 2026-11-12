@@ -1,0 +1,14 @@
+{
+  "name": "inha-world-tier03",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test-parity.mjs"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "0.10.4"
+  },
+  "devDependencies": {
+    "pg": "^8.23.1"
+  }
+}
