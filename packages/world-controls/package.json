@@ -1,0 +1,13 @@
+{
+  "name": "@aldol/world-controls",
+  "version": "0.0.0-p0",
+  "private": true,
+  "type": "module",
+  "description": "Candidate engine-independent game movement and camera conventions",
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
