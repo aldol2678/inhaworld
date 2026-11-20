@@ -10,6 +10,8 @@ compatibility_date = "2026-11-13"
 # to main) with the inha_world_tier4_live_app login role. Use stdin only.
 #
 # No routes / custom domains on the Worker itself: inhagame.app /api traffic
-# reaches this Worker through the Pages Functions proxy in the
-# inhagame-world-migrate project, so deploying it cannot shadow any live path
-# until that proxy is added.
+# reaches this Worker through a Cloudflare Worker route attached at the zone
+# level (inhagame.app/api/* -> inha-world-tier04, route id d7b06d9e...),
+# NOT through a Pages Functions proxy — the live Pages project
+# (inhagame-world-migrate) has no Functions. So deploying this Worker alone
+# cannot shadow any live path until that route exists.
