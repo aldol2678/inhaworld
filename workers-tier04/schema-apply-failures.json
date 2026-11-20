@@ -1,0 +1,26 @@
+[
+  {
+    "i": 1188,
+    "message": "LIFE_SKILL_CURVE_INVALID"
+  },
+  {
+    "i": 1189,
+    "message": "LIFE_PROGRESSION_CURVE_INVALID"
+  },
+  {
+    "i": 1191,
+    "message": "LIFE_SKILL_CURVE_INVALID"
+  },
+  {
+    "i": 1200,
+    "message": "DAILY_QUIZ_50_POOL_POSTCONDITION_FAILED total=100 active=100 major=74 general=8 inha=2"
+  },
+  {
+    "i": 1364,
+    "message": "trigger \"tier4_session_ref\" for relation \"world_mail_verify_requests\" already exists"
+  },
+  {
+    "i": 1373,
+    "message": "trigger \"tier4_session_ref\" for relation \"world_online_sessions\" already exists"
+  }
+]
