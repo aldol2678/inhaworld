@@ -1,0 +1,22 @@
+--- a/src/online/world-online.js
++++ b/src/online/world-online.js
+@@ -19,6 +19,7 @@
+ import { ActionType, equipmentKey } from "../network/protocol.js";
+ import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "../config/supabase-public-config.js";
+ import { setStaffBadgeClient } from "../staff-badges.js";
++import { readGuestSessionId } from "../activity/fishing-reporter-wiring.js";
+ export { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "../config/supabase-public-config.js";
+ 
+ // The guest session lives under its own storage key so it never replaces or signs out the
+@@ -215,7 +216,10 @@
+   }
+ 
+   function openSession({ userId, displayName, guest, transportClient }) {
+-    setStaffBadgeClient(transportClient);
++    // Staff badges (Tier 4 guest-open): the badge lookup authenticates with the v0.1 guest
++    // session id (X-Session-Id), not the realtime transport client. The realtime transport
++    // itself is unchanged (C-group scope).
++    setStaffBadgeClient({ getSessionId: () => readGuestSessionId() });
+     const transport = createTransport(transportClient, { allowGuest: guest });
+     const sessionId = randomId();
+     const net = new NetworkManager({

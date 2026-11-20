@@ -1,0 +1,22 @@
+--- a/src/phone/smartphone.js
++++ b/src/phone/smartphone.js
+@@ -73,7 +73,10 @@
+       const badge=root.querySelector('.smartphone-app[data-app-id="notifications"] .smartphone-notification-badge');
+       if(badge){badge.hidden=!state.unreadCount;badge.textContent=state.unreadCount>99?'99+':String(state.unreadCount);}
+     },doc});
+-  const student=createStudentId({getClient,getIdentity,getProgression,onChange:()=>{if(shell?.snapshot().current?.appId==='student-id')render(true);}});
++  // Student ID (Tier 4 guest-open): the profile read uses the v0.1 guest session id
++  // (X-Session-Id) via createStudentId's default supplier. The phone's getClient stays
++  // for the other phone modules (messages, notifications, album).
++  const student=createStudentId({getIdentity,getProgression,onChange:()=>{if(shell?.snapshot().current?.appId==='student-id')render(true);}});
+   function revokeImages() {for (const url of objectUrls) win.URL.revokeObjectURL(url); objectUrls.clear();}
+   function attachImage(node,blob) {const url=win.URL.createObjectURL(blob);objectUrls.add(url);node.src=url;}
+   function worldVisibility(open) {
+@@ -222,6 +225,7 @@
+     content.append(btn(side==='front'?'뒷면 보기':'앞면 보기',()=>{preferences.face(side==='front'?'back':'front');render(true);}));
+     if(jeongseok?.phoneView().enabled)content.append(btn('🏛️ 정석학술정보관 출입',()=>launch('student-id',{view:'jeongseok'})));
+     if(p.state==='LOADING')content.append(el('p','','프로필을 불러오는 중…'));
++    if(p.state==='NO_PROFILE')content.append(el('p','','프로필이 아직 없어요.'));
+     if(p.state==='UNAVAILABLE')content.append(el('p','','프로필을 불러오지 못했어요.'),btn('다시 불러오기',()=>{void student.refresh();}));
+   }
+   const passTime=iso=>new Date(iso).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});

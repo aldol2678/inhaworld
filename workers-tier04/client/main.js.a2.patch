@@ -1,0 +1,118 @@
+--- a/src/main.js
++++ b/src/main.js
+@@ -1064,9 +1064,16 @@
+   getSelfUserId: () => online?.userId ?? null
+ });
+ // Housing H3: visitors knock at the Dorm Lobby corridor door; owners answer from inside their room.
++// AUTH (A-2 writes, Tier 4 guest-open): the write clients below authenticate with the v0.1
++// guest session id (X-Session-Id). The id is read lazily from localStorage
++// (fishing-reporter-wiring.js readGuestSessionId(): 'inha-v01:sync-session', fallback
++// 'inha-v01:server-session'; null when absent — never fabricated). No legacy token header is
++// sent anywhere on these paths. setAccount binds the session id; a null id leaves the client
++// SIGNED_OUT. Equip/unequip, shop purchase, attendance claim, guestbook, jeongseok pass,
++// cooking, furniture save, personal room and room knock all use this transport now.
+ const roomKnockClient = new RoomKnockClient({
+-  getClient: () => online?.supabase ?? null,
+-  getSelfUserId: () => online?.userId ?? null
++  getSessionId: () => readGuestSessionId(),
++  getSelfUserId: () => readGuestSessionId()
+ });
+ // Player Card and Friends panel share one visit entry; the controller exists once rooms do.
+ const roomVisitEntry = Object.freeze({
+@@ -1215,7 +1222,7 @@
+ // paid shows its server rewards through the existing toast lane (daily first, then the monthly
+ // milestone), then only the Wallet is re-read (coin only: no EXP, no items).
+ const attendance = createAttendanceClient({
+-  getClient: () => online?.supabase ?? null,
++  getSessionId: () => readGuestSessionId(),
+   onRecoveryReadback: () => { void wallet.refresh("daily-reward-recovery"); },
+   onRewards: (rewards) => {
+     const [daily, ...milestones] = rewards;
+@@ -1245,7 +1252,13 @@
+ loadout.onChange((change) => online?.setLocalEquipment(change.accountId, publicEquipmentFor(change, change.accountId)));
+ // Personal Room Session carries the same public equipment on the room channel.
+ loadout.onChange((change) => {
+-  if (change.accountId && change.accountId === online?.userId) roomSession?.setEquipment(publicEquipmentFor(change, change.accountId));
++  // A-2 (A-1 follow-up, room side): the loadout account is now the v0.1 guest session id,
++  // not the host login id, so the room equipment is set when the change belongs to the
++  // current session. Campus Presence publication is NOT fixed here: world-online.js
++  // applyEquipment compares the stored account id against session.userId (the login id)
++  // and guests never publish by design, so it needs the C-group session→user mapping.
++  // See client/README.md.
++  if (change.accountId && change.accountId === readGuestSessionId()) roomSession?.setEquipment(publicEquipmentFor(change, change.accountId));
+ });
+ // A page restored from the back/forward cache may have missed progression / wallet / inventory changes.
+ window.addEventListener("pageshow", (event) => {
+@@ -1320,12 +1333,12 @@
+ // Unfriend / block from any panel: a live room visit re-asks the server at once (not in 15 s).
+ social.onRelationshipChange(() => { void roomSession?.revalidateNow(); });
+ const guestbook = new GuestbookClient({
+-  getClient: () => online?.supabase ?? null,
+-  getSelfUserId: () => online?.userId ?? null
++  getSessionId: () => readGuestSessionId(),
++  getSelfUserId: () => readGuestSessionId()
+ });
+ const personalRoom = new PersonalRoomClient({
+-  getClient: () => online?.supabase ?? null,
+-  getSelfUserId: () => online?.userId ?? null
++  getSessionId: () => readGuestSessionId(),
++  getSelfUserId: () => readGuestSessionId()
+ });
+ const guestbookPanel = createGuestbookPanel({
+   panel: document.getElementById("guestbook-panel"),
+@@ -2586,7 +2599,8 @@
+     } }),
+   getClient: () => online?.supabase ?? null,
+   getIdentity: () => online?.userId ? { userId: online.userId, displayName: online.identity?.displayName ?? null } : null,
+-  getEquipment: () => publicEquipmentFor(loadout, online?.userId ?? null),
++  // A-2 (A-1 follow-up, room side): the loadout account is the v0.1 guest session id.
++  getEquipment: () => publicEquipmentFor(loadout, readGuestSessionId()),
+   onAccessLost: ({ role, reason }) => {
+     if (rooms.currentSpace !== "ROOM_PERSONAL_BASIC") return;
+     rooms.exit({ force: true });
+@@ -2646,8 +2660,8 @@
+   if(roomFurniture)furnitureEditor?.update(roomFurniture.state());
+ });
+ roomFurniture = createFurnitureClient({
+-  getClient: () => online?.supabase ?? null,
+-  getUserId: () => online?.userId ?? null,
++  getSessionId: () => readGuestSessionId(),
++  getUserId: () => readGuestSessionId(),
+   onChange: state => {
+     const signature = JSON.stringify(state.objects);
+     if (signature !== furnitureSceneSignature) {
+@@ -2742,7 +2756,7 @@
+ // B2 candidate stays closed by default. Tests inject availability into the module fixture only;
+ // no URL/local-storage/player toggle may turn a COMING_SOON recipe into an enabled consumer.
+ cookingFeature = createCookingFeature({
+-  getClient: () => online?.supabase ?? null,
++  getSessionId: () => readGuestSessionId(),
+   getUserId: () => roomFunctionAccountId,
+   getRoomState: getRoomFunctionState,
+   inventory,
+@@ -3306,7 +3320,7 @@
+ 
+ // Inner reader and public-side fictional guide; RPCs retain sole eligibility/economy authority.
+ const jeongseok = createJeongseokFeature({
+-  getClient: () => online?.supabase ?? null, isEnabled: () => jeongseokEntryMode !== JEONGSEOK_ENTRY_MODE.CLOSED, audio: worldAudio,
++  getSessionId: () => readGuestSessionId(), isEnabled: () => jeongseokEntryMode !== JEONGSEOK_ENTRY_MODE.CLOSED, audio: worldAudio,
+   getContext: () => ({ space: rooms.currentSpace, position: player.getLocalPosition(),
+     grounded: controller.grounded, mounted: controller.mounted, busy: rooms.status().busy }),
+   onEnter: snapshot => jeongseokInterior.enterFromServerGrant(snapshot, { mounted: controller.mounted }),
+@@ -4081,12 +4095,14 @@
+     shop.setAccount(readGuestSessionId());
+     if (shop.accountId) void shop.refresh("account-capability");
+     void wallet.setAccount(readGuestSessionId());
+-    void jeongseok.setAccount(identity ? online?.userId ?? null : null);
++    // A-2 writes (Tier 4 guest-open) bind the v0.1 guest session id, like the A-1 reads.
++    void jeongseok.setAccount(readGuestSessionId());
+     jeongseokInterior.setAccount(identity ? online?.userId ?? null : null);
+     collectionBook.setAccount(readGuestSessionId());
+     void inventory.setAccount(readGuestSessionId());
+     void dailyQuiz.setAccount(identity ? online?.userId ?? null : null);
+-    void attendance.setAccount(identity ? online?.userId ?? null : null);
++    void attendance.setAccount(readGuestSessionId());
++    void guestbook.setAccount(readGuestSessionId());
+     void lifeSkillBook.setAccount(identity ? online?.userId ?? null : null);
+     // Fishing no longer follows the host's login identity: it binds the v0.1 guest
+     // session id (X-Session-Id). The other setAccount calls in this handler

@@ -1,0 +1,3149 @@
+{
+  "generatedAt": "2026-11-20T12:46:59.546Z",
+  "source": "tier4-scratch branch, 52 original migrations applied, closure from extract-closure.mjs",
+  "functions": [
+    {
+      "schema": "private",
+      "name": "validate_world_room_furniture_v1",
+      "args": "p_user uuid, p_objects jsonb",
+      "newArgs": "p_user uuid, p_objects jsonb",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "3d97734f563ccafcb4e14e062811c03f79bb12fbf48ea757b24cd99977314357",
+      "newSrcSha256": "3d97734f563ccafcb4e14e062811c03f79bb12fbf48ea757b24cd99977314357"
+    },
+    {
+      "schema": "private",
+      "name": "world_accompany_expire",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "aa01235df2e471332b555bbb2017dfb1966bda63019d509c1b08e7d81d301f3e",
+      "newSrcSha256": "aa01235df2e471332b555bbb2017dfb1966bda63019d509c1b08e7d81d301f3e"
+    },
+    {
+      "schema": "private",
+      "name": "world_accompany_lock_users",
+      "args": "p_a uuid, p_b uuid",
+      "newArgs": "p_a uuid, p_b uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "8cb5ba4b54fe04f1836a0297d20bfe5e81e98acdd2854f2e5df28f8ff37ff060",
+      "newSrcSha256": "8cb5ba4b54fe04f1836a0297d20bfe5e81e98acdd2854f2e5df28f8ff37ff060"
+    },
+    {
+      "schema": "private",
+      "name": "world_appearance_caller_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "ad6334df0719f870bd0d026c8934bbe07ebcc7890083c2d2c0592b015977a817",
+      "newSrcSha256": "c89dadc6d530837714c359440bf291b54986bad4baafce860b56f82c29900e07"
+    },
+    {
+      "schema": "private",
+      "name": "world_appearance_loadout_json_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "e82383e04520f998712feb28b455a3306de2ef86f6f3e7fe846c886b52b8b58d",
+      "newSrcSha256": "e82383e04520f998712feb28b455a3306de2ef86f6f3e7fe846c886b52b8b58d"
+    },
+    {
+      "schema": "private",
+      "name": "world_appearance_record_v1",
+      "args": "p_user uuid, p_key text, p_action text, p_slot text, p_requested text, p_previous text, p_next text",
+      "newArgs": "p_user uuid, p_key text, p_action text, p_slot text, p_requested text, p_previous text, p_next text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "2db7e0178b414c29d4edd8a69a5238a5ae567a45542d497ec26e33ffc5319249",
+      "newSrcSha256": "2db7e0178b414c29d4edd8a69a5238a5ae567a45542d497ec26e33ffc5319249"
+    },
+    {
+      "schema": "private",
+      "name": "world_appearance_result_v1",
+      "args": "p_tx private.world_appearance_transactions, p_replayed boolean",
+      "newArgs": "p_tx private.world_appearance_transactions, p_replayed boolean",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "c5538c201e08b0d805ed34efd97786e20ec1eda1560165da79f9480026eb1177",
+      "newSrcSha256": "c5538c201e08b0d805ed34efd97786e20ec1eda1560165da79f9480026eb1177"
+    },
+    {
+      "schema": "private",
+      "name": "world_appearance_slot_ok_v1",
+      "args": "p_slot text",
+      "newArgs": "p_slot text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "6396fcf3b87dbe46e1d65d08621f0c5d0ebe3e9e108aa8d4937ee2df6ccd7170",
+      "newSrcSha256": "6396fcf3b87dbe46e1d65d08621f0c5d0ebe3e9e108aa8d4937ee2df6ccd7170"
+    },
+    {
+      "schema": "private",
+      "name": "world_appearance_transactions_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "ec077ca6fa8d80755cd8844b38df0aae227fc5180d6fb8956943832772a9235e",
+      "newSrcSha256": "ec077ca6fa8d80755cd8844b38df0aae227fc5180d6fb8956943832772a9235e"
+    },
+    {
+      "schema": "private",
+      "name": "world_attendance_caller_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "ffb1259b7001d5a1d852a945909b07ecd094e8d5f36444b67804a3fa165debad",
+      "newSrcSha256": "c89dadc6d530837714c359440bf291b54986bad4baafce860b56f82c29900e07"
+    },
+    {
+      "schema": "private",
+      "name": "world_attendance_claim_v1",
+      "args": "p_user uuid, p_today date",
+      "newArgs": "p_user uuid, p_today date",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "5f59067adec238e340adee74d181f8a7a7aadf21e368d1591464643d6ab21bf2",
+      "newSrcSha256": "5f59067adec238e340adee74d181f8a7a7aadf21e368d1591464643d6ab21bf2"
+    },
+    {
+      "schema": "private",
+      "name": "world_attendance_milestone_coin_v1",
+      "args": "p_days integer",
+      "newArgs": "p_days integer",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "140e6dd56d991563b07650322bc3356fd05e76ef37e8325f12094057de307323",
+      "newSrcSha256": "140e6dd56d991563b07650322bc3356fd05e76ef37e8325f12094057de307323"
+    },
+    {
+      "schema": "private",
+      "name": "world_attendance_state_v1",
+      "args": "p_user uuid, p_today date",
+      "newArgs": "p_user uuid, p_today date",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "f7862206e9f2d2312245ac45f055bcc92a231c9e6408731a25ee488981fa1c8d",
+      "newSrcSha256": "f7862206e9f2d2312245ac45f055bcc92a231c9e6408731a25ee488981fa1c8d"
+    },
+    {
+      "schema": "private",
+      "name": "world_attendance_today_v1",
+      "args": "p_now timestamp with time zone",
+      "newArgs": "p_now timestamp with time zone",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "51930443ccc5ae99041d70f60ce118425900b837e7604eed132f21341f29f83b",
+      "newSrcSha256": "51930443ccc5ae99041d70f60ce118425900b837e7604eed132f21341f29f83b"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_relationship_account_ok_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "47df603d5189951a9cbcccae57e0f382b67ad0207b5c326e5dcc194ccde7bd97",
+      "newSrcSha256": "48b1a1cbca07c033ced12ad424f9a97c79e91e915a995cc990374cfc6f815d52"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_relationship_advance_v1",
+      "args": "p_user uuid, p_npc_id text, p_target_stage smallint, p_source_type text, p_source_ref text, p_result_ref text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_npc_id text, p_target_stage smallint, p_source_type text, p_source_ref text, p_result_ref text, p_idempotency_key text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "904c1cb18b0f01fdd0f5d130e180192926f4f9b2156c5c4fdd8674cc533be764",
+      "newSrcSha256": "904c1cb18b0f01fdd0f5d130e180192926f4f9b2156c5c4fdd8674cc533be764"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_relationship_event_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "modified",
+      "changes": [
+        "DELETE allowance: session row instead of auth.users"
+      ],
+      "origSrcSha256": "fa2bdde6056e54d96c022ee9e0f2d9c3d2d65c4d64d9b726897803444a2b6e1e",
+      "newSrcSha256": "5b2e6ba68d65d4f39705afa714008b49331b8712ebc0f40c327de149110afe29"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_relationship_list_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "6e8ca44eb0f46a500eb80529a808cb39eaffe8b79128b7f13ad61b92af53db41",
+      "newSrcSha256": "6e8ca44eb0f46a500eb80529a808cb39eaffe8b79128b7f13ad61b92af53db41"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_relationship_projection_guard_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "2d42f671f93c15839de2a242d615cf2dd4d7f58bc757e4054542c7554b95457e",
+      "newSrcSha256": "2d42f671f93c15839de2a242d615cf2dd4d7f58bc757e4054542c7554b95457e"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_relationship_snapshot_v1",
+      "args": "p_user uuid, p_npc_id text",
+      "newArgs": "p_user uuid, p_npc_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "3326b19e1f1f22da596490b2fe01fba9f8c7e47819428d2d164dfc699787686f",
+      "newSrcSha256": "3326b19e1f1f22da596490b2fe01fba9f8c7e47819428d2d164dfc699787686f"
+    },
+    {
+      "schema": "private",
+      "name": "world_campus_npc_relationship_account_ok_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "47df603d5189951a9cbcccae57e0f382b67ad0207b5c326e5dcc194ccde7bd97",
+      "newSrcSha256": "48b1a1cbca07c033ced12ad424f9a97c79e91e915a995cc990374cfc6f815d52"
+    },
+    {
+      "schema": "private",
+      "name": "world_campus_npc_relationship_apply_v1",
+      "args": "p_user uuid, p_npc_id text, p_definition_version integer, p_event_type text, p_signal text, p_occurrence integer, p_requested_delta smallint, p_source_type text, p_source_ref text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_npc_id text, p_definition_version integer, p_event_type text, p_signal text, p_occurrence integer, p_requested_delta smallint, p_source_type text, p_source_ref text, p_idempotency_key text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "2956c8ed69524875796c1232ce39cc40f057b680137dc452532a086ee4a9785e",
+      "newSrcSha256": "2956c8ed69524875796c1232ce39cc40f057b680137dc452532a086ee4a9785e"
+    },
+    {
+      "schema": "private",
+      "name": "world_campus_npc_relationship_event_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "modified",
+      "changes": [
+        "DELETE allowance: session row instead of auth.users"
+      ],
+      "origSrcSha256": "3df09bb02c770fc57ed35fb48da5549a0bbf173f4f0892d08f361f0ef8323f9a",
+      "newSrcSha256": "6de5931ea709dc3fdd214e486d42d36b93ae3751f6eab1fd38ac02ff06e0719e"
+    },
+    {
+      "schema": "private",
+      "name": "world_campus_npc_relationship_list_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "c91c2c67d78ea23fd6d2a06fb34f2607941a1a3a0f2fedf134f8e5130ac2f2f7",
+      "newSrcSha256": "c91c2c67d78ea23fd6d2a06fb34f2607941a1a3a0f2fedf134f8e5130ac2f2f7"
+    },
+    {
+      "schema": "private",
+      "name": "world_campus_npc_relationship_projection_guard_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "cad2bb19e21a59164d867a9674a5447826d12a9c8b0da3edb215bb45fd748c1f",
+      "newSrcSha256": "cad2bb19e21a59164d867a9674a5447826d12a9c8b0da3edb215bb45fd748c1f"
+    },
+    {
+      "schema": "private",
+      "name": "world_campus_npc_relationship_snapshot_v1",
+      "args": "p_user uuid, p_npc_id text",
+      "newArgs": "p_user uuid, p_npc_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "1f47582cc7963bc3ab82580c26c0d186aa0f6711696c457157c3abd0aaaf01b1",
+      "newSrcSha256": "1f47582cc7963bc3ab82580c26c0d186aa0f6711696c457157c3abd0aaaf01b1"
+    },
+    {
+      "schema": "private",
+      "name": "world_campus_npc_relationship_tier_v1",
+      "args": "p_affinity integer",
+      "newArgs": "p_affinity integer",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "2c26755a7fb5b0c58557f0c31b71136ecfa7fd9dbd2eef47464ab17b0669e65b",
+      "newSrcSha256": "2c26755a7fb5b0c58557f0c31b71136ecfa7fd9dbd2eef47464ab17b0669e65b"
+    },
+    {
+      "schema": "private",
+      "name": "world_card",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "66361cdc320a86a337fc0c20428cd969bb6b519a844cf057d3afeaa8d8b2edf1",
+      "newSrcSha256": "62bc17a2caa3a63986fab9112e09822b81f9ddb1208969353128529a6debf4ff"
+    },
+    {
+      "schema": "private",
+      "name": "world_currency_transactions_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "e176ea3b738ae0d4fd9955c3dec401f4ff3e20bd1528c51cdb216e2792f9e965",
+      "newSrcSha256": "e176ea3b738ae0d4fd9955c3dec401f4ff3e20bd1528c51cdb216e2792f9e965"
+    },
+    {
+      "schema": "private",
+      "name": "world_daily_quiz_account_ok_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "db062f0efd341d0c10e2eac7bba08a3d7f491f041616e94c5ab0365d0fd8739a",
+      "newSrcSha256": "48b1a1cbca07c033ced12ad424f9a97c79e91e915a995cc990374cfc6f815d52"
+    },
+    {
+      "schema": "private",
+      "name": "world_daily_quiz_caller_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "003a5f36e0a2f175dfb2b6012509b2930387ad225cc874ec9857573a9405a65f",
+      "newSrcSha256": "179b56f7f3d2eeceeabf6efe7bee3b72fd21040d57d275835bc476f784b97481"
+    },
+    {
+      "schema": "private",
+      "name": "world_daily_quiz_major_count_v1",
+      "args": "p_user uuid, p_date date",
+      "newArgs": "p_user uuid, p_date date",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "b0c905e9c266ce9060dff07949e9083f85725d9dcc24acf3617d63f2741dcd40",
+      "newSrcSha256": "b0c905e9c266ce9060dff07949e9083f85725d9dcc24acf3617d63f2741dcd40"
+    },
+    {
+      "schema": "private",
+      "name": "world_daily_quiz_reward_view_v1",
+      "args": "p_reward jsonb",
+      "newArgs": "p_reward jsonb",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "6b5b7b1b2b55796042b8f491e57fcee9127de87082664c909c965f4744e636a9",
+      "newSrcSha256": "6b5b7b1b2b55796042b8f491e57fcee9127de87082664c909c965f4744e636a9"
+    },
+    {
+      "schema": "private",
+      "name": "world_daily_quiz_state_v1",
+      "args": "p_user uuid, p_date date",
+      "newArgs": "p_user uuid, p_date date",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "b0283acb99417fb26b829c8e83bed7cd961a01c1b1b81d7470cc1e8f5d337240",
+      "newSrcSha256": "b0283acb99417fb26b829c8e83bed7cd961a01c1b1b81d7470cc1e8f5d337240"
+    },
+    {
+      "schema": "private",
+      "name": "world_daily_quiz_today_v1",
+      "args": "p_now timestamp with time zone",
+      "newArgs": "p_now timestamp with time zone",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "51930443ccc5ae99041d70f60ce118425900b837e7604eed132f21341f29f83b",
+      "newSrcSha256": "51930443ccc5ae99041d70f60ce118425900b837e7604eed132f21341f29f83b"
+    },
+    {
+      "schema": "private",
+      "name": "world_event_state_v1",
+      "args": "p_event private.world_events, p_now timestamp with time zone",
+      "newArgs": "p_event private.world_events, p_now timestamp with time zone",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "29162c7740ae2e6cb6fca92ece0c57727e7a42e0b013b9381191c79a26a3953a",
+      "newSrcSha256": "29162c7740ae2e6cb6fca92ece0c57727e7a42e0b013b9381191c79a26a3953a"
+    },
+    {
+      "schema": "private",
+      "name": "world_exp_apply_v1",
+      "args": "p_user uuid, p_amount bigint, p_source_type text, p_source_id text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_amount bigint, p_source_type text, p_source_id text, p_idempotency_key text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "fc7b8d943c790ffa80d81fb61ef2d29cc0ae9c2db4cc782ebfde9527f1afba0a",
+      "newSrcSha256": "fc7b8d943c790ffa80d81fb61ef2d29cc0ae9c2db4cc782ebfde9527f1afba0a"
+    },
+    {
+      "schema": "private",
+      "name": "world_exp_result_v1",
+      "args": "p_tx private.world_exp_transactions, p_status text",
+      "newArgs": "p_tx private.world_exp_transactions, p_status text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "fbfa1778fbb8e187ec88eafe09bf3c460c7f9b09b39c08513e6d5a974a29934d",
+      "newSrcSha256": "fbfa1778fbb8e187ec88eafe09bf3c460c7f9b09b39c08513e6d5a974a29934d"
+    },
+    {
+      "schema": "private",
+      "name": "world_exp_transactions_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "e176ea3b738ae0d4fd9955c3dec401f4ff3e20bd1528c51cdb216e2792f9e965",
+      "newSrcSha256": "e176ea3b738ae0d4fd9955c3dec401f4ff3e20bd1528c51cdb216e2792f9e965"
+    },
+    {
+      "schema": "private",
+      "name": "world_guestbook_entry_json",
+      "args": "p_entry_id uuid, p_viewer uuid",
+      "newArgs": "p_entry_id uuid, p_viewer uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "d0c8abb4c43f04593fa7b5cf2f5edf90f1d750c58841df8293b653809d2fb8e1",
+      "newSrcSha256": "9ae89e18bd4203674d458012268d6a3a06a80e81383779f382b8656bddf7e550"
+    },
+    {
+      "schema": "private",
+      "name": "world_guestbook_normalize",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "210375653462b71f98f212fbe9c98ff0804f96086bc8861a58a61535ad8b49f0",
+      "newSrcSha256": "210375653462b71f98f212fbe9c98ff0804f96086bc8861a58a61535ad8b49f0"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_account_ok_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "0403e5f4d2e9a7ebb3e6e0d28e755d5ac6a0dc370ecb090b49767e3aff049956",
+      "newSrcSha256": "48b1a1cbca07c033ced12ad424f9a97c79e91e915a995cc990374cfc6f815d52"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_consume_result_v1",
+      "args": "p_consumption private.world_item_consumptions, p_status text",
+      "newArgs": "p_consumption private.world_item_consumptions, p_status text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "6a71a1ca05437bc87f5a1122bf587cccc9dfe940121840c4a87b87ae8354fe96",
+      "newSrcSha256": "6a71a1ca05437bc87f5a1122bf587cccc9dfe940121840c4a87b87ae8354fe96"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_consume_v1",
+      "args": "p_user uuid, p_item_id text, p_quantity integer, p_source_type text, p_source_ref text, p_idempotency_key text, p_parent_mutation_id uuid, p_metadata jsonb",
+      "newArgs": "p_user uuid, p_item_id text, p_quantity integer, p_source_type text, p_source_ref text, p_idempotency_key text, p_parent_mutation_id uuid, p_metadata jsonb",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "a9e7059c46d79ee5237933ed8d0278b9f9ca8b902c7811c380104bec0e80ea23",
+      "newSrcSha256": "a9e7059c46d79ee5237933ed8d0278b9f9ca8b902c7811c380104bec0e80ea23"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_grant_result_v1",
+      "args": "p_grant private.world_item_grants, p_status text, p_acquired_at timestamp with time zone",
+      "newArgs": "p_grant private.world_item_grants, p_status text, p_acquired_at timestamp with time zone",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "04f975837fe5e434f7b00da029d8cd2b8dc309e945e36abd6b8349f294426b7f",
+      "newSrcSha256": "04f975837fe5e434f7b00da029d8cd2b8dc309e945e36abd6b8349f294426b7f"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_grant_v1",
+      "args": "p_user uuid, p_item_id text, p_quantity integer, p_source_type text, p_source_ref text, p_idempotency_key text, p_event_id text, p_metadata jsonb",
+      "newArgs": "p_user uuid, p_item_id text, p_quantity integer, p_source_type text, p_source_ref text, p_idempotency_key text, p_event_id text, p_metadata jsonb",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "16d4a3e03c2af4b53f34414656434dd69c925166dd3e99b1db535cf53de1bae9",
+      "newSrcSha256": "16d4a3e03c2af4b53f34414656434dd69c925166dd3e99b1db535cf53de1bae9"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_item_json_v1",
+      "args": "p_item private.world_player_items, p_catalog_status text, p_server_view boolean",
+      "newArgs": "p_item private.world_player_items, p_catalog_status text, p_server_view boolean",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "377124750b6add85accb61003ca465ef6cfbd54dc61d4bf5866955c57f60b5e0",
+      "newSrcSha256": "377124750b6add85accb61003ca465ef6cfbd54dc61d4bf5866955c57f60b5e0"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_mutate_v1",
+      "args": "p_user uuid, p_mutation_type text, p_source_type text, p_source_ref text, p_idempotency_key text, p_plan jsonb",
+      "newArgs": "p_user uuid, p_mutation_type text, p_source_type text, p_source_ref text, p_idempotency_key text, p_plan jsonb",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "76f1a6520f1089ab0bd06615f2fbdf50d4f8d05848dc6aa0cefb25b78fbf6505",
+      "newSrcSha256": "76f1a6520f1089ab0bd06615f2fbdf50d4f8d05848dc6aa0cefb25b78fbf6505"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_mutation_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "d0c35d6e08102ad4c5256cf56a8cf9001e94a839ceaa24d48ec7271562b4e24e",
+      "newSrcSha256": "d0c35d6e08102ad4c5256cf56a8cf9001e94a839ceaa24d48ec7271562b4e24e"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_mutation_receipt_v1",
+      "args": "p_mutation private.world_inventory_mutations, p_status text",
+      "newArgs": "p_mutation private.world_inventory_mutations, p_status text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "fdea525aa1d064eae09a76256bbeead38e05bd47539ed4cdabf16abb2b9644c0",
+      "newSrcSha256": "fdea525aa1d064eae09a76256bbeead38e05bd47539ed4cdabf16abb2b9644c0"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_normalize_plan_v1",
+      "args": "p_plan jsonb",
+      "newArgs": "p_plan jsonb",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "fec42491c70ad17dd79f09793c4406e5d68ebf3c5001d12a70090ed32a449b1c",
+      "newSrcSha256": "fec42491c70ad17dd79f09793c4406e5d68ebf3c5001d12a70090ed32a449b1c"
+    },
+    {
+      "schema": "private",
+      "name": "world_item_grants_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "2fabed4b284467a69f95472d911f001da0e54319adb7302ed434a3a2cec733a9",
+      "newSrcSha256": "2fabed4b284467a69f95472d911f001da0e54319adb7302ed434a3a2cec733a9"
+    },
+    {
+      "schema": "private",
+      "name": "world_jeongseok_access_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "AUTH_REQUIRED branch: null-only (Worker verifies the session first)",
+        "mail badge takes v_uid"
+      ],
+      "origSrcSha256": "ad09d2caf37ae23aaf33f44a1d49848a191bb68eb4e6d2f7177321aa7e07d693",
+      "newSrcSha256": "1b3665832e803b7d319a0790ef025ace612700bf7f6821d346102afccf6d23cd"
+    },
+    {
+      "schema": "private",
+      "name": "world_jeongseok_pass_purchase_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "modified",
+      "changes": [
+        "DELETE allowance: session row instead of auth.users"
+      ],
+      "origSrcSha256": "e6fe17fc1dce0d6f420ad97f183d9a2120bf62d63b953cb32bb646f12c6d0591",
+      "newSrcSha256": "6bdd4f6de3bcfa5475233740c8272118216071e1f67cb82dd0864e1d010a89af"
+    },
+    {
+      "schema": "private",
+      "name": "world_jeongseok_purchase_result_v1",
+      "args": "p_purchase_id uuid, p_replayed boolean",
+      "newArgs": "p_purchase_id uuid, p_replayed boolean",
+      "status": "modified",
+      "changes": [
+        "access snapshot for the purchase owner"
+      ],
+      "origSrcSha256": "ad6d8b9d46673810fac46ba639da72dbef6f81b648d8d9b1f3419d010862808b",
+      "newSrcSha256": "fa7f53a68fed7f5450d5e4e0e8918cf84e5d724ceceab541350e0ced763e2c23"
+    },
+    {
+      "schema": "private",
+      "name": "world_landlord_pick_survivor_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "59051c6c22c98747e751d5e101da15708764a6e7b5d0ad372f62bddb8a186021",
+      "newSrcSha256": "59051c6c22c98747e751d5e101da15708764a6e7b5d0ad372f62bddb8a186021"
+    },
+    {
+      "schema": "private",
+      "name": "world_level_for_exp_v1",
+      "args": "p_total_exp bigint",
+      "newArgs": "p_total_exp bigint",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "e6f30d071f0c3f8d8eeb5469d73c6c0cc00c4023b4f89de93ce973b7df5251c6",
+      "newSrcSha256": "e6f30d071f0c3f8d8eeb5469d73c6c0cc00c4023b4f89de93ce973b7df5251c6"
+    },
+    {
+      "schema": "private",
+      "name": "world_level_thresholds_immutable_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "237e02fa41f69ad299f6f6531b0e8be74970c8a8ce75667097ea9e0333510fb1",
+      "newSrcSha256": "237e02fa41f69ad299f6f6531b0e8be74970c8a8ce75667097ea9e0333510fb1"
+    },
+    {
+      "schema": "private",
+      "name": "world_level_thresholds_validate_insert_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "8ab404bf25e3d277f3c8211e06c7cc8d93457f9bd3197ebd461f394cdba19b32",
+      "newSrcSha256": "8ab404bf25e3d277f3c8211e06c7cc8d93457f9bd3197ebd461f394cdba19b32"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_book_skill_view_v1",
+      "args": "p_user uuid, p_skill_id text",
+      "newArgs": "p_user uuid, p_skill_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "7a8a5eb3c1ee6e220c2c20ec8f93bb4eca1b6aa078413833f3131aca1d254ebf",
+      "newSrcSha256": "7a8a5eb3c1ee6e220c2c20ec8f93bb4eca1b6aa078413833f3131aca1d254ebf"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_book_tree_view_v1",
+      "args": "p_user uuid, p_skill_id text",
+      "newArgs": "p_user uuid, p_skill_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "2cfc9ca8530720d4c9061e2eee89cce2ff6bb8686c81e772b17ef24e07a5feb1",
+      "newSrcSha256": "2cfc9ca8530720d4c9061e2eee89cce2ff6bb8686c81e772b17ef24e07a5feb1"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_book_visible_skill_v1",
+      "args": "p_skill_id text",
+      "newArgs": "p_skill_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "1f1aee1b758290651c467b7cb9ef7ba8fbaeb7c54801265e3fa24c4b78e39ac9",
+      "newSrcSha256": "1f1aee1b758290651c467b7cb9ef7ba8fbaeb7c54801265e3fa24c4b78e39ac9"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_caller_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "dea0caba94372604d7802d20b6d840bbeb6f80df6e9a84e28013702bc80a90ff",
+      "newSrcSha256": "6da0e21e5b6c3a43dcb5cb6e6e94927c2f7df3c8c8ff5ba2a47aac67e860def2"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_node_rank_v1",
+      "args": "p_user uuid, p_node_id text",
+      "newArgs": "p_user uuid, p_node_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "9a33fce3ab9e4d874ae0dc1fc506781a8ab207cc4732d7bc2530890ec16e9680",
+      "newSrcSha256": "9a33fce3ab9e4d874ae0dc1fc506781a8ab207cc4732d7bc2530890ec16e9680"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_node_unlock_v1",
+      "args": "p_user uuid, p_node_id text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_node_id text, p_idempotency_key text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "7a520744a1af0336b2a3c5702a7f746a3d29ffaa5508a0da9151ddef594643b4",
+      "newSrcSha256": "7a520744a1af0336b2a3c5702a7f746a3d29ffaa5508a0da9151ddef594643b4"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_nodes_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "modified",
+      "changes": [
+        "DELETE allowance: session row instead of auth.users"
+      ],
+      "origSrcSha256": "509656f8c79e0ed66cf35bcde3b184431ea77169ba4c2994cef7c3733956f7a0",
+      "newSrcSha256": "c69234a2d337ec5106c67819e4c51c5e661b3b369eba81804cf76d2768c6f48f"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_progression_snapshot_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "b956422365b1cfc5a674d9f5da2d0679b5d9dbf10460d647261b72447d77a122",
+      "newSrcSha256": "b956422365b1cfc5a674d9f5da2d0679b5d9dbf10460d647261b72447d77a122"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_progression_threshold_immutable_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "a4511bfd50287777c919f4b4bbc57072546c02e7a4a3acc14014015adbeda528",
+      "newSrcSha256": "a4511bfd50287777c919f4b4bbc57072546c02e7a4a3acc14014015adbeda528"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_progression_threshold_validate_insert_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "956826c9a018d3bb7fb5b1010f5b7e782e9ca9362883a2ef588c7d9cc3cb8612",
+      "newSrcSha256": "956826c9a018d3bb7fb5b1010f5b7e782e9ca9362883a2ef588c7d9cc3cb8612"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_progression_total_skill_xp_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "4580a5aeb667148fc7633534a05271e3393db7661531581e46c1c01c93cc76c3",
+      "newSrcSha256": "4580a5aeb667148fc7633534a05271e3393db7661531581e46c1c01c93cc76c3"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_account_ok_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "47df603d5189951a9cbcccae57e0f382b67ad0207b5c326e5dcc194ccde7bd97",
+      "newSrcSha256": "48b1a1cbca07c033ced12ad424f9a97c79e91e915a995cc990374cfc6f815d52"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_level_for_xp_v1",
+      "args": "p_curve_id text, p_total_xp bigint",
+      "newArgs": "p_curve_id text, p_total_xp bigint",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "f85f6be98fa5dbfcb3d3848de9b185e3ad697628a3885009f2091afdb3d0548d",
+      "newSrcSha256": "f85f6be98fa5dbfcb3d3848de9b185e3ad697628a3885009f2091afdb3d0548d"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_snapshot_v1",
+      "args": "p_user uuid, p_skill_id text",
+      "newArgs": "p_user uuid, p_skill_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "4b635c77719224600ddec30c4691b5c2b553ffe7f6e7b3824e632daaa091eaee",
+      "newSrcSha256": "4b635c77719224600ddec30c4691b5c2b553ffe7f6e7b3824e632daaa091eaee"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_sp_snapshot_v1",
+      "args": "p_user uuid, p_skill_id text",
+      "newArgs": "p_user uuid, p_skill_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "1b82be22539d435c413afc4de5113d250810cf6b472cf3a9e8427b0f87b67267",
+      "newSrcSha256": "1b82be22539d435c413afc4de5113d250810cf6b472cf3a9e8427b0f87b67267"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_threshold_immutable_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "0888ff8d73617e32b2463e5a283c4d484fec7dfc7492f3b5a2c10475e4654968",
+      "newSrcSha256": "0888ff8d73617e32b2463e5a283c4d484fec7dfc7492f3b5a2c10475e4654968"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_threshold_validate_insert_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "8d63283e1d7676279c33bc280b2e51e6b2ac0a1f6399cb08da9001f894c1a05a",
+      "newSrcSha256": "8d63283e1d7676279c33bc280b2e51e6b2ac0a1f6399cb08da9001f894c1a05a"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_tree_snapshot_v1",
+      "args": "p_user uuid, p_skill_id text",
+      "newArgs": "p_user uuid, p_skill_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "25addb3f334afc7cbe48e4cd0a5ad4b0bc44595254e9c41f542977ab77f4a8a8",
+      "newSrcSha256": "25addb3f334afc7cbe48e4cd0a5ad4b0bc44595254e9c41f542977ab77f4a8a8"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_sp_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "modified",
+      "changes": [
+        "DELETE allowance: session row instead of auth.users"
+      ],
+      "origSrcSha256": "36d9ae3b7cd27995b5c6265a5150fd807d359d5896b4f2d7d6cfa4282c3ee196",
+      "newSrcSha256": "74b832dca2f530c6451ef61056037fe2905eba0ef808078c609d204f2a3519d4"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_tree_edge_validate_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "f387aab3026af7eb23cb9a4771460ef3eadd722c8b697974afe4a70e3a0958a2",
+      "newSrcSha256": "f387aab3026af7eb23cb9a4771460ef3eadd722c8b697974afe4a70e3a0958a2"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_tree_epoch_v1",
+      "args": "p_user uuid, p_skill_id text",
+      "newArgs": "p_user uuid, p_skill_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "850396d78d284a1b3bb1a37b52d031be921c0156b0b933fbecd8c14e2d0a9114",
+      "newSrcSha256": "850396d78d284a1b3bb1a37b52d031be921c0156b0b933fbecd8c14e2d0a9114"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_tree_node_guard_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "42adcfb9de3817a0ce516ef77dd277b194815d218c6c904cc5736069b6a1bf25",
+      "newSrcSha256": "42adcfb9de3817a0ce516ef77dd277b194815d218c6c904cc5736069b6a1bf25"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_tree_reset_state_v1",
+      "args": "p_user uuid, p_skill_id text",
+      "newArgs": "p_user uuid, p_skill_id text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "2d4ad8a64bc9bbecf458dad83f0a28debf69cd216611bd509d455554bbc2fb5a",
+      "newSrcSha256": "2d4ad8a64bc9bbecf458dad83f0a28debf69cd216611bd509d455554bbc2fb5a"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_tree_reset_v1",
+      "args": "p_user uuid, p_skill_id text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_skill_id text, p_idempotency_key text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "2445d1aa7742ea75399836cf081d43e9a37a401097595af2d31a1a9e1996dcee",
+      "newSrcSha256": "2445d1aa7742ea75399836cf081d43e9a37a401097595af2d31a1a9e1996dcee"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_tree_resets_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "modified",
+      "changes": [
+        "DELETE allowance: session row instead of auth.users"
+      ],
+      "origSrcSha256": "c5a7456e383103e18b5d085175f0659110939ab1d0f9d7c40c0fe9a1e6767eaf",
+      "newSrcSha256": "4a7cf14c93a4cf34357c160e29da6f0748ed139253bf7ea96aaf79117c59f68b"
+    },
+    {
+      "schema": "private",
+      "name": "world_lock_pair",
+      "args": "p_a uuid, p_b uuid",
+      "newArgs": "p_a uuid, p_b uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "f34367a8894348851ea7b2ac16ec7d43e26137bb9a1bf6907b6a0d18918560ae",
+      "newSrcSha256": "f34367a8894348851ea7b2ac16ec7d43e26137bb9a1bf6907b6a0d18918560ae"
+    },
+    {
+      "schema": "private",
+      "name": "world_mcm_account_ok_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "db062f0efd341d0c10e2eac7bba08a3d7f491f041616e94c5ab0365d0fd8739a",
+      "newSrcSha256": "48b1a1cbca07c033ced12ad424f9a97c79e91e915a995cc990374cfc6f815d52"
+    },
+    {
+      "schema": "private",
+      "name": "world_mcm_claim_result_v1",
+      "args": "p_claim_type text, p_status text, p_replayed boolean, p_reward_transaction_id uuid, p_claimed_at timestamp with time zone",
+      "newArgs": "p_claim_type text, p_status text, p_replayed boolean, p_reward_transaction_id uuid, p_claimed_at timestamp with time zone",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "637900816a614089687b019af252b4e6466d73dd684097727a580537ab336830",
+      "newSrcSha256": "637900816a614089687b019af252b4e6466d73dd684097727a580537ab336830"
+    },
+    {
+      "schema": "private",
+      "name": "world_mcm_claim_reward_v1",
+      "args": "p_user uuid, p_claim_type text",
+      "newArgs": "p_user uuid, p_claim_type text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "01fa87393205fab4eda1aeb4681a236d571f42eb5662d18ac04d692e2589ebb3",
+      "newSrcSha256": "01fa87393205fab4eda1aeb4681a236d571f42eb5662d18ac04d692e2589ebb3"
+    },
+    {
+      "schema": "private",
+      "name": "world_mcm_reward_claims_final_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "1a48654fd651362a087635f1076313985f5f278c7f966809a6b969fdf8f4e214",
+      "newSrcSha256": "1a48654fd651362a087635f1076313985f5f278c7f966809a6b969fdf8f4e214"
+    },
+    {
+      "schema": "private",
+      "name": "world_mcm_state_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "62800144a1bcf903144bc4fe0effc1da36747d5237037b8075d157ccd0deb7aa",
+      "newSrcSha256": "62800144a1bcf903144bc4fe0effc1da36747d5237037b8075d157ccd0deb7aa"
+    },
+    {
+      "schema": "private",
+      "name": "world_mcm_try_complete_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "093222014c5d6abb688b1472a78a18ad4d2a0dad23196ba6d34a2c68af924f9a",
+      "newSrcSha256": "093222014c5d6abb688b1472a78a18ad4d2a0dad23196ba6d34a2c68af924f9a"
+    },
+    {
+      "schema": "private",
+      "name": "world_personal_room_json_v1",
+      "args": "p_room world_player_rooms",
+      "newArgs": "p_room world_player_rooms",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "22234202b17d422da5a349696f6e13ca2c6328047ff4905ce72eb12a9fd9b959",
+      "newSrcSha256": "22234202b17d422da5a349696f6e13ca2c6328047ff4905ce72eb12a9fd9b959"
+    },
+    {
+      "schema": "private",
+      "name": "world_player_level_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "071760c8a6a241676d45744a1eab4fb4fe18739063505992351eb39610ada484",
+      "newSrcSha256": "071760c8a6a241676d45744a1eab4fb4fe18739063505992351eb39610ada484"
+    },
+    {
+      "schema": "private",
+      "name": "world_progression_account_ok_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "47df603d5189951a9cbcccae57e0f382b67ad0207b5c326e5dcc194ccde7bd97",
+      "newSrcSha256": "48b1a1cbca07c033ced12ad424f9a97c79e91e915a995cc990374cfc6f815d52"
+    },
+    {
+      "schema": "private",
+      "name": "world_progression_snapshot_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "f796b8ea8cee6d805d3848dea6a5f1d385a0d90679a078bdd837fed4ab760683",
+      "newSrcSha256": "f796b8ea8cee6d805d3848dea6a5f1d385a0d90679a078bdd837fed4ab760683"
+    },
+    {
+      "schema": "private",
+      "name": "world_purchase_result_v1",
+      "args": "p_purchase_id uuid, p_replayed boolean",
+      "newArgs": "p_purchase_id uuid, p_replayed boolean",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "636f9f24e76b4bd737001cc6614b06feb89b60d43ecd6779971e3f18d62b3e8b",
+      "newSrcSha256": "636f9f24e76b4bd737001cc6614b06feb89b60d43ecd6779971e3f18d62b3e8b"
+    },
+    {
+      "schema": "private",
+      "name": "world_purchase_transactions_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "2eca98bd929a1c225021827238ac54d58ea32fd7ba0de4d958f907832dc95618",
+      "newSrcSha256": "2eca98bd929a1c225021827238ac54d58ea32fd7ba0de4d958f907832dc95618"
+    },
+    {
+      "schema": "private",
+      "name": "world_recipe_receipt_append_only_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "modified",
+      "changes": [
+        "DELETE allowance: session row instead of auth.users"
+      ],
+      "origSrcSha256": "1e03360986561651f7ada2853969360ac72d8c950843939bc9bd58594982e7af",
+      "newSrcSha256": "87020e38bfa0d4edc5c106bb103060fb467b8f55749d5317239b9f7362abf3f6"
+    },
+    {
+      "schema": "private",
+      "name": "world_relationship",
+      "args": "p_caller uuid, p_target uuid",
+      "newArgs": "p_caller uuid, p_target uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "35817c50a2606262abcd8905430f4b4ed15028f389672e997c45c1a9d80f4d78",
+      "newSrcSha256": "35817c50a2606262abcd8905430f4b4ed15028f389672e997c45c1a9d80f4d78"
+    },
+    {
+      "schema": "private",
+      "name": "world_reward_final_rows_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "eed7316d098de1c3141819b99d07885191e3962895af49155e36118d341a54d3",
+      "newSrcSha256": "eed7316d098de1c3141819b99d07885191e3962895af49155e36118d341a54d3"
+    },
+    {
+      "schema": "private",
+      "name": "world_reward_grant_v1",
+      "args": "p_user uuid, p_reward_id text, p_source_type text, p_source_id text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_reward_id text, p_source_type text, p_source_id text, p_idempotency_key text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "ca8ebfd037e2de8c43fcdfdeda6326ccd31e79bde605a48021b45700e28bac53",
+      "newSrcSha256": "ca8ebfd037e2de8c43fcdfdeda6326ccd31e79bde605a48021b45700e28bac53"
+    },
+    {
+      "schema": "private",
+      "name": "world_reward_grants_validate_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "92f353bd405be0a31a1208f8c47d5e08d5ee5a5acca9d1d3d499046820bfaa03",
+      "newSrcSha256": "92f353bd405be0a31a1208f8c47d5e08d5ee5a5acca9d1d3d499046820bfaa03"
+    },
+    {
+      "schema": "private",
+      "name": "world_reward_result_v1",
+      "args": "p_reward_transaction_id uuid, p_replayed boolean",
+      "newArgs": "p_reward_transaction_id uuid, p_replayed boolean",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "16849900443893730beac3030d75e90e6524a7afbf1be9a6e4934e46303ce7e1",
+      "newSrcSha256": "16849900443893730beac3030d75e90e6524a7afbf1be9a6e4934e46303ce7e1"
+    },
+    {
+      "schema": "private",
+      "name": "world_room_access_v1",
+      "args": "p_viewer uuid, p_room_id uuid",
+      "newArgs": "p_viewer uuid, p_room_id uuid",
+      "status": "modified",
+      "changes": [
+        "viewer check: profiles row only (no auth.users)"
+      ],
+      "origSrcSha256": "ca88ea2551505d9cfe8bc4d81f2e43b2cf754721d25288769b58a473cd9fcc4e",
+      "newSrcSha256": "2ec751f8aafed9a000bf95e6edb3e527f201853282e762ebcfd8707c70fc21b9"
+    },
+    {
+      "schema": "private",
+      "name": "world_room_caller_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "6ab2412a008fb5c0d6dec839eff53ed8812f21be35ae20ae3e855b7d6d1323da",
+      "newSrcSha256": "c89dadc6d530837714c359440bf291b54986bad4baafce860b56f82c29900e07"
+    },
+    {
+      "schema": "private",
+      "name": "world_room_furniture_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "800dd820075c0c848f313ac8cbacd5c445bc23b0dd9fece52e1e349fe7574423",
+      "newSrcSha256": "800dd820075c0c848f313ac8cbacd5c445bc23b0dd9fece52e1e349fe7574423"
+    },
+    {
+      "schema": "private",
+      "name": "world_room_knock_json_v1",
+      "args": "p_knock private.world_room_knocks",
+      "newArgs": "p_knock private.world_room_knocks",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "7ccefe5b628fe8a53a9202104f6127ebc6d4047895e3295ea0fafe8ef387d782",
+      "newSrcSha256": "7ccefe5b628fe8a53a9202104f6127ebc6d4047895e3295ea0fafe8ef387d782"
+    },
+    {
+      "schema": "private",
+      "name": "world_room_owner_present_v1",
+      "args": "p_room_id uuid",
+      "newArgs": "p_room_id uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "9d06cd29880ffff2fe4b267095cd0c47d18042bf618f53b0554ef2a390dcbfa9",
+      "newSrcSha256": "9d06cd29880ffff2fe4b267095cd0c47d18042bf618f53b0554ef2a390dcbfa9"
+    },
+    {
+      "schema": "private",
+      "name": "world_shop_listing_block_v2",
+      "args": "p_listing private.world_shop_listings, p_now timestamp with time zone, p_player_level integer",
+      "newArgs": "p_listing private.world_shop_listings, p_now timestamp with time zone, p_player_level integer",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "f7a992644502fd1a516f87a823a24878abd64d87fcbec1fd1a7afc8c883b62c3",
+      "newSrcSha256": "f7a992644502fd1a516f87a823a24878abd64d87fcbec1fd1a7afc8c883b62c3"
+    },
+    {
+      "schema": "private",
+      "name": "world_shop_listings_validate_v1",
+      "args": "",
+      "newArgs": "",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "5381c39973190e6a36f916964fa4e43129eefe3b318e2ca14b5f1742411eee0a",
+      "newSrcSha256": "5381c39973190e6a36f916964fa4e43129eefe3b318e2ca14b5f1742411eee0a"
+    },
+    {
+      "schema": "private",
+      "name": "world_social_caller",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "c3d75b5b03ad52ecd0e2809bfc1b18722a4d3043599cb6cb103d0f6e64a46f3d",
+      "newSrcSha256": "004c3d39ba19ac8058f42736c3691f98b108ad4ecd91338438e94d8cf9067921"
+    },
+    {
+      "schema": "private",
+      "name": "world_social_target",
+      "args": "p_caller uuid, p_target uuid",
+      "newArgs": "p_caller uuid, p_target uuid",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "7e390728228e100f0e50a811557d36a659d9628ec472b284ec747f6c862aac1f",
+      "newSrcSha256": "7e390728228e100f0e50a811557d36a659d9628ec472b284ec747f6c862aac1f"
+    },
+    {
+      "schema": "private",
+      "name": "world_wallet_account_ok_v1",
+      "args": "p_user uuid",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "0403e5f4d2e9a7ebb3e6e0d28e755d5ac6a0dc370ecb090b49767e3aff049956",
+      "newSrcSha256": "48b1a1cbca07c033ced12ad424f9a97c79e91e915a995cc990374cfc6f815d52"
+    },
+    {
+      "schema": "private",
+      "name": "world_wallet_apply_v1",
+      "args": "p_user uuid, p_currency_id text, p_delta bigint, p_type text, p_source_type text, p_source_id text, p_idempotency_key text, p_reason text",
+      "newArgs": "p_user uuid, p_currency_id text, p_delta bigint, p_type text, p_source_type text, p_source_id text, p_idempotency_key text, p_reason text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "db1fa06ec845b9b9de9f9833f0c19429d31b4fc06fad07113cb137b4f5d91988",
+      "newSrcSha256": "db1fa06ec845b9b9de9f9833f0c19429d31b4fc06fad07113cb137b4f5d91988"
+    },
+    {
+      "schema": "private",
+      "name": "world_wallet_result_v1",
+      "args": "p_tx private.world_currency_transactions, p_status text",
+      "newArgs": "p_tx private.world_currency_transactions, p_status text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "09d0d3d8af87117e9f22eeba5165f1244f0dba239d0db1d428629e3c164146ae",
+      "newSrcSha256": "09d0d3d8af87117e9f22eeba5165f1244f0dba239d0db1d428629e3c164146ae"
+    },
+    {
+      "schema": "public",
+      "name": "advance_mcm_2026_event_v1",
+      "args": "p_user uuid, p_event text",
+      "newArgs": "p_user uuid, p_event text",
+      "status": "modified",
+      "changes": [
+        "drop service_role gate (Worker is the server caller; no HTTP endpoint)"
+      ],
+      "origSrcSha256": "83a2c2306668e3dc316cf6afc0960cfb524773c3bc18652a295f23ec7dd4f525",
+      "newSrcSha256": "a9e76f7b455bc4fe20d10a42c85196909fc15412a78767880025b0ceb6d731ba"
+    },
+    {
+      "schema": "public",
+      "name": "answer_my_world_daily_quiz_v1",
+      "args": "p_run_id uuid, p_question_id text, p_answer_index smallint",
+      "newArgs": "p_user uuid, p_run_id uuid, p_question_id text, p_answer_index smallint",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_run_id uuid, p_question_id text, p_answer_index smallint)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "a89b8cf325ba5697aee813e87e3faafdb835b03f813182306694f7bbd012088e",
+      "newSrcSha256": "cfee1033bb30312334535a2c1f1bce3571d3cfc01a9d71f46576f223ed8d746d"
+    },
+    {
+      "schema": "public",
+      "name": "block_world_user",
+      "args": "p_target uuid",
+      "newArgs": "p_user uuid, p_target uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "a8dd3ed22aedef5684361d9ce74222d044fdac00c2e03f60d42ba624786f32cd",
+      "newSrcSha256": "13e94e3fdee0aba0da79a4f58704a2833afad08e941fbe879a8ebbbf16523f00"
+    },
+    {
+      "schema": "public",
+      "name": "cancel_world_friend_request",
+      "args": "p_target uuid",
+      "newArgs": "p_user uuid, p_target uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "b3f6c44e302a8610d51a4399cc83101ea1d9d0a3696142d0a3d8c3eb6b318e98",
+      "newSrcSha256": "476ae129d16d5ed0a92c1e95b150521f270bc2d597ae71a731cfe7083ed02e7d"
+    },
+    {
+      "schema": "public",
+      "name": "claim_my_mcm_2026_main_reward_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "cb1db3c0035c5a1b1f106244e9e6ace0aa56ca267f074177c8956ca042d7145a",
+      "newSrcSha256": "2f1ed3ee8d5edb3deea936c0825fc01c47b9193c5396761f8dee8d8e0ce51f89"
+    },
+    {
+      "schema": "public",
+      "name": "claim_my_mcm_landlord_first_clear_reward_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "52432be1d276700a788bac81bf5119a1710685c60fa35f2a4b27c50f079f6481",
+      "newSrcSha256": "0a71f70fb45966e169aab0af7b3e37bc09d1715b8af262a973bfce6e720f9580"
+    },
+    {
+      "schema": "public",
+      "name": "claim_my_world_attendance_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "dc9ec108bcfd1564c9f51b27048e7a292e06c9d0fad03afc0de909cd30d6b882",
+      "newSrcSha256": "46c8220dcaf8281b9a0bdcfa08fc4c3de590e49f7e8d63240377747361030340"
+    },
+    {
+      "schema": "public",
+      "name": "cook_my_world_recipe_v1",
+      "args": "p_recipe_id text, p_request_id uuid",
+      "newArgs": "p_user uuid, p_recipe_id text, p_request_id uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_recipe_id text, p_request_id uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "bdad48a0b444ba402be2185ac143212fa47af6ca059d330d7e5ec6672a44eca0",
+      "newSrcSha256": "bfed6501f79a45f12c501d43438e9af66e95da4f1723e611055bc15c5a81711d"
+    },
+    {
+      "schema": "public",
+      "name": "create_world_guestbook_entry_v2",
+      "args": "p_content text, p_location_key text",
+      "newArgs": "p_user uuid, p_content text, p_location_key text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_content text, p_location_key text)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "00d47920c444bcd55b3d1701abcdef4385d822306dc97f6e70f33bd297a7d3bc",
+      "newSrcSha256": "e013c8b39be77d6f795073bf1c45695128bbe4aa66bf72d4185cb1c4d8327d6a"
+    },
+    {
+      "schema": "public",
+      "name": "delete_world_guestbook_entry_v2",
+      "args": "p_entry_id uuid",
+      "newArgs": "p_user uuid, p_entry_id uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_entry_id uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "45753795d743c99d79dc60821adf130142c4abeb90cfdf8ac6536abf4d064227",
+      "newSrcSha256": "d8f121645203133cc0010573c72a363ad3175b7f06222a279010ba4ff3328c96"
+    },
+    {
+      "schema": "public",
+      "name": "end_world_accompany",
+      "args": "p_session_id uuid",
+      "newArgs": "p_user uuid, p_session_id uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_session_id uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "4259f4fb033a7b3d16c3c653841ae4890344325416defb5506511057133003fe",
+      "newSrcSha256": "7b343011c2aa929acc027428faffaeb698c8c33ff6f52311e9ba8ca453d76a56"
+    },
+    {
+      "schema": "public",
+      "name": "equip_my_world_item_v1",
+      "args": "p_slot text, p_item_id text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_slot text, p_item_id text, p_idempotency_key text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_slot text, p_item_id text, p_idempotency_key text)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "80a6b2b5b2330e11aa6f0bfdcbf19ffe4480158bf4967b86a213c4ca6ce4b832",
+      "newSrcSha256": "ac92b878d05140f97b46bc6922eb74911b77f0e14138ec88f6a55cfe726a6b04"
+    },
+    {
+      "schema": "public",
+      "name": "get_jeongseok_access_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "access helper takes p_user"
+      ],
+      "origSrcSha256": "e8a5a500a0dedd879cfc9034bd17de8451b0e378db87027e4b0d09cf7b8138de",
+      "newSrcSha256": "20b3be1b9264526cb84f941cb57094d116acc9755a8ca7a898543a2013d6bea2"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_achievements",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "gate: null-only + PROFILE_NOT_FOUND for missing/banned profile",
+        "inha_verified: drop auth.users email branch, badges only"
+      ],
+      "origSrcSha256": "b89e0d95cae15e30a703d9b678ece94a096a9170aedd9c3eeb9e2d059e5fc203",
+      "newSrcSha256": "3e04a7df2b361102e410a344060091776f83eee271f2677a5e9892cca2083a75"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_biryong_npc_relationship_v1",
+      "args": "p_npc_id text",
+      "newArgs": "p_user uuid, p_npc_id text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_npc_id text)",
+        "v_user := p_user"
+      ],
+      "origSrcSha256": "3121e88860db54da449e6ec65bcfbecf0d0085be66c374f9ecc815c57a40b694",
+      "newSrcSha256": "092ddbe8577ccad4003a73cd47dda86b9c1835d8bcefcb6f7af1ef3247784a94"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_biryong_npc_relationships_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_user := p_user"
+      ],
+      "origSrcSha256": "dd676ccf095f6297d2aa1d966a65e133160faef5fa478767c7679376c09c55a4",
+      "newSrcSha256": "193e552cc2c752f4b0ba11dac41ebc907be32caadee4ed2ecd947e446b2ae34c"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_biryong_progress_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "null-only gate (no auth.uid/auth.jwt)",
+        "row lookup by p_user"
+      ],
+      "origSrcSha256": "2784024a79d873cb8764aaa7c813fd20b51d8c27a35a83ae8179d1a40c9d11b6",
+      "newSrcSha256": "5725c08ad9b1c04dfed891be95c6c760760a333cca360fc677e1912eb74bf36f"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_mcm_2026_event_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "8886ae4537b56c8203e9949907dd53531cd0efda91585090241b810cb3ec6b03",
+      "newSrcSha256": "0cecad8794cfcf73337bba1938e7000a3c50e56257688f5b224cc9772f3f0cba"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_profile",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)",
+        "joinedAt from profile row; my_inha_mail_badge(p_user)"
+      ],
+      "origSrcSha256": "5d7c4f0a486ac687cce0d7386a202b2ef70d2a036d494833fc913993da88d35d",
+      "newSrcSha256": "5b06e614e2fe83047c13fbc199da93050111c61652bab5b11712206b11476540"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_room_knock_v1",
+      "args": "p_knock uuid",
+      "newArgs": "p_user uuid, p_knock uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_knock uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "da111c65ce7585a57892d5a97963aad4699cabac985099ab966f98a2ad24282f",
+      "newSrcSha256": "6055a22744356ddef7dcd951a95d9569a9b4c35b6c7b4afc4d789743dcf2a25d"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_accompany",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "34e6e7bc9d75a0b0a5e6f1a92d9359f585e012bd7f8034ee32bff7c3046f66f8",
+      "newSrcSha256": "55ff7f632d8558873185504cce77a16a8fa94a5d8e03dde2f1b5511a3c9e5ad0"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_appearance_loadout_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "5026bf8282b8b5ac5c4a22d595b6e4d629a8054cb559fc300b2df839ec9cb379",
+      "newSrcSha256": "a1590cc1c016db84e78ca8a0dcbcfb93b22a78f155d6024791fbeb00c6d2109b"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_attendance_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "c2785e6dacc3d9f368f346bffbe8c9a9653cf1f3404e1b8cfb7696de6f37d2cd",
+      "newSrcSha256": "e5f7e94f965a4771c0b2e4c057c72ccfcdf2a419efdd544ebc0272293110953f"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_campus_npc_relationship_v1",
+      "args": "p_npc_id text",
+      "newArgs": "p_user uuid, p_npc_id text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_npc_id text)",
+        "v_user := p_user"
+      ],
+      "origSrcSha256": "969da16581ff356a28d7e2e53b574c8362c2b1d212afeaefcad036b5c5683fed",
+      "newSrcSha256": "6542cc4b595e1049254fa35ed1180238b10e30e9fd9fbb1efbe59ec4b307ecba"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_campus_npc_relationships_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_user := p_user"
+      ],
+      "origSrcSha256": "9f883098a207ca0e8de9822617a4d5d9bde7625e9db6a300e434737655357571",
+      "newSrcSha256": "f729122639ad2330e0dd16ed0f26b2f7321834b732dbd414dd69517495c76bc5"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_daily_quiz_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "cd5d41a2934b829491b03835827a6b2a0cb5774812089dfa7e1d3940d444583f",
+      "newSrcSha256": "13521ab7c721ce1d4db71c3ea91450fae4d39f91b20ea1e99f8d736d87171a08"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_inventory_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "aa7bfe40b4b71e337c815552d5b4394ed2eb1d45309b3d8784d940871fc431fd",
+      "newSrcSha256": "6c2d0dda88727b0aa76cfd0ccb8dce6c6e4d7c61b15928d894f1c71a774c2a32"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_life_skill_tree_v1",
+      "args": "p_skill_id text",
+      "newArgs": "p_user uuid, p_skill_id text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_skill_id text)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "6d8a7dfb2366b1335f9ed015b71c151c76cc1dfce326d6092ec04bcdc55ac890",
+      "newSrcSha256": "ef48b3ab860a4ea18a64a6551eb3717e7d2cbfe9ed481e39a6f98c1e1ab33c33"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_life_skills_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "4400a5f2af0d67d719c63fd2b0dc37fe9e82437e5b8dd58761201e227a788cfd",
+      "newSrcSha256": "465039ec6df5307b11667d3d9ef9e51434ea5e6170cd2d3b813bfce345b18d05"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_progression_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "13756462d5e5124273498b903eb7b51d93ff7de63f87e42ff9fdbde67c297865",
+      "newSrcSha256": "bdf88e161f6fe14a96121287e389752e9bb7f613e5694d7fd421f5fb13359081"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_social",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "69b40e06abaf59160ae69be1140c423d9149531c9aa70a9c1ceffa7ab2aace93",
+      "newSrcSha256": "a6a61cd4023a04a4c6d93326975aa302a93a1ba07c67d1681297182cdfddaccb"
+    },
+    {
+      "schema": "public",
+      "name": "get_my_world_wallet_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "60fdf6c4da24f292829db640bde7f811fe37db0b72426733cd768f30813e46a5",
+      "newSrcSha256": "351fd24e822df87db1926ff8c43c0ac8f82f2c2749f169b2cb55b9c7593b6e74"
+    },
+    {
+      "schema": "public",
+      "name": "get_or_create_my_personal_room_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "d22bb4fe46071ed170c0979e1232e4c4bb939187ed5842f9cdd4d959b73a4824",
+      "newSrcSha256": "4bb53fa0b07163ca4f79cbefd990b73838e43acf24abb6f2ce6f3d539aeb4b41"
+    },
+    {
+      "schema": "public",
+      "name": "get_world_guestbook_v2",
+      "args": "p_location_key text, p_limit integer, p_before timestamp with time zone",
+      "newArgs": "p_user uuid, p_location_key text, p_limit integer, p_before timestamp with time zone",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_location_key text, p_limit integer, p_before timestamp with time zone)",
+        "caller takes p_user",
+        "drop auth.users join (profiles + not-banned is the visibility rule)"
+      ],
+      "origSrcSha256": "873fce75e049caf0e873263018256fdc996ea69ad3b18aba7c96deae25a62174",
+      "newSrcSha256": "b6b603b54f00fb42cb182e47b3a4e7345455ebe85eaf04a7a5f1dec5bca0e4d0"
+    },
+    {
+      "schema": "public",
+      "name": "get_world_public_profile",
+      "args": "p_target uuid",
+      "newArgs": "p_user uuid, p_target uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "18200e713939f3eb720ea7da58e6490631adfe3a01accd2418b28e117eaacfa5",
+      "newSrcSha256": "cd699ea4303017db71c7319407dd03d974c5157b234c3f5b175ff6ca50d12fcc"
+    },
+    {
+      "schema": "public",
+      "name": "get_world_relationship",
+      "args": "p_target uuid",
+      "newArgs": "p_user uuid, p_target uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "a44f85cbc8e8f93fac9e2ef3c8e39452d8d0487bf16bb15ffaa988afd4211ebd",
+      "newSrcSha256": "9f0bb25978ff89b692e709a84c696a341a8107aa74a7ff880a6453b4b03191f1"
+    },
+    {
+      "schema": "public",
+      "name": "get_world_room_furniture_v1",
+      "args": "p_room uuid",
+      "newArgs": "p_user uuid, p_room uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_room uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "7758d2703556f3f2646b71c3b84736d54e2351de5e26807c851f0807cf9fcfef",
+      "newSrcSha256": "d427fe6282eb695e821a1f68b11792008e2329fa12486a45ff74fe712c772b7f"
+    },
+    {
+      "schema": "public",
+      "name": "get_world_shop_capabilities_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)",
+        "probe the ported v2 signature",
+        "probe the ported v1 signature",
+        "probe the Worker role grant (v2)",
+        "probe the Worker role grant (v1)"
+      ],
+      "origSrcSha256": "09f53df0bec139c6cb03948a342a941b1e046c039703a00221066935d5de7623",
+      "newSrcSha256": "fbbff716526d1f2472c92ea7eb938c84a74655b5d12d9fbc7a8d7cf4b755478d"
+    },
+    {
+      "schema": "public",
+      "name": "get_world_shop_v1",
+      "args": "p_shop_id text",
+      "newArgs": "p_user uuid, p_shop_id text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_shop_id text)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "d17c845544178dfc51c1957ac1a07b2833e7134911e037dec8196abe89451b4b",
+      "newSrcSha256": "0c74d0bdbaa04304acb7198a04a092ae4cf7c2e7e98fafd83a7f5472f9309f9d"
+    },
+    {
+      "schema": "public",
+      "name": "get_world_staff_badges_v1",
+      "args": "p_user_ids uuid[]",
+      "newArgs": "p_user uuid, p_user_ids uuid[]",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_user_ids uuid[])",
+        "auth.uid() -> p_user"
+      ],
+      "origSrcSha256": "cf791af87438a42e948250c1e5f4ac8fa1ec29e4c2c0b96cca15323e406db5c8",
+      "newSrcSha256": "4fed0cc0da79edb5fa1fdeab4d1eff592d2a0a905e6733188e74f2b56cfad181"
+    },
+    {
+      "schema": "public",
+      "name": "is_inha_mail",
+      "args": "p_email text",
+      "newArgs": "p_email text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "a0931035c27e4e80a3ce7a4d37d78ef00c05d4a1277ec0e6922b204ffee4317c",
+      "newSrcSha256": "a0931035c27e4e80a3ce7a4d37d78ef00c05d4a1277ec0e6922b204ffee4317c"
+    },
+    {
+      "schema": "public",
+      "name": "knock_friend_personal_room_v1",
+      "args": "p_owner uuid",
+      "newArgs": "p_user uuid, p_owner uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_owner uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "1e9d0abe582c28fd9352bc4b4f394c38c716e62da555a1bbc390ed7a36323089",
+      "newSrcSha256": "10759c27848a84bb1bcf35270574c1e6388f9b8194c8b61a188dfc86c9067bb3"
+    },
+    {
+      "schema": "public",
+      "name": "list_my_room_knocks_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "8492681f6d5c0ffe6d9d4980ae6f3eb48d7a66432511da080a990d3cce5e28a9",
+      "newSrcSha256": "00b433de6012c0083f58c337f7b510db1266b25a881aba3e408217b8644433fc"
+    },
+    {
+      "schema": "public",
+      "name": "merge_my_biryong_progress_v1",
+      "args": "p_progress jsonb, p_migrated_from_local boolean",
+      "newArgs": "p_user uuid, p_progress jsonb, p_migrated_from_local boolean",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_progress jsonb, p_migrated_from_local boolean)",
+        "v_user := p_user",
+        "null-only gate",
+        "readback with p_user"
+      ],
+      "origSrcSha256": "746ca48e8afcb4edb1e3680dfc9d3e5f071cbb463c387752de8b8daef784d44f",
+      "newSrcSha256": "57f0ab8d62046e892ea6ddad62aeac5d147f8a24d876012a04b0135c5d8c309b"
+    },
+    {
+      "schema": "public",
+      "name": "my_inha_mail_badge",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "body replaced (session check / badges only)"
+      ],
+      "origSrcSha256": "043fc3772ab6224902da21dff26266958ac546d5ee6f8a718210ca389b3c69e1",
+      "newSrcSha256": "32beb0d990846d821cb0fff2b4d33106793f1f0e452e0a2280ba42966b7e8b82"
+    },
+    {
+      "schema": "public",
+      "name": "propose_world_accompany",
+      "args": "p_target uuid, p_poi_id text, p_place_zone_id text",
+      "newArgs": "p_user uuid, p_target uuid, p_poi_id text, p_place_zone_id text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid, p_poi_id text, p_place_zone_id text)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "a0f8b5e054c3d996f3dc6e8ff81e38dd3f28990a14a37ff64d9b8318766f9a43",
+      "newSrcSha256": "cac771a8f1896a03dd3709cd90d8a79225266a94a79e7d269a85b86750b883d6"
+    },
+    {
+      "schema": "public",
+      "name": "purchase_jeongseok_pass_v1",
+      "args": "p_pass_type text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_pass_type text, p_idempotency_key text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_pass_type text, p_idempotency_key text)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)",
+        "mail badge takes v_uid"
+      ],
+      "origSrcSha256": "d2da4463d46554ce9a8519b506e53d1d299e2dca0fc896dc592e6c2ab5d0957f",
+      "newSrcSha256": "85c162ebf64440b8e917c93e722b45c461b93f3ae0563109e3c64772cb4e533d"
+    },
+    {
+      "schema": "public",
+      "name": "purchase_world_shop_listing_v1",
+      "args": "p_listing_id text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_listing_id text, p_idempotency_key text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_listing_id text, p_idempotency_key text)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "0cedd4bb161930eeea50ae4be6f042bbeabef264da2ad5d0e2ae993e9338b9e9",
+      "newSrcSha256": "c42341e615ca9217b7fe40c1ca12629226f4bc38b86dfd9ba4097f72efe440b1"
+    },
+    {
+      "schema": "public",
+      "name": "purchase_world_shop_listing_v2",
+      "args": "p_shop_id text, p_listing_id text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_shop_id text, p_listing_id text, p_idempotency_key text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_shop_id text, p_listing_id text, p_idempotency_key text)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)",
+        "replay delegates with p_user",
+        "fresh purchase delegates with p_user"
+      ],
+      "origSrcSha256": "392c6ffc4e4f4feef723d5401d57958018cf6d926411038a40b86029f9354ef7",
+      "newSrcSha256": "b4d94d99ffdb73d28b2755187bd55d7f6b6b327a5fb35efb0dc897f97ba67c9c"
+    },
+    {
+      "schema": "public",
+      "name": "remove_world_friend",
+      "args": "p_target uuid",
+      "newArgs": "p_user uuid, p_target uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "28d32580a6cb9f2ff9efdb41928d5ea1cb50c1d67d8b4871829f80abaab85ead",
+      "newSrcSha256": "95874c760199079ddfe2684bb179ecd636deec335ef1c539bfed3b6240926b97"
+    },
+    {
+      "schema": "public",
+      "name": "report_world_user",
+      "args": "p_target uuid, p_category text, p_place_zone_id text",
+      "newArgs": "p_user uuid, p_target uuid, p_category text, p_place_zone_id text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid, p_category text, p_place_zone_id text)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "33084a028a95a2f6bcf0e070be293666fb6143fd0d2cf99aeed82f22f12ddc2a",
+      "newSrcSha256": "d0dd24b3ed1ff6a2036f4b2cf3a38f4be7d60dc185b978726f15945220d30635"
+    },
+    {
+      "schema": "public",
+      "name": "reset_my_world_life_tree_v1",
+      "args": "p_skill_id text, p_request_id uuid",
+      "newArgs": "p_user uuid, p_skill_id text, p_request_id uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_skill_id text, p_request_id uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "ed8f4271a7516a38cf809e8ecc148022947a8db1b4350fc3a5b232c2dc7f5fb2",
+      "newSrcSha256": "4a8e3d333049babdfd8b5ddc0abe5a76df86e0312f2df2cbe30e52eeca3b05eb"
+    },
+    {
+      "schema": "public",
+      "name": "respond_room_knock_v1",
+      "args": "p_knock uuid, p_accept boolean",
+      "newArgs": "p_user uuid, p_knock uuid, p_accept boolean",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_knock uuid, p_accept boolean)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "d33f9cd61dd27d07ddf254613dcef14a2331d0e2ab5d3635fd793507720c8277",
+      "newSrcSha256": "6c54052b5170519bf1c14b4cd643b702d960fe6f64a40356331958acb69a8855"
+    },
+    {
+      "schema": "public",
+      "name": "respond_world_accompany",
+      "args": "p_session_id uuid, p_accept boolean",
+      "newArgs": "p_user uuid, p_session_id uuid, p_accept boolean",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_session_id uuid, p_accept boolean)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "67efe5ce27be2927a97d882a740036c746f3920bb6903f3d621b6e507daa3145",
+      "newSrcSha256": "df237cdc0d7a7a9745feb923ca6098ea18dd4806a21744b3a0867afa6efd3098"
+    },
+    {
+      "schema": "public",
+      "name": "respond_world_friend_request",
+      "args": "p_target uuid, p_accept boolean",
+      "newArgs": "p_user uuid, p_target uuid, p_accept boolean",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid, p_accept boolean)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "3482ce0fd35447e075b7b67d30e80d79f1192df7016cb058d870ce6c23754056",
+      "newSrcSha256": "b8555f9c342d11a2a42993392f52e1015de822f8a66a19e2a2c8f6adde39c7ba"
+    },
+    {
+      "schema": "public",
+      "name": "save_my_room_furniture_v1",
+      "args": "p_room uuid, p_revision integer, p_objects jsonb",
+      "newArgs": "p_user uuid, p_room uuid, p_revision integer, p_objects jsonb",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_room uuid, p_revision integer, p_objects jsonb)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "888d3644dc03a6900796f5e70bee8d8f5c45d819344fbc6541b64118808eea2e",
+      "newSrcSha256": "ac6b8f2d1cc4961f682464db2ab3159a1b2457fc10d5d5dcbb98f6d3804617d2"
+    },
+    {
+      "schema": "public",
+      "name": "send_world_friend_request",
+      "args": "p_target uuid",
+      "newArgs": "p_user uuid, p_target uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "1f0d7ba17d40fc672fb2cea383e39fc2193b1c6cec0dac8e5baca8b353610804",
+      "newSrcSha256": "a4fe60d99dcb9c2fb238088005cdfcceea2422aa227e8f6ce1efa1a71145142d"
+    },
+    {
+      "schema": "public",
+      "name": "set_my_personal_room_visibility_v1",
+      "args": "p_visibility text",
+      "newArgs": "p_user uuid, p_visibility text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_visibility text)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "83337789401c256bc1c538e3072fd8deca282919054e0b71d8a03a2d42367267",
+      "newSrcSha256": "409ae267456b442a33126b487395a45f6f156d9b9b81a6b5154fdede4bffb151"
+    },
+    {
+      "schema": "public",
+      "name": "start_mcm_landlord_run_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "71a9394a0f9c82ac6f051d8b83d9fddc744bbfe5c6ee3ebcaafa6568a9648829",
+      "newSrcSha256": "72b7b9e4b5f6a5bdd372d7547191ee256cc558abbde0e749e292f001e8560f3b"
+    },
+    {
+      "schema": "public",
+      "name": "start_my_world_daily_quiz_v1",
+      "args": "",
+      "newArgs": "p_user uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "caa6e9fa4d7509d3c288addd16ca02f27daf2b91a0488463c2fe07264b9cc00a",
+      "newSrcSha256": "2477678b04e9913bfdeb9a3980266f2545b971acc0c7cc73253fbc8f5616f32e"
+    },
+    {
+      "schema": "public",
+      "name": "submit_mcm_landlord_choice_v1",
+      "args": "p_run_id uuid, p_actor_id text",
+      "newArgs": "p_user uuid, p_run_id uuid, p_actor_id text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_run_id uuid, p_actor_id text)",
+        "v_uid := p_user",
+        "drop is_anonymous gate (null-only)"
+      ],
+      "origSrcSha256": "e5517f57b5eaebecc2e6718841498e8f8d5dd619b1e9410f1fcb8f15a467c80b",
+      "newSrcSha256": "c2721c8b9ba0845dead526179269b7332f42e389edd7a01742139b920214686f"
+    },
+    {
+      "schema": "public",
+      "name": "unblock_world_user",
+      "args": "p_target uuid",
+      "newArgs": "p_user uuid, p_target uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_target uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "c060fc14aa2582005218c9912f35146b5778eb573f8268d17a88c6e5884a9c96",
+      "newSrcSha256": "a5265b21a59583cd5d97bcb17eff17b860fb8171169cda29bd490650e0b9d763"
+    },
+    {
+      "schema": "public",
+      "name": "unequip_my_world_item_v1",
+      "args": "p_slot text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_slot text, p_idempotency_key text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_slot text, p_idempotency_key text)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "60d4c6cbc460606e4a699b3736ba35c1626fbf74633a9ee4b6158ebf8d0864bd",
+      "newSrcSha256": "1b8a7144e057ff51ab0f905296ade2ccc4e664654c8dc5c92ff867a893f2db30"
+    },
+    {
+      "schema": "public",
+      "name": "unlock_my_world_life_node_v1",
+      "args": "p_node_id text, p_request_id uuid",
+      "newArgs": "p_user uuid, p_node_id text, p_request_id uuid",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_node_id text, p_request_id uuid)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "44acf2379f2273e46bb1d75b3100c14d4c4cb6bcb83b3dddde083217fb70c03f",
+      "newSrcSha256": "f1517782455f26e1e84b2de9924745f8e1c980136ab796d5d28c34800042993b"
+    },
+    {
+      "schema": "public",
+      "name": "update_world_guestbook_entry_v2",
+      "args": "p_entry_id uuid, p_content text",
+      "newArgs": "p_user uuid, p_entry_id uuid, p_content text",
+      "status": "modified",
+      "changes": [
+        "signature -> (p_user uuid, p_entry_id uuid, p_content text)",
+        "caller takes p_user"
+      ],
+      "origSrcSha256": "777b821dbf83b00bf04c5a5833ca22fe027e6c24ef9eecdbe0ff6c32f9ae1fb5",
+      "newSrcSha256": "0adeb6e2d50c66cfa4c015e542d066e95205a37ba09d4b49d7ca08fd4d93f71d"
+    },
+    {
+      "schema": "public",
+      "name": "world_biryong_npc_relationship_advance_v1",
+      "args": "p_user uuid, p_npc_id text, p_target_stage smallint, p_source_type text, p_source_ref text, p_result_ref text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_npc_id text, p_target_stage smallint, p_source_type text, p_source_ref text, p_result_ref text, p_idempotency_key text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "d317c6abff669c0358f7a3742270cb03b2430e8b7e2362ca2bdbbe7e08b8fe86",
+      "newSrcSha256": "d317c6abff669c0358f7a3742270cb03b2430e8b7e2362ca2bdbbe7e08b8fe86"
+    },
+    {
+      "schema": "public",
+      "name": "world_campus_npc_relationship_apply_v1",
+      "args": "p_user uuid, p_npc_id text, p_definition_version integer, p_event_type text, p_signal text, p_occurrence integer, p_requested_delta smallint, p_source_type text, p_source_ref text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_npc_id text, p_definition_version integer, p_event_type text, p_signal text, p_occurrence integer, p_requested_delta smallint, p_source_type text, p_source_ref text, p_idempotency_key text",
+      "status": "identical",
+      "changes": [],
+      "origSrcSha256": "edf3d6a59325742d4b0ce13be24486eb23c0a7e7a3b6047d208c22681813554a",
+      "newSrcSha256": "edf3d6a59325742d4b0ce13be24486eb23c0a7e7a3b6047d208c22681813554a"
+    },
+    {
+      "schema": "public",
+      "name": "world_reward_grant_v1",
+      "args": "p_user uuid, p_reward_id text, p_source_type text, p_source_id text, p_idempotency_key text",
+      "newArgs": "p_user uuid, p_reward_id text, p_source_type text, p_source_id text, p_idempotency_key text",
+      "status": "modified",
+      "changes": [
+        "drop service_role gate (server-only wrapper; no HTTP endpoint)"
+      ],
+      "origSrcSha256": "4ce4ea6b74419afc63d36fa9f26409318fa081663c3995d7efd525ae1fbd7f57",
+      "newSrcSha256": "259d7d7f708700956a23096b79387877df029062279e5995a69b37961300dcfd"
+    }
+  ],
+  "tables": [
+    {
+      "schema": "private",
+      "name": "world_appearance_transactions"
+    },
+    {
+      "schema": "private",
+      "name": "world_attendance_days"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_npc_relationship_events"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_npc_relationship_fact_catalog"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_npc_relationship_npc_catalog"
+    },
+    {
+      "schema": "private",
+      "name": "world_biryong_progress_v1"
+    },
+    {
+      "schema": "private",
+      "name": "world_campus_npc_relationship_events"
+    },
+    {
+      "schema": "private",
+      "name": "world_campus_npc_relationship_npc_catalog"
+    },
+    {
+      "schema": "private",
+      "name": "world_currencies"
+    },
+    {
+      "schema": "private",
+      "name": "world_currency_transactions"
+    },
+    {
+      "schema": "private",
+      "name": "world_daily_quiz_answers"
+    },
+    {
+      "schema": "private",
+      "name": "world_daily_quiz_questions"
+    },
+    {
+      "schema": "private",
+      "name": "world_daily_quiz_runs"
+    },
+    {
+      "schema": "private",
+      "name": "world_event_progress"
+    },
+    {
+      "schema": "private",
+      "name": "world_events"
+    },
+    {
+      "schema": "private",
+      "name": "world_exp_transactions"
+    },
+    {
+      "schema": "private",
+      "name": "world_guestbook_post_log"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_mutation_entries"
+    },
+    {
+      "schema": "private",
+      "name": "world_inventory_mutations"
+    },
+    {
+      "schema": "private",
+      "name": "world_item_catalog"
+    },
+    {
+      "schema": "private",
+      "name": "world_item_consumptions"
+    },
+    {
+      "schema": "private",
+      "name": "world_item_grants"
+    },
+    {
+      "schema": "private",
+      "name": "world_jeongseok_gate_policy"
+    },
+    {
+      "schema": "private",
+      "name": "world_jeongseok_pass_catalog"
+    },
+    {
+      "schema": "private",
+      "name": "world_jeongseok_pass_entitlements"
+    },
+    {
+      "schema": "private",
+      "name": "world_jeongseok_pass_purchases"
+    },
+    {
+      "schema": "private",
+      "name": "world_landlord_first_clears"
+    },
+    {
+      "schema": "private",
+      "name": "world_landlord_runs"
+    },
+    {
+      "schema": "private",
+      "name": "world_level_thresholds"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_progression_thresholds"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_catalog"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_thresholds"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_tree_catalog"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_skill_tree_edges"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_sp_transactions"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_tree_reset_policy"
+    },
+    {
+      "schema": "private",
+      "name": "world_life_tree_resets"
+    },
+    {
+      "schema": "private",
+      "name": "world_mcm_reward_claims"
+    },
+    {
+      "schema": "private",
+      "name": "world_player_appearance_loadout"
+    },
+    {
+      "schema": "private",
+      "name": "world_player_biryong_npc_relationships"
+    },
+    {
+      "schema": "private",
+      "name": "world_player_campus_npc_relationships"
+    },
+    {
+      "schema": "private",
+      "name": "world_player_items"
+    },
+    {
+      "schema": "private",
+      "name": "world_player_life_nodes"
+    },
+    {
+      "schema": "private",
+      "name": "world_player_life_skills"
+    },
+    {
+      "schema": "private",
+      "name": "world_player_progression"
+    },
+    {
+      "schema": "private",
+      "name": "world_purchase_transactions"
+    },
+    {
+      "schema": "private",
+      "name": "world_recipe_catalog"
+    },
+    {
+      "schema": "private",
+      "name": "world_recipe_receipts"
+    },
+    {
+      "schema": "private",
+      "name": "world_reward_definitions"
+    },
+    {
+      "schema": "private",
+      "name": "world_reward_grants"
+    },
+    {
+      "schema": "private",
+      "name": "world_reward_transaction_entries"
+    },
+    {
+      "schema": "private",
+      "name": "world_reward_transactions"
+    },
+    {
+      "schema": "private",
+      "name": "world_room_knocks"
+    },
+    {
+      "schema": "private",
+      "name": "world_room_layouts"
+    },
+    {
+      "schema": "private",
+      "name": "world_room_owner_presence"
+    },
+    {
+      "schema": "private",
+      "name": "world_shop_listings"
+    },
+    {
+      "schema": "private",
+      "name": "world_shops"
+    },
+    {
+      "schema": "private",
+      "name": "world_staff_assignments"
+    },
+    {
+      "schema": "private",
+      "name": "world_user_moderation_actions"
+    },
+    {
+      "schema": "private",
+      "name": "world_wallets"
+    },
+    {
+      "schema": "public",
+      "name": "classic_event_badges"
+    },
+    {
+      "schema": "public",
+      "name": "departments"
+    },
+    {
+      "schema": "public",
+      "name": "game_builds"
+    },
+    {
+      "schema": "public",
+      "name": "game_events"
+    },
+    {
+      "schema": "public",
+      "name": "game_sessions"
+    },
+    {
+      "schema": "public",
+      "name": "games"
+    },
+    {
+      "schema": "public",
+      "name": "general_stage_bests"
+    },
+    {
+      "schema": "public",
+      "name": "induckup_ranked_bests"
+    },
+    {
+      "schema": "public",
+      "name": "inha_mail_badges"
+    },
+    {
+      "schema": "public",
+      "name": "player_bests"
+    },
+    {
+      "schema": "public",
+      "name": "players"
+    },
+    {
+      "schema": "public",
+      "name": "profiles"
+    },
+    {
+      "schema": "public",
+      "name": "ranked_runs"
+    },
+    {
+      "schema": "public",
+      "name": "ranked_sessions"
+    },
+    {
+      "schema": "public",
+      "name": "user_achievements"
+    },
+    {
+      "schema": "public",
+      "name": "user_game_progress"
+    },
+    {
+      "schema": "public",
+      "name": "world_accompany_sessions"
+    },
+    {
+      "schema": "public",
+      "name": "world_friendships"
+    },
+    {
+      "schema": "public",
+      "name": "world_guestbook_entries"
+    },
+    {
+      "schema": "public",
+      "name": "world_player_rooms"
+    },
+    {
+      "schema": "public",
+      "name": "world_user_blocks"
+    },
+    {
+      "schema": "public",
+      "name": "world_user_reports"
+    }
+  ],
+  "skippedForeignKeysToAuthUsers": [
+    {
+      "table": "private.world_appearance_transactions",
+      "conname": "world_appearance_transactions_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_attendance_days",
+      "conname": "world_attendance_days_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_biryong_npc_relationship_events",
+      "conname": "world_biryong_npc_relationship_events_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_biryong_progress_v1",
+      "conname": "world_biryong_progress_v1_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_campus_npc_relationship_events",
+      "conname": "world_campus_npc_relationship_events_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_daily_quiz_runs",
+      "conname": "world_daily_quiz_runs_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_event_progress",
+      "conname": "world_event_progress_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_guestbook_post_log",
+      "conname": "world_guestbook_post_log_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_inventory_mutations",
+      "conname": "world_inventory_mutations_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_item_consumptions",
+      "conname": "world_item_consumptions_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_item_grants",
+      "conname": "world_item_grants_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_jeongseok_pass_entitlements",
+      "conname": "world_jeongseok_pass_entitlements_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_jeongseok_pass_purchases",
+      "conname": "world_jeongseok_pass_purchases_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_landlord_first_clears",
+      "conname": "world_landlord_first_clears_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_landlord_runs",
+      "conname": "world_landlord_runs_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_life_sp_transactions",
+      "conname": "world_life_sp_transactions_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_life_tree_resets",
+      "conname": "world_life_tree_resets_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_mcm_reward_claims",
+      "conname": "world_mcm_reward_claims_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_player_appearance_loadout",
+      "conname": "world_player_appearance_loadout_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_player_biryong_npc_relationships",
+      "conname": "world_player_biryong_npc_relationships_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_player_campus_npc_relationships",
+      "conname": "world_player_campus_npc_relationships_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_player_items",
+      "conname": "world_player_items_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_player_life_nodes",
+      "conname": "world_player_life_nodes_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_player_life_skills",
+      "conname": "world_player_life_skills_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_player_progression",
+      "conname": "world_player_progression_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_purchase_transactions",
+      "conname": "world_purchase_transactions_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_recipe_receipts",
+      "conname": "world_recipe_receipts_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_reward_transactions",
+      "conname": "world_reward_transactions_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_room_knocks",
+      "conname": "world_room_knocks_visitor_user_id_fkey",
+      "def": "FOREIGN KEY (visitor_user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_staff_assignments",
+      "conname": "world_staff_assignments_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_user_moderation_actions",
+      "conname": "world_user_moderation_actions_actor_id_fkey",
+      "def": "FOREIGN KEY (actor_id) REFERENCES auth.users(id) ON DELETE SET NULL"
+    },
+    {
+      "table": "private.world_user_moderation_actions",
+      "conname": "world_user_moderation_actions_target_id_fkey",
+      "def": "FOREIGN KEY (target_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "private.world_wallets",
+      "conname": "world_wallets_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.classic_event_badges",
+      "conname": "classic_event_badges_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.game_events",
+      "conname": "game_events_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE SET NULL"
+    },
+    {
+      "table": "public.general_stage_bests",
+      "conname": "general_stage_bests_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.induckup_ranked_bests",
+      "conname": "induckup_ranked_bests_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.inha_mail_badges",
+      "conname": "inha_mail_badges_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.player_bests",
+      "conname": "player_bests_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.players",
+      "conname": "players_auth_user_id_fkey",
+      "def": "FOREIGN KEY (auth_user_id) REFERENCES auth.users(id) ON DELETE SET NULL"
+    },
+    {
+      "table": "public.profiles",
+      "conname": "profiles_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.ranked_runs",
+      "conname": "ranked_runs_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.ranked_sessions",
+      "conname": "ranked_sessions_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.user_achievements",
+      "conname": "user_achievements_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.user_game_progress",
+      "conname": "user_game_progress_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_accompany_sessions",
+      "conname": "world_accompany_sessions_invitee_id_fkey",
+      "def": "FOREIGN KEY (invitee_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_accompany_sessions",
+      "conname": "world_accompany_sessions_inviter_id_fkey",
+      "def": "FOREIGN KEY (inviter_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_friendships",
+      "conname": "world_friendships_requested_by_fkey",
+      "def": "FOREIGN KEY (requested_by) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_friendships",
+      "conname": "world_friendships_user_high_fkey",
+      "def": "FOREIGN KEY (user_high) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_friendships",
+      "conname": "world_friendships_user_low_fkey",
+      "def": "FOREIGN KEY (user_low) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_guestbook_entries",
+      "conname": "world_guestbook_entries_user_id_fkey",
+      "def": "FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_player_rooms",
+      "conname": "world_player_rooms_owner_user_id_fkey",
+      "def": "FOREIGN KEY (owner_user_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_user_blocks",
+      "conname": "world_user_blocks_blocked_id_fkey",
+      "def": "FOREIGN KEY (blocked_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_user_blocks",
+      "conname": "world_user_blocks_blocker_id_fkey",
+      "def": "FOREIGN KEY (blocker_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_user_reports",
+      "conname": "world_user_reports_reporter_id_fkey",
+      "def": "FOREIGN KEY (reporter_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    },
+    {
+      "table": "public.world_user_reports",
+      "conname": "world_user_reports_target_id_fkey",
+      "def": "FOREIGN KEY (target_id) REFERENCES auth.users(id) ON DELETE CASCADE"
+    }
+  ],
+  "sessionRefTriggerTables": [
+    "private.world_appearance_transactions",
+    "private.world_attendance_days",
+    "private.world_biryong_npc_relationship_events",
+    "private.world_biryong_progress_v1",
+    "private.world_campus_npc_relationship_events",
+    "private.world_daily_quiz_runs",
+    "private.world_event_progress",
+    "private.world_guestbook_post_log",
+    "private.world_inventory_mutations",
+    "private.world_item_consumptions",
+    "private.world_item_grants",
+    "private.world_jeongseok_pass_entitlements",
+    "private.world_jeongseok_pass_purchases",
+    "private.world_landlord_first_clears",
+    "private.world_landlord_runs",
+    "private.world_life_sp_transactions",
+    "private.world_life_tree_resets",
+    "private.world_mcm_reward_claims",
+    "private.world_player_appearance_loadout",
+    "private.world_player_biryong_npc_relationships",
+    "private.world_player_campus_npc_relationships",
+    "private.world_player_items",
+    "private.world_player_life_nodes",
+    "private.world_player_life_skills",
+    "private.world_player_progression",
+    "private.world_purchase_transactions",
+    "private.world_recipe_receipts",
+    "private.world_reward_transactions",
+    "private.world_room_knocks",
+    "private.world_staff_assignments",
+    "private.world_user_moderation_actions",
+    "private.world_user_moderation_actions",
+    "private.world_wallets",
+    "public.classic_event_badges",
+    "public.game_events",
+    "public.general_stage_bests",
+    "public.induckup_ranked_bests",
+    "public.inha_mail_badges",
+    "public.player_bests",
+    "public.players",
+    "public.profiles",
+    "public.ranked_runs",
+    "public.ranked_sessions",
+    "public.user_achievements",
+    "public.user_game_progress",
+    "public.world_accompany_sessions",
+    "public.world_accompany_sessions",
+    "public.world_friendships",
+    "public.world_friendships",
+    "public.world_friendships",
+    "public.world_guestbook_entries",
+    "public.world_player_rooms",
+    "public.world_user_blocks",
+    "public.world_user_blocks",
+    "public.world_user_reports",
+    "public.world_user_reports"
+  ],
+  "excludedTriggers": [
+    "public.game_events.trg_game_events_attach_context",
+    "public.game_events.trg_game_events_sync_general_run",
+    "public.game_events.trg_ops_refresh_game_events",
+    "public.game_sessions.trg_ops_refresh_game_sessions",
+    "public.general_stage_bests.trg_general_stage_best_event",
+    "public.ranked_runs.trg_ops_refresh_ranked_runs",
+    "public.ranked_runs.trg_ranked_run_event",
+    "public.ranked_runs.trg_ranked_runs_sync_common_run",
+    "public.ranked_sessions.trg_ops_refresh_ranked_sessions",
+    "public.ranked_sessions.trg_ranked_session_event",
+    "public.ranked_sessions.trg_ranked_sessions_sync_common_run"
+  ],
+  "seeds": {
+    "included": 203,
+    "skipped": [
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "private.world_staff_role_permissions",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "private.world_staff_role_permissions",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "private.world_staff_role_permissions",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "private.world_staff_role_permissions",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "private.world_staff_role_permissions",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "private.world_staff_role_permissions",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "private.world_staff_role_permissions",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_contracts",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_event_mappings",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_lifecycle_profiles",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261001213132_public_baseline.sql",
+        "target": "public.ops_lifecycle_profiles",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261002130000_world_personal_room_session_d2.sql",
+        "target": "(do-guard)",
+        "reason": "references outside tables: private.install_world_online_realtime_policies"
+      },
+      {
+        "file": "20261002134000_world_collection_discovery_p0.sql",
+        "target": "private.world_collection_entry_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261003072000_world_asset_canary_remote_control.sql",
+        "target": "public.world_runtime_flags",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004092000_world_creature_core_p0.sql",
+        "target": "private.world_creature_species_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004102000_world_life_creature_bridge_p1.sql",
+        "target": "private.world_creature_activity_bridge_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004102000_world_life_creature_bridge_p1.sql",
+        "target": "private.world_life_creature_bridge_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004105000_world_combat_creature_bridge_p1.sql",
+        "target": "private.world_creature_activity_bridge_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004105000_world_combat_creature_bridge_p1.sql",
+        "target": "private.world_combat_creature_bridge_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004111000_world_duck_companion_p1.sql",
+        "target": "private.world_creature_species_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004111000_world_duck_companion_p1.sql",
+        "target": "private.world_creature_form_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004111000_world_duck_companion_p1.sql",
+        "target": "private.world_inkyung_duck_observation_subjects",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004111000_world_duck_companion_p1.sql",
+        "target": "private.world_creature_acquisition_rule_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004132000_world_fishing_f2.sql",
+        "target": "private.world_fishing_runtime",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004161000_world_fishing_first_life_skill.sql",
+        "target": "private.world_collection_entry_catalog",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004161000_world_fishing_first_life_skill.sql",
+        "target": "private.world_fishing_runtime",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261004161000_world_fishing_first_life_skill.sql",
+        "target": "(do-guard)",
+        "reason": "references outside tables: private.world_fishing_policy_validate_v1, private.world_fishing_runtime, private.world_collection_entry_catalog"
+      },
+      {
+        "file": "20261005021000_world_fishing_f3_trusted_presence.sql",
+        "target": "private.world_fishing_spots",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261005202000_world_gathering_p0.sql",
+        "target": "private.world_gathering_runtime",
+        "reason": "table outside closure"
+      },
+      {
+        "file": "20261005202000_world_gathering_p0.sql",
+        "target": "private.world_gathering_source_catalog",
+        "reason": "table outside closure"
+      }
+    ]
+  },
+  "counts": {
+    "functions": 183,
+    "identical": 92,
+    "modified": 91,
+    "tables": 82,
+    "seedsIncluded": 203,
+    "seedsSkipped": 67
+  }
+}
