@@ -1,0 +1,4 @@
+dist/
+.pages-build-*/
+node_modules/
+.pytest_cache/

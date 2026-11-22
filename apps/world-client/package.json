@@ -1,0 +1,10 @@
+{
+  "name": "inhaworld-campus-client",
+  "private": true,
+  "type": "module",
+  "engines": {"node": ">=24"},
+  "scripts": {
+    "build": "node tools/build-pages.mjs",
+    "test": "node --test tests/guestbook-session.mjs tests/public-settings.mjs && node tests/spatial.mjs"
+  }
+}
