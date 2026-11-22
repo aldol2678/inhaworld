@@ -36,7 +36,7 @@ BEGIN
           AND s.id = p_proof_session_id::text
           AND s.created_epoch >= e.epoch
           AND COALESCE(s.actor_user_id::text, s.id) = p_guest_user_id::text
-        FOR SHARE OF s;
+        FOR SHARE OF s, e;
 
         IF COALESCE(v_owns_guest, FALSE) IS NOT TRUE THEN
             RAISE EXCEPTION 'GUEST_SESSION_PROOF_INVALID' USING ERRCODE = '42501';
