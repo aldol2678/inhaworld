@@ -80,7 +80,15 @@ class Driver:
         self.cy = box["y"] + box["height"] * 0.5
         self.right = box["x"] + box["width"] * 0.72
         if not mobile:
-            page.locator("#scene").click(position={"x": 100, "y": 80})
+            # Click a visible canvas point while the test holds game frames.
+            x, y = page.locator("#scene").evaluate("""canvas => {
+              canvas.scrollIntoView({block: 'nearest'});
+              const rect = canvas.getBoundingClientRect();
+              const x = rect.left + 100, y = rect.top + 80;
+              if (document.elementFromPoint(x, y) !== canvas) throw Error('Canvas point is covered');
+              return [x, y];
+            }""")
+            page.mouse.click(x, y)
             page.wait_for_function("document.pointerLockElement===document.querySelector('#scene')")
 
     def face(self, yaw):
@@ -129,6 +137,11 @@ class Driver:
             assert error > 1, self.inputs[-1]
         else:
             assert error < 0.38, self.inputs[-1]
+
+
+def release_pointer(page):
+    page.evaluate("document.exitPointerLock()")
+    page.wait_for_function("document.pointerLockElement === null", polling=20)
 
 
 def hold(page):
@@ -248,7 +261,7 @@ def test_world(origin, browser, routes, w, h):
                 page.keyboard.up(key)
                 assert math.dist(old, position(page)) > 1
             assert position(page) == (0.0, -98.0)
-            page.evaluate("document.exitPointerLock()")
+            release_pointer(page)
         page.reload()
         guest_ready(page)
         hold(page)
@@ -288,7 +301,7 @@ def test_world(origin, browser, routes, w, h):
             assert "1/3" in page.locator("#hud-quest").inner_text()
             report["traversal"] = "spawn to gate"
         if not mobile:
-            page.evaluate("document.exitPointerLock()")
+            release_pointer(page)
         page.locator("#room-list button").nth(2).click()
         if mobile:
             page.evaluate("scrollTo(0,0)")
@@ -300,7 +313,7 @@ def test_world(origin, browser, routes, w, h):
         driver.walk(pos)
         report["facadeAndRetreat"] = driver.inputs
         if not mobile:
-            page.evaluate("document.exitPointerLock()")
+            release_pointer(page)
         page.locator("#nickname").fill("QA-캠퍼스")
         page.locator("#save-nickname").click()
         page.locator("#room-list button").nth(1).click()

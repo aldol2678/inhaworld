@@ -2,7 +2,7 @@
 
 import json
 import math
-from test_world import ROOT, OUT, Driver, guest_ready, hold, frame, position, screenshot, draw_stats
+from test_world import ROOT, OUT, Driver, guest_ready, hold, frame, position, screenshot, draw_stats, release_pointer
 
 
 def test_walls_camera_and_repeated_visits(origin, browser):
@@ -60,7 +60,7 @@ def test_walls_camera_and_repeated_visits(origin, browser):
     contacts.append(check_contact(gate, tree["id"]))
     # Create wider context shots looking toward each facade.
     for label, i in [("hall", 1), ("library", 2)]:
-        page.evaluate("document.exitPointerLock()")
+        release_pointer(page)
         page.locator("#room-list button").nth(i).click()
         ctl = Driver(page, cdp, False)
         pos = layout["rooms"][["main-building", "library"][i - 1]]
@@ -70,7 +70,7 @@ def test_walls_camera_and_repeated_visits(origin, browser):
         page.keyboard.up("s")
         frame(page, 1, 0.016)
         screenshot(page, "04-approach-" + label)
-    page.evaluate("document.exitPointerLock()")
+    release_pointer(page)
     cdp.send("Performance.enable")
 
     def measurement():

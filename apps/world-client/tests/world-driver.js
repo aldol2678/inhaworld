@@ -5,9 +5,11 @@
   let held = false,
     next = null,
     clock = 0;
+  let gameTick;
   const samples = [];
   window.requestAnimationFrame = function (cb) {
-    if (cb.name !== 'tick') return native(cb);
+    if (!gameTick && cb.name === 'tick') gameTick = cb;
+    if (cb !== gameTick) return native(cb);
     if (held) {
       next = cb;
       return 0;
