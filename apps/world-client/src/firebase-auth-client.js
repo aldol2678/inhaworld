@@ -1,3 +1,4 @@
+import { guestBridgeProof } from './guest-bridge-proof.js';
 // INHA WORLD — Firebase Auth client (DRAFT, portal integration patch).
 // Talks to the Tier 4 Firebase Worker endpoints only; the Firebase JS SDK
 // itself (signInWithEmailAndPassword / signInWithPopup / signInAnonymously)
@@ -85,9 +86,15 @@ export function createFirebaseAuthClient(options = {}) {
     const guest = guestSessionId !== undefined
       ? guestSessionId
       : (getProfileUserId() ?? getGuestSessionId());
+    // Never pass a bare profile UUID as proof. Only attempt to bridge a
+    // cached guest profile when a corresponding server-issued session
+    // credential is available. The Worker and Neon verify the owner.
+    const proof = guestBridgeProof(storage, guest);
     const body = { idToken };
-    if (guest) body.guestSessionId = guest;
-    const data = await call('/api/auth/firebase/login', { method: 'POST', body });
+    if (guest && proof) body.guestSessionId = guest;
+    const data = await call('/api/auth/firebase/login', {
+      method: 'POST', sessionId: guest && proof ? proof : null, body,
+    });
     if (typeof data?.deviceSessionId === 'string') {
       storage.setItem(SESSION_KEY, data.deviceSessionId);
     }
