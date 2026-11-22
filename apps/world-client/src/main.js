@@ -4,6 +4,7 @@ import { createCampus } from './campus.js';
 import { pickAdapter } from './api.js';
 import { store } from './store.js';
 import { createFirebaseAuthClient } from './firebase-auth-client.js';
+import { linkNewFirebaseProfile } from './firebase-profile-link.js';
 
 import { settingsFor } from './config.js';
 
@@ -534,9 +535,26 @@ $('auth-create-profile').addEventListener('click', () => withAuthError(async () 
   });
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || ('http ' + res.status));
+  // create_my_world_profile_v1 does not bind the new profile to Firebase.
+  // An unlinked profile would disappear on the next device login, so use
+  // the verified current Firebase token and require an identity readback.
+  try {
+    const auth = await firebaseAuth();
+    await linkNewFirebaseProfile({
+      profile: data,
+      firebaseUser: auth?.currentUser,
+      authClient: tier4,
+    });
+  } catch (e) {
+    authProfileRow.style.display = 'block';
+    const code = e?.code || 'PROFILE_LINK_UNAVAILABLE';
+    statusLine.textContent = `프로필은 저장됐지만 계정 연결은 미완료입니다 (${code}). 같은 계정으로 다시 시도해 주세요.`;
+    setAuthStatus('프로필 계정 연결 대기 중');
+    return;
+  }
   authProfileRow.style.display = 'none';
-  statusLine.textContent = `프로필 생성됨: ${nickname}`;
-  setAuthStatus(`로그인됨: ${nickname}`);
+  statusLine.textContent = `프로필 저장·계정 연결 완료: ${data.nickname || nickname}`;
+  setAuthStatus(`로그인됨: ${data.nickname || nickname}`);
 }, '프로필 만들기'));
 
 // ---- Movement loop ----
