@@ -7,6 +7,6 @@
   },
   "scripts": {
     "build": "node tools/build-pages.mjs",
-    "test": "node --test tests/guestbook-session.mjs tests/public-settings.mjs tests/guest-bridge-client.test.mjs && node tests/spatial.mjs"
+    "test": "node --test tests/guestbook-session.mjs tests/public-settings.mjs tests/guest-bridge-client.test.mjs tests/auth-account-switch.test.mjs && node tests/spatial.mjs"
   }
 }
