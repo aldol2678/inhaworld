@@ -76,9 +76,18 @@ export function createFirebaseAuthClient(options = {}) {
     if (id) storage.setItem(GUEST_SESSION_KEY, id);
     else storage.removeItem(GUEST_SESSION_KEY);
   }
+  function clearLocalAuth() {
+    // Account switching and expired sessions must not preserve an
+    // unrelated profile/guest bearer for a later Firebase identity.
+    for (const key of [SESSION_KEY, PROFILE_USER_KEY, GUEST_SESSION_KEY]) {
+      storage.removeItem(key);
+    }
+  }
 
   // POST /api/auth/firebase/login {idToken, guestSessionId?}
-  // Stores the device session id + profile user id on success.
+  // Automatic guest bridging is best-effort: if a previously cached
+  // proof is stale, sign in normally without linking another profile.
+  // Explicit guestSessionId remains fail-closed (no silent retry).
   async function login(idToken, { guestSessionId = undefined } = {}) {
     if (typeof idToken !== 'string' || idToken === '') {
       throw new FirebaseAuthError('FIREBASE_TOKEN_MISSING', 400);
@@ -86,21 +95,38 @@ export function createFirebaseAuthClient(options = {}) {
     const guest = guestSessionId !== undefined
       ? guestSessionId
       : (getProfileUserId() ?? getGuestSessionId());
-    // Never pass a bare profile UUID as proof. Only attempt to bridge a
-    // cached guest profile when a corresponding server-issued session
-    // credential is available. The Worker and Neon verify the owner.
     const proof = guestBridgeProof(storage, guest);
-    const body = { idToken };
-    if (guest && proof) body.guestSessionId = guest;
-    const data = await call('/api/auth/firebase/login', {
-      method: 'POST', sessionId: guest && proof ? proof : null, body,
-    });
+    let data;
+    if (guest && proof) {
+      try {
+        data = await call('/api/auth/firebase/login', {
+          method: 'POST', sessionId: proof,
+          body: { idToken, guestSessionId: guest },
+        });
+      } catch (error) {
+        // The browser's local IDs are untrusted; do not make an otherwise
+        // valid new login fail because a former account's proof expired.
+        if (guestSessionId !== undefined || error?.status !== 403 ||
+            error?.code !== 'GUEST_SESSION_PROOF_INVALID') throw error;
+        clearLocalAuth();
+        data = await call('/api/auth/firebase/login', {
+          method: 'POST', body: { idToken },
+        });
+      }
+    } else {
+      data = await call('/api/auth/firebase/login', {
+        method: 'POST', body: { idToken },
+      });
+    }
     if (typeof data?.deviceSessionId === 'string') {
       storage.setItem(SESSION_KEY, data.deviceSessionId);
     }
     if (typeof data?.userId === 'string') {
       storage.setItem(PROFILE_USER_KEY, data.userId);
+    } else {
+      storage.removeItem(PROFILE_USER_KEY);
     }
+    storage.removeItem(GUEST_SESSION_KEY);
     return data;
   }
 
@@ -118,7 +144,10 @@ export function createFirebaseAuthClient(options = {}) {
     });
     if (typeof data?.userId === 'string') {
       storage.setItem(PROFILE_USER_KEY, data.userId);
+    } else {
+      storage.removeItem(PROFILE_USER_KEY);
     }
+    storage.removeItem(GUEST_SESSION_KEY);
     return data;
   }
 
@@ -138,11 +167,14 @@ export function createFirebaseAuthClient(options = {}) {
   // device session id; the server deletes only the device row.
   async function logout() {
     const sessionId = getSessionId();
-    if (!sessionId) return { ok: true };
+    if (!sessionId) {
+      clearLocalAuth();
+      return { ok: true };
+    }
     const data = await call('/api/auth/firebase/logout', {
       method: 'POST', sessionId, body: {},
     });
-    storage.removeItem(SESSION_KEY);
+    clearLocalAuth();
     return data;
   }
 
@@ -154,6 +186,6 @@ export function createFirebaseAuthClient(options = {}) {
   return {
     login, link, me, logout, config,
     getSessionId, getProfileUserId, getGuestSessionId, setGuestSessionId,
-    SESSION_KEY, PROFILE_USER_KEY, GUEST_SESSION_KEY,
+    clearLocalAuth, SESSION_KEY, PROFILE_USER_KEY, GUEST_SESSION_KEY,
   };
 }
