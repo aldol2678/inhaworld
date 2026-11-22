@@ -36,6 +36,10 @@ Python 3, pytest, Python Playwright와 Chromium이 설치된 환경에서 `pytho
 
 `snapshot.sha256`는 11월 21일 운영 정적 파일 10개의 역사적 지문이다. 당시 조립에 쓰인 소스와 `scripts/build-pages.sh`는 미확보다. 원래 스냅샷은 이전 저장소의 복원 커밋에서 확인할 수 있다. [복원 커밋](https://github.com/aldol2678/inhagame/commit/a0d361c)
 
+## 아고라·인경호 탐험
+
+정문에서 기존 길 658과 696을 따라 아고라 남쪽으로 접근할 수 있다. 인경호 동쪽 서비스도로와 여기서 갈라지는 짧은 보도도 걸어서 왕복할 수 있다. 광장과 호수 외곽은 WGS84 데이터에서 생성하며, 인경호 수변의 돌·나무·벤치와 광장 포장의 치수는 게임 표현값이다. [공간 근거와 로컬 화면 비교](qa/p1a/README.md)
+
 ## 공간과 서비스 ID
 
 | v0.1 서비스 ID | 지리 ID | 외부 방문 중심 (x, z) | 기준 |
@@ -49,7 +53,7 @@ Python 3, pytest, Python Playwright와 Chromium이 설치된 환경에서 `pytho
 | 파일 | 담당 |
 |---|---|
 | `tools/spatial-source.mjs` | 모아 포트·Reality Base의 공간 ID/좌표 입력 선택. 이관한 지리 JSON은 map-sources/data/reality에 보관 |
-| `tools/build-layout.mjs`, `mesh-batch.mjs` | 원본 다각형 삼각분할, 4개 지형 절개, 8개 경로, 도로·정문 구조물·본관·정석 파사드 생성 루틴을 정점·색상 배치로 변환 |
+| `tools/build-layout.mjs`, `mesh-batch.mjs` | 원본 다각형 삼각분할, 수면·함몰부 절개, 기존 8개 경로와 P1A 접근로 2개, 도로·정문 구조물·본관·정석 파사드 생성 루틴을 정점·색상 배치로 변환 |
 | `data/layout.json`, `layout.bin` | 지형·도로·입구·충돌·수목 메타데이터와 렌더링 버퍼. 엔진 독립적인 생성 입력에서 재생성 가능 |
 | `src/map/polygon-collision.js`, `spatial.js` | 원본 모서리·꼭짓점 연속 충돌과 미끄러짐, 경사·단 높이, 도착 가능 여부 |
 | `src/campus.js` | Three.js 버텍스 컬러 배치, 본관·정석 상세 거리 제한, 수목 인스턴싱 |

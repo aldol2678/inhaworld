@@ -1,0 +1,52 @@
+photoId,pdfPage,sourceFilename,ledgerCaption,correctedSubject,spatialId,GIS or source,comparisonCamera,evidenceFile,implementation,observation and limit,fieldView
+P01,7,1000013472.heic,본관 정면과 계단,,bldg_01,OSM way 217958071,hall,screens/hall.png,P0 비교,기둥과 가로 창띠가 보임. 사진의 깊은 현관과 계단의 축척은 판정 보류.,유사 시점
+P02,10,1000013487.heic,본관 정면의 기둥과 출입구,,bldg_01,OSM way 217958071,hall,screens/hall.png,P0 비교,기둥과 가로 창띠가 보임. 사진의 깊은 현관과 계단의 축척은 판정 보류.,유사 시점
+P03,10,1000013488.heic,본관 앞 계단 정면,,bldg_01,OSM way 217958071,hall,screens/hall.png,P0 비교,기둥과 가로 창띠가 보임. 사진의 깊은 현관과 계단의 축척은 판정 보류.,유사 시점
+P04,11,1000013489.heic,본관 앞 계단 사선,,bldg_01,OSM way 217958071,hall,screens/hall.png,P0 비교,기둥과 가로 창띠가 보임. 사진의 깊은 현관과 계단의 축척은 판정 보류.,유사 시점
+P05,3,1000013456.heic,본관 주변 건물과 잔디 조경,,bldg_01 / central lawns,campus-site lawn polygons,hall,screens/hall.png,P0 비교,본관 앞 포장과 열식 수목의 원근 비교. 수관 위치와 세부 식재는 게임 표현.,유사 시점
+P06,3,1000013457.heic,주변 건물과 조경의 사선 전경,,bldg_01 / central lawns,campus-site lawn polygons,hall,screens/hall.png,P0 비교,본관 앞 포장과 열식 수목의 원근 비교. 수관 위치와 세부 식재는 게임 표현.,유사 시점
+P07,4,1000013462.heic,중앙 잔디밭과 포장 경계,,bldg_01 / central lawns,campus-site lawn polygons,hall,screens/hall.png,P0 비교,본관 앞 포장과 열식 수목의 원근 비교. 수관 위치와 세부 식재는 게임 표현.,유사 시점
+P08,4,1000013467.heic,정석 앞에서 바라본 본관,,bldg_01 / central lawns,campus-site lawn polygons,hall,screens/hall.png,P0 비교,본관 앞 포장과 열식 수목의 원근 비교. 수관 위치와 세부 식재는 게임 표현.,유사 시점
+P09,5,1000013468.heic,본관과 주차 공간의 관계,,bldg_01 / site_481241692,OSM way 481241692,hall,screens/hall.png,P0 비교,전면 횡단 도로와 본관의 상대 관계 비교. 주차·가로등 배치 실측은 보류.,유사 시점
+P10,5,1000013469.heic,본관 앞 도로와 수로,,bldg_01 / site_481241692,OSM way 481241692,hall,screens/hall.png,P0 비교,전면 횡단 도로와 본관의 상대 관계 비교. 주차·가로등 배치 실측은 보류.,유사 시점
+P11,6,1000013471.heic,중앙 도로와 가로등,,bldg_01 / site_481241692,OSM way 481241692,hall,screens/hall.png,P0 비교,전면 횡단 도로와 본관의 상대 관계 비교. 주차·가로등 배치 실측은 보류.,유사 시점
+P12,6,1000013470.heic,수로와 중앙 잔디 조경,,site_218220690,OSM way 218220690,canal,screens/canal.png,P0 비교,직선 수면·잔디·양측 동선의 축을 비교. 인경호 수변에 전용하지 않음.,유사 시점
+P13,7,1000013477.heic,중앙 수로의 축선과 주변 건물,,site_218220690,OSM way 218220690,canal,screens/canal.png,P0 비교,직선 수면·잔디·양측 동선의 축을 비교. 인경호 수변에 전용하지 않음.,유사 시점
+P14,8,1000013465.heic,정석학술정보관 중앙 곡면부,,bldg_jungseok,OSM way 217958067,library,screens/library.png,P0 비교,유리 중앙부와 출입 계단의 실루엣 비교. 곡률과 단수 실측은 보류.,유사 시점
+P15,8,1000013466(1).heic,정석학술정보관 정면과 출입 계단,,bldg_jungseok,OSM way 217958067,library,screens/library.png,P0 비교,유리 중앙부와 출입 계단의 실루엣 비교. 곡률과 단수 실측은 보류.,유사 시점
+P16,9,1000013473.heic,50계단 보수 기념 명판,,bldg_01 vicinity,plaque position unknown,null,null,HOLD,명판의 개보수 문구로 실제 단수 판정 불가.,HOLD
+P17,12,1000013458.heic,로켓 모형과 원형 받침,,unknown,rocket placement unverified,null,null,HOLD,P1A 밖. 설치점 HOLD.,HOLD
+P18,13,1000013459.heic,ITA-7CR형 로켓 모형 안내판,,unknown,rocket placement unverified,null,null,HOLD,P1A 밖. 설치점 HOLD.,HOLD
+P19,14,1000013461.heic,로켓 모형의 측면과 주변 조경,,unknown,rocket placement unverified,null,null,HOLD,P1A 밖. 설치점 HOLD.,HOLD
+P20,15,1000013463.heic,개교 50주년 타임캡슐 표지석,,unknown,time capsule placement unverified,null,null,HOLD,P1A 밖. 표지석 위치 HOLD.,HOLD
+P21,16,1000013464.heic,타임캡슐 표지석의 주변 위치,,unknown,time capsule placement unverified,null,null,HOLD,P1A 밖. 표지석 위치 HOLD.,HOLD
+P22,17,1000013474.heic,최초 6개 학과 조형물의 설치 위치,,unknown,sculpture wall unverified,null,null,HOLD,P1A 밖. 설치 벽 좌표 HOLD.,HOLD
+P23,18,1000013475.heic,최초 6개 학과 조형물 안내판,,unknown,sculpture wall unverified,null,null,HOLD,P1A 밖. 설치 벽 좌표 HOLD.,HOLD
+P24,19,1000013476.heic,벽면 조형물과 표지판,,unknown,sculpture placement unverified,null,null,HOLD,P1A 밖. 작품 위치 HOLD.,HOLD
+P25,19,1000013478.heic,정석 외벽과 조형물 주변,,unknown,sculpture placement unverified,null,null,HOLD,P1A 밖. 작품 위치 HOLD.,HOLD
+P26,20,1000013479.heic,건물 옆 입체 조형물,,unknown,sculpture placement unverified,null,null,HOLD,P1A 밖. 작품 위치 HOLD.,HOLD
+P27,21,1000013480.heic,DC-3형 여객기 안내판,,unknown,DC-3 plaque only,null,null,HOLD,표지 사진. 기체 좌표 HOLD.,HOLD
+P28,22,1000013481.heic,용현정 표지,울림돌 표지,lmk_echo_stone (subject only),landmark position null,null,null,HOLD,울림돌 판독. 용현정·인경호 정자 위치 근거에서 제외.,HOLD
+P29,22,1000013482.heic,용현정 주변 나무와 돌 조경,울림돌과 비룡탑 주변,lmk_echo_stone (subject only),landmark position null,null,null,HOLD,울림돌 판독. 용현정·인경호 정자 위치 근거에서 제외.,HOLD
+P30,23,1000013483.heic,상징 비룡 안내판,,lmk_biryong_tower,landmark position null,null,null,HOLD,위치 미승인. 게임 시설 앵커를 실측값으로 사용하지 않음.,HOLD
+P31,24,1000013484.heic,비룡 상징탑과 앞마당,,lmk_biryong_tower,landmark position null,null,null,HOLD,위치 미승인. 게임 시설 앵커를 실측값으로 사용하지 않음.,HOLD
+P32,24,1000013485.heic,비룡 상징탑의 정면,,lmk_biryong_tower,landmark position null,null,null,HOLD,위치 미승인. 게임 시설 앵커를 실측값으로 사용하지 않음.,HOLD
+P33,25,1000013486.heic,정석 앞에서 내려다본 수로,,site_218220690 / bldg_jungseok,OSM ways 218220690 / 217958067,canal,screens/canal.png,P0 비교,직선 수면 가장자리와 측면 접근의 가림·원근 비교. 인경호의 경사면 근거에서 제외.,유사 시점
+P34,25,1000013490.heic,수로 가장자리의 조경,,site_218220690 / bldg_jungseok,OSM ways 218220690 / 217958067,canal,screens/canal.png,P0 비교,직선 수면 가장자리와 측면 접근의 가림·원근 비교. 인경호의 경사면 근거에서 제외.,유사 시점
+P35,26,1000013491.heic,수로와 정석학술정보관의 관계,,site_218220690 / bldg_jungseok,OSM ways 218220690 / 217958067,canal,screens/canal.png,P0 비교,직선 수면 가장자리와 측면 접근의 가림·원근 비교. 인경호의 경사면 근거에서 제외.,유사 시점
+P36,26,1000013492.heic,수로 수면과 측면 산책 공간,,site_218220690 / bldg_jungseok,OSM ways 218220690 / 217958067,canal,screens/canal.png,P0 비교,직선 수면 가장자리와 측면 접근의 가림·원근 비교. 인경호의 경사면 근거에서 제외.,유사 시점
+P37,27,1000013493.heic,석재 경사면과 정석학술정보관,,site_218220690 / bldg_jungseok,OSM ways 218220690 / 217958067,canal,screens/canal.png,P0 비교,직선 수면 가장자리와 측면 접근의 가림·원근 비교. 인경호의 경사면 근거에서 제외.,유사 시점
+P38,27,1000013494.heic,원형 조경 시설과 주변 건물,,lmk_hawaii_park (vicinity),campus-facilities / site identity only,null,null,HOLD,P1A 밖. 표지·조형 설치점 HOLD.,HOLD
+P39,28,1000013495.heic,공원 주변 건물 외관,,lmk_hawaii_park (vicinity),campus-facilities / site identity only,null,null,HOLD,P1A 밖. 표지·조형 설치점 HOLD.,HOLD
+P40,28,1000013496.heic,공원 조형물과 건물 외관,,lmk_hawaii_park (vicinity),campus-facilities / site identity only,null,null,HOLD,P1A 밖. 표지·조형 설치점 HOLD.,HOLD
+P41,29,1000013497.heic,하와이-인하 공원 표지석 근접,,lmk_hawaii_park (vicinity),campus-facilities / site identity only,null,null,HOLD,P1A 밖. 표지·조형 설치점 HOLD.,HOLD
+P42,30,1000013498.heic,하와이 독립운동 사적지 안내판,,lmk_hawaii_park (vicinity),campus-facilities / site identity only,null,null,HOLD,P1A 밖. 표지·조형 설치점 HOLD.,HOLD
+P43,31,1000013499.heic,인하의 비상 조형물 안내판,,lmk_hawaii_park (vicinity),campus-facilities / site identity only,null,null,HOLD,P1A 밖. 표지·조형 설치점 HOLD.,HOLD
+P44,32,1000013500.heic,하와이-인하 공원 표지석 전경,,lmk_hawaii_park (vicinity),campus-facilities / site identity only,null,null,HOLD,P1A 밖. 표지·조형 설치점 HOLD.,HOLD
+P45,32,1000013501.heic,공원 잔디와 건물 측면,,lmk_hawaii_park (vicinity),campus-facilities / site identity only,null,null,HOLD,P1A 밖. 표지·조형 설치점 HOLD.,HOLD
+P46,33,1000013502.heic,건물 사이 붉은 포장 보행로,,60th–5th corridor,"walkway survey, no geolocated branch",null,null,HOLD,붉은 포장·그늘의 현장 관찰. P1A 경로 연결의 근거에서 제외.,HOLD
+P47,33,1000013503.heic,보행로 반대 방향과 주변 경계,,60th–5th corridor,"walkway survey, no geolocated branch",null,null,HOLD,붉은 포장·그늘의 현장 관찰. P1A 경로 연결의 근거에서 제외.,HOLD
+P48,34,1000013504.heic,나무 그늘과 보행로의 연결,,60th–5th corridor,"walkway survey, no geolocated branch",null,null,HOLD,붉은 포장·그늘의 현장 관찰. P1A 경로 연결의 근거에서 제외.,HOLD
+null,null,null,,,lmk_agora_plaza,OSM 1099894035 v1 / inha_wifi_coverage,agora,screens/agora.png,tools/agora-inkyung.mjs,48장 중 직접 컷 없음. GIS 외곽 안 석재 포장·벤치·그늘은 표현 추정.,직접 사진 HOLD
+null,null,null,,,lmk_inkyung_pond,OSM 218264623 v7 / inha_oldenburg_campus_map,pond,screens/pond.png,tools/agora-inkyung.mjs / src/campus.js,48장 중 직접 컷 없음. 원본 수변 절차 코드의 돌·수목을 대조.,직접 사진 HOLD
+null,null,null,,,lmk_main_gate,OSM node 4741793208,gate,screens/gate.png,P0 비교,48장 중 정문 직접 컷 없음. 10월 12일 캡처는 과거 PlayCanvas.,직접 사진 HOLD
