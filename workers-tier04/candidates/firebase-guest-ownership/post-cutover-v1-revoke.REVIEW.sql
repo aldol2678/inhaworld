@@ -1,0 +1,10 @@
+-- REVIEW-ONLY, DO NOT EXECUTE AS PART OF THIS CANDIDATE.
+-- Only after every deployed Worker uses link_firebase_identity_v2,
+-- all nonproduction tests pass and a separate production rollout is authorized:
+-- REVOKE EXECUTE ON FUNCTION public.link_firebase_identity_v1(text,text,text,boolean,uuid)
+--   FROM inha_world_tier4_writes_app;
+--
+-- This is intentionally commented to prevent accidental execution.
+-- v2 is SECURITY DEFINER, so owner-owned internal v1 calls can continue
+-- after the app role loses direct v1 EXECUTE. Check role memberships
+-- and PUBLIC/anon/authenticated privileges before closing the gate.

@@ -2,9 +2,11 @@
   "name": "inhaworld-campus-client",
   "private": true,
   "type": "module",
-  "engines": {"node": ">=24"},
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "build": "node tools/build-pages.mjs",
-    "test": "node --test tests/guestbook-session.mjs tests/public-settings.mjs && node tests/spatial.mjs"
+    "test": "node --test tests/guestbook-session.mjs tests/public-settings.mjs tests/guest-bridge-client.test.mjs tests/auth-account-switch.test.mjs tests/firebase-profile-link.test.mjs && node tests/spatial.mjs"
   }
 }
