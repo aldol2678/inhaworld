@@ -2,9 +2,9 @@
 // their shoulders continue outside it, without painting across the new gate.
 import { MAIN_GATE_FORECOURT_QUADS } from './main-gate-forecourt.js';
 import { mainGateProductionPath } from './editor/main-gate-production.js';
+import { signedArea as area, subtractGround } from './ground-clipping.js';
 const EPS=1e-8;
 const cross=(a,b,p)=>(b.x-a.x)*(p.z-a.z)-(b.z-a.z)*(p.x-a.x);
-const area=ring=>ring.reduce((sum,p,i)=>{const q=ring[(i+1)%ring.length];return sum+p.x*q.z-q.x*p.z;},0)/2;
 const road=mainGateProductionPath('sosung_ro_frontage');
 const [a,b]=road.vertices,span=Math.hypot(b.x-a.x,b.z-a.z);
 const nx=-(b.z-a.z)/span*road.width/2,nz=(b.x-a.x)/span*road.width/2;
@@ -12,38 +12,7 @@ export const MAIN_GATE_GROUND_MASKS=Object.freeze([
   ...MAIN_GATE_FORECOURT_QUADS,
   [{x:a.x+nx,z:a.z+nz},{x:b.x+nx,z:b.z+nz},{x:b.x-nx,z:b.z-nz},{x:a.x-nx,z:a.z-nz}]
 ].map(r=>Object.freeze((area(r)<0?[...r].reverse():[...r]).map(p=>Object.freeze({x:p.x,z:p.z})))));
-const bounds=ring=>({minX:Math.min(...ring.map(p=>p.x)),maxX:Math.max(...ring.map(p=>p.x)),minZ:Math.min(...ring.map(p=>p.z)),maxZ:Math.max(...ring.map(p=>p.z))});
-const maskBounds=MAIN_GATE_GROUND_MASKS.map(bounds);
-const overlaps=(a,b)=>a.minX<b.maxX-EPS&&a.maxX>b.minX+EPS&&a.minZ<b.maxZ-EPS&&a.maxZ>b.minZ+EPS;
-function halfPlane(ring,a,b,inside){
-  const out=[];
-  for(let i=0;i<ring.length;i++){
-    const p=ring[i],q=ring[(i+1)%ring.length];
-    const dp=cross(a,b,p)*(inside?1:-1),dq=cross(a,b,q)*(inside?1:-1);
-    const pin=dp>=-EPS,qin=dq>=-EPS;
-    if(pin)out.push(p);
-    if(pin!==qin){const t=dp/(dp-dq);out.push({x:p.x+(q.x-p.x)*t,z:p.z+(q.z-p.z)*t});}
-  }
-  return out.filter((p,i)=>{const q=out[(i+out.length-1)%out.length];return Math.hypot(p.x-q.x,p.z-q.z)>EPS;});
-}
-export function clipLegacyGateGround(ring){
-  let pieces=[ring];
-  for(let k=0;k<MAIN_GATE_GROUND_MASKS.length;k++){
-    const mask=MAIN_GATE_GROUND_MASKS[k],next=[];
-    for(const piece of pieces){
-      if(!overlaps(bounds(piece),maskBounds[k])){next.push(piece);continue;}
-      let remainder=piece;
-      for(let i=0;i<mask.length&&remainder.length>=3;i++){
-        const a=mask[i],b=mask[(i+1)%mask.length];
-        const outside=halfPlane(remainder,a,b,false);
-        if(outside.length>=3&&Math.abs(area(outside))>EPS)next.push(outside);
-        remainder=halfPlane(remainder,a,b,true);
-      }
-    }
-    pieces=next;
-  }
-  return pieces;
-}
+export const clipLegacyGateGround = subtractGround(MAIN_GATE_GROUND_MASKS);
 // Convex input quads stay convex after half-plane clipping. Emit a triangle
 // fan as nondegenerate four-vertex faces for the existing batch API.
 export function fillLegacyGateGround(batch,color,ring,y){

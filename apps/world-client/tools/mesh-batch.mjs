@@ -14,7 +14,10 @@ const cylinders = new Map();
 export class MeshBatch {
   vertices = [];
   triangle(color, a, b, c) {
-    this.vertices.push([a, color], [b, color], [c, color]);
+    this.coloredTriangle([a, color], [b, color], [c, color]);
+  }
+  coloredTriangle(a, b, c) {
+    this.vertices.push(a, b, c);
   }
   quad(color, a, b, c, d) {
     this.triangle(color, a, b, c);

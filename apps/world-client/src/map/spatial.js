@@ -1,5 +1,7 @@
 import { moveAroundPolygons, polygonOverlap } from './polygon-collision.js';
 
+export const CAMPUS_GRADE = 0;
+
 function polygonBounds(ring) {
   const xs = ring.map((p) => p.x),
     zs = ring.map((p) => p.z);
@@ -32,7 +34,7 @@ export function createSpatial(layout) {
       const y = triangleHeight(x, z, a, b1, c) ?? triangleHeight(x, z, a, c, d);
       if (y !== null) return y;
     }
-    return 0;
+    return CAMPUS_GRADE;
   }
   function nearby(x, z, nx, nz) {
     const r = shape.radius,

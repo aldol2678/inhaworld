@@ -39,6 +39,9 @@
         clock += seconds * 1000;
         cb(clock);
       }
+      // One synchronous replay can enqueue a long walk on a software GPU.
+      // Finish its real draws before the next pointer-lock or screenshot action.
+      document.querySelector('#scene').getContext('webgl2').finish();
     },
     times() {
       return [...samples];
