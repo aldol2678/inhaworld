@@ -424,7 +424,7 @@ async function refreshAuthState() {
       authProfileRow.style.display = 'none';
       return;
     }
-    window.localStorage.removeItem(tier4.SESSION_KEY);
+    tier4.clearLocalAuth();
     setAuthStatus('이전 로그인 세션이 만료되었습니다. 다시 로그인해 주세요.');
     authProfileRow.style.display = 'none';
   }
@@ -503,7 +503,7 @@ $('auth-anon').addEventListener('click', () => withAuthError(async () => {
 $('auth-logout').addEventListener('click', () => withAuthError(async () => {
   try { await tier4.logout(); } catch (error) {
     if (error.status !== 401) throw error;
-    window.localStorage.removeItem(tier4.SESSION_KEY);
+    tier4.clearLocalAuth();
   }
   authProfileRow.style.display = 'none';
   try {
