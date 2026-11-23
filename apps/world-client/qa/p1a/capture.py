@@ -4,6 +4,7 @@ import argparse
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
+import math
 import os
 from pathlib import Path
 from threading import Thread
@@ -19,13 +20,21 @@ VIEWS = {
     "agora": (121.8, -10.4, 131, -2),
     "pond": (125.6, 5.05, 121.5, 18.5),
 }
+# Optional comparison views. The last two values specify an elevated QA camera
+# only. The game uses its ordinary eye height for all four-coordinate poses.
+FIELD_VIEWS = {
+    "west-bank": (109, 22, 151, 13),
+    "lake-oblique": (103, -16, 133, 30, 26, -0.40),
+    "lake-plan": (122.56, 19.25, 131.58, 14.95, 34, -math.pi / 2),
+}
 PROBE = """
-globalThis.captureMapView = ([x, z, targetX, targetZ]) => {
-    if (!campus.canStand(x, z)) throw Error('Occupied camera at ' + [x, z]);
+globalThis.captureMapView = ([x, z, targetX, targetZ, height, pitch]) => {
+    if (height === undefined && !campus.canStand(x, z)) throw Error('Occupied camera at ' + [x, z]);
     player.x = x;
     player.z = z;
     player.yaw = Math.atan2(x - targetX, z - targetZ);
     updateCamera();
+    if (height !== undefined) { camera.position.y = height; camera.rotation.x = pitch; }
     campus.updateVisibility(x, z);
     renderer.render(scene, camera);
     return {
@@ -44,6 +53,17 @@ globalThis.captureMapView = ([x, z, targetX, targetZ]) => {
         contextLost: renderer.getContext().isContextLost()
     };
 };
+globalThis.sampleMapRender = count => {
+    const gl = renderer.getContext(), pixel = new Uint8Array(4);
+    const times = [];
+    for (let i = 0; i < count + 12; i++) {
+        const start = performance.now();
+        renderer.render(scene, camera);
+        gl.readPixels(canvas.width >> 1, canvas.height >> 1, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+        if (i >= 12) times.push(performance.now() - start);
+    }
+    return times;
+};
 """
 
 
@@ -58,7 +78,10 @@ def main():
     p.add_argument("out", type=Path)
     p.add_argument("--width", type=int, default=1280)
     p.add_argument("--height", type=int, default=720)
+    p.add_argument("--field-study", action="store_true", help="include west bank and overhead lake cameras")
+    p.add_argument("--timing", action="store_true", help="time 60 synchronized pond renders after warm-up")
     args = p.parse_args()
+    views = VIEWS | FIELD_VIEWS if args.field_study else VIEWS
     args.out.mkdir(exist_ok=True, parents=True)
     with ThreadingHTTPServer(
         ("127.0.0.1", 0), partial(QuietHandler, directory=str(args.dist))
@@ -78,15 +101,28 @@ def main():
                 device_scale_factor=1,
             )
             page = ctx.new_page()
+            page.add_init_script(path=Path(__file__).resolve().parents[2] / "tests/world-driver.js")
             # Count actual WebGL buffer objects on this disposable QA document.
             page.add_init_script("""(() => {
-              const counts = globalThis.qaBufferCounts = {created: 0, deleted: 0};
+              const counts = globalThis.qaBufferCounts = {created: 0, deleted: 0, bytes: 0};
+              const sizes = new Map();
               const gl = WebGL2RenderingContext.prototype;
+              const allocate = gl.bufferData;
+              gl.bufferData = function (target, data, ...args) {
+                const result = allocate.call(this, target, data, ...args);
+                const binding = target === this.ARRAY_BUFFER ? this.ARRAY_BUFFER_BINDING : this.ELEMENT_ARRAY_BUFFER_BINDING;
+                const buffer = this.getParameter(binding);
+                const bytes = this.getBufferParameter(target, this.BUFFER_SIZE);
+                counts.bytes += bytes - (sizes.get(buffer) || 0);
+                sizes.set(buffer, bytes);
+                return result;
+              };
               for (const [key, operation] of [['created','createBuffer'],['deleted','deleteBuffer']]) {
                 const original = gl[operation];
                 gl[operation] = function (...args) {
                   const value = original.apply(this, args);
                   if (key === 'created' ? value : args[0]) counts[key]++;
+                  if (key === 'deleted') { counts.bytes -= sizes.get(args[0]) || 0; sizes.delete(args[0]); }
                   return value;
                 };
               }
@@ -111,8 +147,13 @@ def main():
             page.wait_for_function(
                 "typeof captureMapView === 'function' && document.querySelector('#room-list').children.length === 3"
             )
+            def hold_game():
+                page.evaluate("worldTest.hold()")
+                page.wait_for_function("worldTest.ready()", polling=20)
+
+            hold_game()
             captures = {}
-            for name, pose in VIEWS.items():
+            for name, pose in views.items():
                 captures[name] = page.evaluate("pose => captureMapView(pose)", pose)
                 page.locator("#scene").screenshot(path=args.out / f"{name}.png")
             warm = page.evaluate("pose => captureMapView(pose)", VIEWS["gate"])
@@ -128,14 +169,24 @@ def main():
             assert not errors, errors
             page.reload()
             page.wait_for_function("typeof captureMapView === 'function'")
-            for pose in VIEWS.values():
+            hold_game()
+            for pose in views.values():
                 page.evaluate("pose => captureMapView(pose)", pose)
             restored = page.evaluate("pose => captureMapView(pose)", VIEWS["gate"])
             assert all(
                 restored[k] == repeat[k]
                 for k in ["geometries", "textures", "glBuffers", "calls", "triangles"]
             )
+            cdp = ctx.new_cdp_session(page)
+            cdp.send("HeapProfiler.collectGarbage")
+            heap = cdp.send("Runtime.getHeapUsage")
+            samples = []
+            if args.timing:
+                page.evaluate("pose => captureMapView(pose)", views["pond"])
+                samples = page.evaluate("sampleMapRender(60)")
             report = dict(
+                heapAfterReloadBytes=heap,
+                pondRenderReadbackMs=samples,
                 chromium=browser.version,
                 viewport=[args.width, args.height],
                 touch=touch,

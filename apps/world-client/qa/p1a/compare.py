@@ -49,7 +49,9 @@ def compare(dirs, screen_dir, suffix, labels):
         diff = ImageChops.difference(*images)
         r, g, b = diff.split()
         max_channel = ImageChops.lighter(ImageChops.lighter(r, g), b)
-        row["changedPixels"] = sum(max_channel.histogram()[1:])
+        histogram = max_channel.histogram()
+        row["changedPixels"] = sum(histogram[1:])
+        row["changedPixelsOver8"] = sum(histogram[9:])
         row["changedBoundsXYXY"] = diff.getbbox()
         row["maxChannelDelta"] = max_channel.getextrema()[1]
         save_pair(images, [f"{label}    {name}" for label in labels], screen_dir / f"{name}{suffix}.png")

@@ -2,6 +2,8 @@
 
 정적 Pages 앱의 루트는 `apps/world-client/`다. 게임의 표시·입력·저장 계약은 기존 Draft PR #452에서 가져왔다. 맵을 생성하는 Node 코드와 데이터는 `map-sources/`에 있고, 브라우저는 생성한 레이아웃과 Three.js만 읽는다. [원본 PR](https://github.com/aldol2678/inhagame/pull/452) · [원본 커밋](https://github.com/aldol2678/inhagame/commit/aeb5d1d7ff17082e1a7a2a876f1a36fd0bf2b320)
 
+인경호 학생회관·2호관 남관, 호안 수목과 동측 보행로의 후속 고증 결과에는 두 빌드의 동일 카메라 화면과 로컬 입력 검증이 담겨 있다. [현장사진 대조와 플레이 QA](qa/p1a/field-study/README.md)
+
 ## 로컬 실행과 검증
 
 Node 24에서 다음 명령을 실행한다. Three.js와 MIT 라이선스가 저장소에 포함되어 있다.
