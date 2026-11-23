@@ -1,0 +1,45 @@
+{
+  "verifiedUTC": "2026-11-23",
+  "issue": 13,
+  "basePR": {
+    "number": 12,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "c4f3d938949b29acd178366592ccbf9330e0502b",
+    "branch": "codex/world-map-p1bc-canal-quality",
+    "base": "codex/world-map-p1a-agora-inkyung"
+  },
+  "parentPR": {
+    "number": 10,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head": "b8356ed67cdac11499ecb1059baf6379d9fca658",
+    "base": "codex/inha-world-client-migration-p0"
+  },
+  "legacyCommit": "0b72d2593ecd3e9bb6293724771cdfb978e74ccf",
+  "drive": [
+    {
+      "id": "1BUc_dwW6ugZ_4sZHQUqLIuPO3mEl0E8A",
+      "title": "inha-campus-photos-2026.pdf",
+      "modified": "2026-11-22T01:23:08.826Z"
+    },
+    {
+      "id": "1Hgj_Qiyr_-EWfW6DxZ2wTU5OaB9ELGQI",
+      "title": "INHA_WORLD_현장사진_68장_분류표_2026-11-22.xlsx",
+      "modified": "2026-11-22T15:01:53.222Z"
+    },
+    {
+      "id": "1rLeZsskkzRVrQzebvnxYap7MxvLynt3I",
+      "title": "INHA_WORLD_P0_현장사진_게임맵_대조_2026-11-23.md",
+      "modified": "2026-11-23T01:49:49.753Z"
+    }
+  ],
+  "pdf": {
+    "bytes": 31473704,
+    "pages": 76,
+    "numberedPhotographs": 68,
+    "sha256": "a9c7557d8779529caf6b9aac15bf0df919d4a7106e2ec99706666c88fa88c326"
+  }
+}

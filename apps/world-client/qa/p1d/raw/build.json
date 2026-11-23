@@ -1,0 +1,161 @@
+{
+  "sourceCommit": "e004560ff03cb204433931730d6b346a8ce31595",
+  "baseCommit": "c4f3d938949b29acd178366592ccbf9330e0502b",
+  "before": {
+    "data/layout.bin": {
+      "bytes": 1225152,
+      "sha256": "552db9bd248f238b7a66d2e5254b177bfddacca06eeff6704f0592fea8e2e7ba"
+    },
+    "data/layout.json": {
+      "bytes": 132361,
+      "sha256": "46aef87a7b76656b9a001fd6647cd75bd81257228b0b6c33f63ebedf0ca19f32"
+    },
+    "data/quests.json": {
+      "bytes": 673,
+      "sha256": "80292111b02a5c8c0c583c4e1d6545d3dd5effb96c1e9d386203363f8621c84b"
+    },
+    "data/rooms.json": {
+      "bytes": 815,
+      "sha256": "703722708eb53acda33298fa533780ef26ddf7ec7ececee2355fe8b477a039ec"
+    },
+    "index.html": {
+      "bytes": 6653,
+      "sha256": "1305b0f5cdcd27d50ef9bc68da9b61959642f24b6e905d5adc2652937801028d"
+    },
+    "public-config.js": {
+      "bytes": 70,
+      "sha256": "2a1c19a2a9778ecc122ef0d1cdfec786e8a7ca3623fb7ef6f02614d287eec628"
+    },
+    "src/api.js": {
+      "bytes": 7978,
+      "sha256": "bfe4eb1fafc48d254cca42ea597f18169de6a38cfed6ea52cd0d441a7f334ba1"
+    },
+    "src/campus.js": {
+      "bytes": 11187,
+      "sha256": "65595e3a4728702a2faf56b35ff8621a26182077b66217dcaf670123708df699"
+    },
+    "src/canal-water.js": {
+      "bytes": 2674,
+      "sha256": "85a94e8a386ea8f14abc4ada87752d5eb9f77120e2c97247067dbd3251eace9d"
+    },
+    "src/config.js": {
+      "bytes": 315,
+      "sha256": "1c16dc172ee8322fe6cc17ae791b6dfbc554705b6027f43488b015ecaf581bb8"
+    },
+    "src/firebase-auth-client.js": {
+      "bytes": 6236,
+      "sha256": "998db115d8581d767c65c571c14c532984e65204ec5a0880b706fd3d59126e27"
+    },
+    "src/graphics-quality.js": {
+      "bytes": 3926,
+      "sha256": "01fda8d592fd2b9028ba5907f1aa1196c27fab626015c3aacd4b22bfb1a00aa2"
+    },
+    "src/main.js": {
+      "bytes": 25317,
+      "sha256": "3847168854c09a154d360b44cf3656efd3afaa03ee3c2cd7ea96ca600224a79c"
+    },
+    "src/map/polygon-collision.js": {
+      "bytes": 3144,
+      "sha256": "2f844663afb6dcae6045dc704d12700cbc2a0ed540f6c8f7b324418fb0affcb4"
+    },
+    "src/map/spatial.js": {
+      "bytes": 2826,
+      "sha256": "9f4ae7c1c83a5d6534d2ba4776ba6910184e98a71783571ac25c89517f179525"
+    },
+    "src/store.js": {
+      "bytes": 1444,
+      "sha256": "d28625e43b0cd848c8685509980e78b8910c3525290e898d44357274207f6764"
+    },
+    "vendor/LICENSE": {
+      "bytes": 1081,
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    "vendor/three.core.js": {
+      "bytes": 1474799,
+      "sha256": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578"
+    },
+    "vendor/three.module.js": {
+      "bytes": 658900,
+      "sha256": "104f56145899722094556490d787aae0617cc2fc3382f31df02d724ea1aee341"
+    }
+  },
+  "after": {
+    "data/layout.bin": {
+      "bytes": 1235376,
+      "sha256": "9ef23024bffd286e5450462b1c38fac8b8e028c1d55314c075ec19897770f2d3"
+    },
+    "data/layout.json": {
+      "bytes": 132489,
+      "sha256": "8ffaff295829ffeefaf643fa250829233ba93648949ee3be9005c040b97d6a5e"
+    },
+    "data/quests.json": {
+      "bytes": 673,
+      "sha256": "80292111b02a5c8c0c583c4e1d6545d3dd5effb96c1e9d386203363f8621c84b"
+    },
+    "data/rooms.json": {
+      "bytes": 815,
+      "sha256": "703722708eb53acda33298fa533780ef26ddf7ec7ececee2355fe8b477a039ec"
+    },
+    "index.html": {
+      "bytes": 6653,
+      "sha256": "1305b0f5cdcd27d50ef9bc68da9b61959642f24b6e905d5adc2652937801028d"
+    },
+    "public-config.js": {
+      "bytes": 70,
+      "sha256": "2a1c19a2a9778ecc122ef0d1cdfec786e8a7ca3623fb7ef6f02614d287eec628"
+    },
+    "src/api.js": {
+      "bytes": 7978,
+      "sha256": "bfe4eb1fafc48d254cca42ea597f18169de6a38cfed6ea52cd0d441a7f334ba1"
+    },
+    "src/campus.js": {
+      "bytes": 12669,
+      "sha256": "fd33ad10faae82b3acbfddf8fd83a0634834d555b6cc628f1de778d59c1719c9"
+    },
+    "src/canal-water.js": {
+      "bytes": 2674,
+      "sha256": "85a94e8a386ea8f14abc4ada87752d5eb9f77120e2c97247067dbd3251eace9d"
+    },
+    "src/config.js": {
+      "bytes": 315,
+      "sha256": "1c16dc172ee8322fe6cc17ae791b6dfbc554705b6027f43488b015ecaf581bb8"
+    },
+    "src/firebase-auth-client.js": {
+      "bytes": 6236,
+      "sha256": "998db115d8581d767c65c571c14c532984e65204ec5a0880b706fd3d59126e27"
+    },
+    "src/graphics-quality.js": {
+      "bytes": 4275,
+      "sha256": "168ca59e3455365e155a3c5686a8d2d7870d3484abdb25986388d85ffdb74b4a"
+    },
+    "src/main.js": {
+      "bytes": 26033,
+      "sha256": "2b4c8b991f1c4761eeb9ac18edd31c4918f40510b4b2a7a9a098dd7f68a4a5c5"
+    },
+    "src/map/polygon-collision.js": {
+      "bytes": 3144,
+      "sha256": "2f844663afb6dcae6045dc704d12700cbc2a0ed540f6c8f7b324418fb0affcb4"
+    },
+    "src/map/spatial.js": {
+      "bytes": 2826,
+      "sha256": "9f4ae7c1c83a5d6534d2ba4776ba6910184e98a71783571ac25c89517f179525"
+    },
+    "src/store.js": {
+      "bytes": 1444,
+      "sha256": "d28625e43b0cd848c8685509980e78b8910c3525290e898d44357274207f6764"
+    },
+    "vendor/LICENSE": {
+      "bytes": 1081,
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    "vendor/three.core.js": {
+      "bytes": 1474799,
+      "sha256": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578"
+    },
+    "vendor/three.module.js": {
+      "bytes": 658900,
+      "sha256": "104f56145899722094556490d787aae0617cc2fc3382f31df02d724ea1aee341"
+    }
+  },
+  "cleanArchiveBuildIdentical": true
+}

@@ -1,0 +1,32 @@
+
+> test
+> node --test tests/guestbook-session.mjs tests/public-settings.mjs tests/p1a-spatial.mjs tests/p1bc.mjs && node tests/spatial.mjs
+
+✔ ServerAdapter attaches the writer session, including after a nickname change (27.919029ms)
+✔ FutureSyncAdapter attaches the writer session, including after a nickname change (1.251246ms)
+✔ source nodes connect P0, the lakeside service way and its sidewalk on walkable grade (32.732726ms)
+✔ only water occupies the source lake and a single surface owns the mapped plaza (54.057024ms)
+ℹ {"lod":"near","waterAreaWU2":707.5336189865841,"dryInsideLakeWU2":0.00016254011022809323,"plazaFloorWU2":149.76221936719202}
+ℹ {"lod":"far","waterAreaWU2":707.533688041603,"dryInsideLakeWU2":0.00007993996989341667,"plazaFloorWU2":27.459711190786038}
+✔ each shoreline edge stops a swept capsule and every seat has a solid base (2.371986ms)
+ℹ {"edgeClearanceWU":[0.6000099999999949,0.6000099999999877,0.6000100000000008,0.6000099999999987,0.6000099999999957,0.600010000000001,0.6000100000000024,0.6000100000000002,0.6000100000000017,0.6000099999999955,0.6000100000000017,0.600009999999997,0.6000099999999956]}
+✔ the two lake-facing shells use the ledger roofs and keep the east footway entrance open (2.628513ms)
+✔ P1A collision, routes, stairs and trees match the parent commit; new solids use source footprints (47.374309ms)
+✔ one water quad occupies the source pool, only the existing coping covers its perimeter (22.187048ms)
+ℹ {"poolAreaWU2":304.3423946042524,"dryOverWaterWU2":0}
+✔ connector dressing respects all seven Agora paving edges and the thirteen lake edges (25.965694ms)
+✔ legacy graphics preference restores and preserves other registry fields (0.837392ms)
+✔ auto needs sustained render windows, recovers and leaves manual selection in control (0.868139ms)
+✔ unconfigured build keeps optional external services disabled (1.540522ms)
+✔ an external sync gateway is bound to one explicit site origin (0.33209ms)
+✔ server credentials cannot be serialized as Firebase Web App fields (0.173421ms)
+✔ a copied Pages build ignores external services on a different origin (625.649476ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 770.073111
+{"points":174,"independentPort":false,"maxDeltaWU":0,"sweeps":77,"rooms":{"main-gate":{"spatialId":"lmk_main_gate","x":0,"z":-76,"viewYaw":3.141592653589793},"main-building":{"spatialId":"bldg_01","x":49.480531336502,"z":-4.713956611688115,"viewYaw":-2.6309469284025337},"library":{"spatialId":"bldg_jungseok","x":-19.447742592800143,"z":-3.9694703617483755,"viewYaw":2.075980010255096}},"survey":{"corridor_width_m":null,"corridor_length_m":null,"tree_spacing_m":null,"lamp_spacing_m":null,"plaza_dimensions_m":null,"branch_angles_at_south_node":null}}
