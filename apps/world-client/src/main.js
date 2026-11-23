@@ -1,5 +1,6 @@
 // INHA WORLD rebuild v0.1 — main loop, movement, HUD, rooms, guestbook, quests.
 import * as THREE from '../vendor/three.module.js';
+import { createQuality, initialTier, profiles, readQuality } from './graphics-quality.js';
 import { createCampus } from './campus.js';
 import { pickAdapter } from './api.js';
 import { store } from './store.js';
@@ -35,10 +36,13 @@ const completing = new Set();
 nicknameInput.value = store.nickname() || '';
 
 // ---- 3D setup ----
-const canvas = $('scene');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.shadowMap.enabled = false;
+const inputSurface = $('scene-input');
+let canvas = $('scene');
+const device = maxTextureSize => ({ width: innerWidth, height: innerHeight, dpr: devicePixelRatio || 1,
+  touch: matchMedia('(pointer: coarse)').matches, maxTextureSize });
+const savedQuality = readQuality(window.localStorage);
+let requestedAA = profiles[savedQuality === 'auto' ? initialTier(device(8192)) : savedQuality].antialias;
+let renderer = new THREE.WebGLRenderer({canvas, antialias: requestedAA});
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x9fc3e8);
 scene.fog = new THREE.Fog(0x9fc3e8, 85, 240);
@@ -68,14 +72,47 @@ const joy = { active: false, id: null, dx: 0, dy: 0 };
 const joyBase = $('joy-base');
 const joyKnob = $('joy-knob');
 
+const qualitySelect = $('graphics-quality');
+let profile;
 function resize() {
   const w = canvas.clientWidth || window.innerWidth;
   const h = canvas.clientHeight || 480;
-  renderer.setSize(w, h, false);
+  renderer.setDrawingBufferSize(w, h, Math.min(window.devicePixelRatio || 1, profile.pixelCap));
+
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
 }
+const quality = createQuality({
+  device: () => device(renderer.capabilities.maxTextureSize),
+  storage: window.localStorage,
+  apply(tier, preference) {
+    profile = profiles[tier];
+    qualitySelect.value = preference;
+    $('graphics-resolved').textContent = preference === 'auto' ? profile.label : '';
+    // WebGL fixes default framebuffer AA at context creation. Recreate only on
+    // a boundary crossing. The input surface, camera and simulation stay live.
+    if (requestedAA !== profile.antialias) {
+      requestedAA = profile.antialias;
+      const next = canvas.cloneNode(false);
+      let replacement;
+      try { replacement = new THREE.WebGLRenderer({canvas: next, antialias: requestedAA}); }
+      catch { /* The current context remains usable if the device cannot allocate a second one. */ }
+      if (replacement) {
+        campus.releaseGpu();
+        renderer.dispose();
+        renderer.forceContextLoss();
+        canvas.replaceWith(next);
+        canvas = next;
+        renderer = replacement;
+      }
+    }
+    campus.setProfile(profile);
+    resize();
+  },
+});
+qualitySelect.addEventListener('change', () => quality.select(qualitySelect.value));
 window.addEventListener('resize', resize);
+document.addEventListener('visibilitychange', () => quality.resume());
 
 function updateCamera() {
   camera.position.set(player.x, campus.groundHeight(player.x, player.z) + 2.2, player.z);
@@ -227,23 +264,23 @@ window.addEventListener('keydown', e => {
 });
 window.addEventListener('keyup', (e) => { keys.delete(e.key.toLowerCase()); });
 
-canvas.addEventListener('click', () => {
-  if (window.matchMedia('(pointer: fine)').matches && canvas.requestPointerLock) {
-    canvas.requestPointerLock();
+inputSurface.addEventListener('click', () => {
+  if (window.matchMedia('(pointer: fine)').matches && inputSurface.requestPointerLock) {
+    inputSurface.requestPointerLock();
   }
 });
 document.addEventListener('mousemove', (e) => {
-  if (document.pointerLockElement === canvas) {
+  if (document.pointerLockElement === inputSurface) {
     player.yaw -= e.movementX * 0.003;
   } else if (dragging && lastPointer) {
     player.yaw -= (e.clientX - lastPointer.x) * 0.005;
     lastPointer = { x: e.clientX, y: e.clientY };
   }
 });
-canvas.addEventListener('mousedown', (e) => { dragging = true; lastPointer = { x: e.clientX, y: e.clientY }; });
+inputSurface.addEventListener('mousedown', (e) => { dragging = true; lastPointer = { x: e.clientX, y: e.clientY }; });
 window.addEventListener('mouseup', () => { dragging = false; });
 
-canvas.addEventListener('touchstart', (e) => {
+inputSurface.addEventListener('touchstart', (e) => {
   for (const t of e.changedTouches) {
     const rect = canvas.getBoundingClientRect();
     if (t.clientX < rect.left + rect.width / 2 && !joy.active) {
@@ -257,7 +294,7 @@ canvas.addEventListener('touchstart', (e) => {
   }
   e.preventDefault();
 }, { passive: false });
-canvas.addEventListener('touchmove', (e) => {
+inputSurface.addEventListener('touchmove', (e) => {
   for (const t of e.changedTouches) {
     if (joy.active && t.identifier === joy.id) {
       const dx = Math.max(-50, Math.min(50, t.clientX - (parseFloat(joyBase.style.left) + 60)));
@@ -281,8 +318,8 @@ function endTouch(e) {
     if (lastPointer && t.identifier === lastPointer.id) lastPointer = null;
   }
 }
-canvas.addEventListener('touchend', endTouch);
-canvas.addEventListener('touchcancel', endTouch);
+inputSurface.addEventListener('touchend', endTouch);
+inputSurface.addEventListener('touchcancel', endTouch);
 function releaseInput() {
   keys.clear();
   dragging = false;
@@ -566,7 +603,9 @@ function tick(now) {
   updateCamera();
   refreshHud();
   campus.updateVisibility(player.x,player.z);
+  campus.updateWater(now / 1000);
   renderer.render(scene, camera);
+  if (!document.hidden) quality.frame(performance.now());
   requestAnimationFrame(tick);
 }
 

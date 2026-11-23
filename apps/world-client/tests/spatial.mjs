@@ -45,7 +45,7 @@ assert.equal(Object.keys(layout.walkwaySurvey).length, 6);
 assert(Object.values(layout.walkwaySurvey).every((v) => v === null));
 assert.deepEqual(
   layout.obstacles.filter((o) => o.id.startsWith('bldg_')).map((o) => o.id),
-  ['bldg_01', 'bldg_jungseok', 'bldg_02_south', 'bldg_07'],
+  ['bldg_01', 'bldg_jungseok', 'bldg_02_south', 'bldg_07', 'bldg_lawschool', 'bldg_06', 'bldg_hawaii'],
 );
 assert.deepEqual(layout.routes.slice(0, 8).map(r => r.id),
   sites.features.filter(f => f.kind === 'path').map(f => f.id));
@@ -54,7 +54,7 @@ for (const p of [world.spawn, ...Object.values(world.rooms)]) assert(world.canSt
 let sweeps = 0;
 for (const body of layout.obstacles.filter(
   (o) =>
-    ['bldg_01', 'bldg_jungseok', 'bldg_02_south', 'bldg_07', 'site_218220690', 'lmk_inkyung_pond'].includes(o.id) ||
+    ['bldg_01', 'bldg_jungseok', 'bldg_02_south', 'bldg_07', 'bldg_lawschool', 'bldg_06', 'bldg_hawaii', 'site_218220690', 'lmk_inkyung_pond'].includes(o.id) ||
     o.id.startsWith('tree-'),
 )) {
   let checked = false;

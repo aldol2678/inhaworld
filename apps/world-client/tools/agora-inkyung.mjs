@@ -321,6 +321,7 @@ export function agoraInkyung(port, pond) {
   );
   const clipWater = subtractGround(water);
   return {
+    plaza,
     routes,
     clipWater,
     fillTerrain(shared, near, far, mesh) {

@@ -10,6 +10,8 @@ import {
   buildCampusTerrainGeometry,
   buildCampusTerrainSidesGeometry,
 } from '../map-sources/src/campus-terrain-geometry.js';
+import { fillLawn, fillLandscape } from './canal-landscape.mjs';
+import { fillCorridorBuildings, fillCampusReturns } from './corridor-buildings.mjs';
 import { fillInkyungBuildings } from './inkyung-buildings.mjs';
 import { polygonOverlap } from '../map-sources/src/polygon-collision.js';
 import {
@@ -48,7 +50,7 @@ import {
 } from '../map-sources/src/library-route-layout.js';
 import { LIBRARY_GREENS, GARDEN_FLOOR } from '../map-sources/src/library-garden-layout.js';
 import { SPORTS_CUT_RING, SPORTS_FLOOR } from '../map-sources/src/stadium-stands-layout.js';
-import { FACILITY_BOUNDS } from '../map-sources/src/campus-facilities.js';
+import { FACILITIES, FACILITY_BOUNDS } from '../map-sources/src/campus-facilities.js';
 import { MAIN_GATE_SPAWN } from '../map-sources/src/campus-spawn.js';
 import { LIBRARY_FRONT } from '../map-sources/src/basic-campus.js';
 
@@ -56,6 +58,8 @@ const base = new MeshBatch(),
   hall = new MeshBatch(),
   library = new MeshBatch();
 const groups = { base, hall, library };
+const canalLayers = Array.from({length: 4}, () => new MeshBatch());
+const connectorLayers = Array.from({length: 4}, () => new MeshBatch());
 const bounds = { ...FACILITY_BOUNDS };
 const depressions = [
   { id: 'garden', ring: LIBRARY_GREENS[0].polygon, y: GARDEN_FLOOR },
@@ -90,14 +94,18 @@ for (const d of depressions) {
 for (const [i, feature] of water.entries()) {
   const ring = cutouts[i];
   if (feature.id === 'lmk_inkyung_pond') p1a.fillWater(near);
-  else base.polygon('#5597a3', ring, 0.025);
+  // The reflecting pool renderer uses this same obstacle ring for its single water surface.
   solid(feature.id, ring);
   if (feature.kind === 'reflecting_pool')
     for (const quad of gateCentralPoolRimFaces(ring)) base.quad('#c7c3b4', ...quad);
 }
-const routes = [];
+const routes = [], lawns = [];
 for (const f of port.SITE_FEATURES) {
-  if (f.kind === 'lawn') base.polygon('#80a46b', port.projectPolygon(f.polygon), 0.018);
+  if (f.kind === 'lawn') {
+    const ring = port.projectPolygon(f.polygon);
+    lawns.push(ring);
+    fillLawn(base, ring);
+  }
   if (f.kind !== 'path') continue;
   const line = f.line.map((ll) => port.geoToWorld(...ll)),
     width = CAMPUS_PATH_WIDTHS[f.id] ?? 3.5;
@@ -108,11 +116,12 @@ for (const f of port.SITE_FEATURES) {
     width,
     accuracy: 'source-centerline / estimated width',
   });
+  const bankPath = ['site_481241657', 'site_258995842'].includes(f.id);
   for (let i = 1; i < line.length; i++) {
     const frame = roadFrame(line[i - 1], line[i]);
     for (const [w, y, color] of [
-      [width + 2.1, 0.032, '#bbb7a9'],
-      [width, 0.04, '#8a908b'],
+      [width + 2.1, 0.032, bankPath ? '#b3ac94' : '#bbb7a9'],
+      [width, 0.04, bankPath ? '#b8b1a2' : '#8a908b'],
     ]) {
       const ring = [
         [0, -1],
@@ -282,6 +291,7 @@ for (const u of entry.ordinaryCenters) {
   );
 }
 const trees = [];
+const treeRoad = new Map();
 for (const f of routes.filter((r) =>
   ['site_481241658', 'site_481241696', 'site_481241657', 'site_258995842'].includes(r.id),
 )) {
@@ -299,11 +309,29 @@ for (const f of routes.filter((r) =>
         )
           continue;
         trees.push(p);
+        treeRoad.set(p, f.id);
       }
   }
 }
 fillInkyungBuildings(base, near, solid, port.geoToWorld(water[0].lat, water[0].lon),
   p1a.routes.find(r => r.highway === 'footway'));
+fillCorridorBuildings(base, canalLayers, connectorLayers, solid);
+fillCampusReturns(base, canalLayers, BUILDINGS);
+fillLandscape({ lawns, pool: cutouts[1], plaza: p1a.plaza, routes, trees, treeRoad, canal: canalLayers, connector: connectorLayers });
+const detailZones = {};
+for (const [name, layers, anchors] of [
+  ['canal', canalLayers, [cutouts[1][0], cutouts[1][2], FACILITIES.find(f => f.id === 'bldg_lawschool').center]],
+  ['connector', connectorLayers, [routes.find(r => r.id === 'site_481241696').line[1],
+    FACILITIES.find(f => f.id === 'bldg_06').center, FACILITIES.find(f => f.id === 'bldg_hawaii').center]],
+]) {
+  const batch = groups[name] = new MeshBatch();
+  const counts = [0];
+  for (const layer of layers) {
+    batch.vertices.push(...layer.vertices);
+    counts.push(batch.vertices.length);
+  }
+  detailZones[name] = { anchors, counts };
+}
 const p1aLod = {
   ...port.geoToWorld(water[0].lat, water[0].lon), firstTree: trees.length,
   farVertices: far.vertices.length, sharedVertices: base.vertices.length,
@@ -357,6 +385,7 @@ const metadata = {
   depressions,
   trees,
   p1aLod,
+  detailZones,
   routes,
   roadIds: CAMPUS_ROADS.map((r) => r.id),
   gateIds,

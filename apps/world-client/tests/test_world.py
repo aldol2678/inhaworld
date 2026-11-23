@@ -82,7 +82,7 @@ class Driver:
         self.right = box["x"] + box["width"] * 0.72
         if not mobile:
             # Click a visible canvas point while the test holds game frames.
-            x, y = page.locator("#scene").evaluate("""canvas => {
+            x, y = page.locator("#scene-input").evaluate("""canvas => {
               canvas.scrollIntoView({block: 'nearest'});
               const rect = canvas.getBoundingClientRect();
               const x = rect.left + 100, y = rect.top + 80;
@@ -90,7 +90,7 @@ class Driver:
               return [x, y];
             }""")
             page.mouse.click(x, y)
-            page.wait_for_function("document.pointerLockElement===document.querySelector('#scene')")
+            page.wait_for_function("document.pointerLockElement===document.querySelector('#scene-input')")
 
     def face(self, yaw):
         if self.mobile:
@@ -352,7 +352,14 @@ def test_world(origin, browser, routes, w, h):
             page.set_viewport_size(dict(width=h, height=w))
             page.evaluate("scrollTo(0,0)")
             page.wait_for_function(
-                'document.querySelector("#scene").width===document.querySelector("#scene").clientWidth'
+                '''() => {
+                  const c = document.querySelector('#scene');
+                  const option = document.querySelector('#graphics-quality');
+                  const labels = { '매우 낮음': .65, '낮음': .8, '중간': 1.25, '높음': 2, '울트라': 2 };
+                  const label = option.value === 'auto' ? document.querySelector('#graphics-resolved').textContent
+                                                      : option.selectedOptions[0].text;
+                  return c.width === Math.floor(c.clientWidth*Math.min(devicePixelRatio, labels[label]));
+                }'''
             )
             assert page.evaluate("document.documentElement.scrollWidth===innerWidth")
             report["rotatedBuffer"] = draw_stats(page)["buffer"]

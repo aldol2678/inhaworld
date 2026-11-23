@@ -1,5 +1,6 @@
 // The two shoreline backdrops have named OSM footprints in the existing facility ledger.
 // Heights/floor spacing are its public-QA blockout values. The window treatment is illustrative.
+import { fillStudentDoor, fillStudentSpandrel } from './corridor-buildings.mjs';
 import { FACILITIES } from '../map-sources/src/campus-facilities.js';
 import { edgeFrame } from '../map-sources/src/roadview-layout.js';
 
@@ -23,7 +24,7 @@ function entranceRecess(ring, sidewalk) {
   const inset = 1.10;
   const notch = [left.at(left.length - half, 0), left.at(left.length - half, -inset),
     right.at(half, -inset), right.at(half, 0)];
-  return { ground: [...ring.slice(0, i), ...notch, ...ring.slice(i + 1)], soffit: [...notch, landing] };
+  return { ground: [...ring.slice(0, i), ...notch, ...ring.slice(i + 1)], soffit: [...notch, landing], rearEdge: i + 1 };
 }
 
 export function fillInkyungBuildings(shared, near, solid, lake, sidewalk) {
@@ -33,11 +34,12 @@ export function fillInkyungBuildings(shared, near, solid, lake, sidewalk) {
     const stone = curved ? '#ded7c5' : '#cabea8';
     const storey = height / floors;
     if (curved) {
-      const { ground, soffit } = entranceRecess(ring, sidewalk);
+      const { ground, soffit, rearEdge } = entranceRecess(ring, sidewalk);
       shell(shared, stone, ground, 0, storey);
       shell(shared, stone, ring, storey, height);
       shared.polygon('#b9b4a5', soffit, storey);
       solid(id, ground, 0, height);
+      fillStudentDoor(near, edgeFrame(ground, rearEdge));
     } else {
       shell(shared, stone, ring, 0, height);
       solid(id, ring, 0, height);
@@ -49,6 +51,7 @@ export function fillInkyungBuildings(shared, near, solid, lake, sidewalk) {
     ring.forEach((p, i) => {
       const f = edgeFrame(ring, i);
       if (f.local(lake).out <= 0) return;
+      if (curved) for (let level=1; level<floors; level++) fillStudentSpandrel(near, f, level, storey);
       const bays = Math.ceil(f.length / (curved ? 4.0 : 3.3));
       const span = f.length / bays;
       for (let j = 0; j < bays; j++) {
