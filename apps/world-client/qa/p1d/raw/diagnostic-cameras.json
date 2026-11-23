@@ -1,0 +1,62 @@
+{
+  "1280x720/contact-ground": {
+    "position": [
+      133,
+      2.2,
+      -13
+    ],
+    "yaw": 0.7768384530203056,
+    "pitch": 0,
+    "fov": 70,
+    "buffer": [
+      940,
+      504
+    ],
+    "pixelRatio": 1
+  },
+  "1280x720/contact-plan": {
+    "position": [
+      128.4,
+      26,
+      -20.5
+    ],
+    "yaw": 3.141592653589793,
+    "pitch": -1.5707963267948966,
+    "fov": 70,
+    "buffer": [
+      940,
+      504
+    ],
+    "pixelRatio": 1
+  },
+  "891x411/contact-ground": {
+    "position": [
+      133,
+      2.2,
+      -13
+    ],
+    "yaw": 0.7768384530203056,
+    "pitch": 0,
+    "fov": 70,
+    "buffer": [
+      891,
+      288
+    ],
+    "pixelRatio": 1
+  },
+  "891x411/contact-plan": {
+    "position": [
+      128.4,
+      26,
+      -20.5
+    ],
+    "yaw": 3.141592653589793,
+    "pitch": -1.5707963267948966,
+    "fov": 70,
+    "buffer": [
+      891,
+      288
+    ],
+    "pixelRatio": 1
+  }
+}

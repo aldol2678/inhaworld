@@ -11,7 +11,7 @@ import {
   buildCampusTerrainSidesGeometry,
 } from '../map-sources/src/campus-terrain-geometry.js';
 import { fillLawn, fillLandscape } from './canal-landscape.mjs';
-import { fillCorridorBuildings, fillCampusReturns } from './corridor-buildings.mjs';
+import { fillCorridorBuildings, fillCampusReturns, fillDreamSkyline } from './corridor-buildings.mjs';
 import { fillInkyungBuildings } from './inkyung-buildings.mjs';
 import { polygonOverlap } from '../map-sources/src/polygon-collision.js';
 import {
@@ -85,7 +85,7 @@ const cutouts = water.map((f) => port.projectPolygon(f.polygon));
 const p1a = agoraInkyung(port, cutouts[0]);
 const near = new MeshBatch(), far = new MeshBatch();
 far.polygon('#5597a3', cutouts[0], 0.025);
-p1a.fillTerrain(base, near, far,
+p1a.fillTerrain(base,
   buildCampusTerrainGeometry(bounds, [...cutouts, ...depressions.map((d) => d.ring)]));
 for (const d of depressions) {
   base.polygon('#829770', d.ring, d.y);
@@ -332,11 +332,14 @@ for (const [name, layers, anchors] of [
   }
   detailZones[name] = { anchors, counts };
 }
+groups.dream = new MeshBatch();
+const dreamSkyline = fillDreamSkyline(groups.dream);
+const firstTree = trees.length;
+p1a.fillLand(near, base, far, trees, solid, routes.find(r => r.id === 'site_481241696'));
 const p1aLod = {
-  ...port.geoToWorld(water[0].lat, water[0].lon), firstTree: trees.length,
+  ...port.geoToWorld(water[0].lat, water[0].lon), firstTree,
   farVertices: far.vertices.length, sharedVertices: base.vertices.length,
 };
-p1a.fillLand(near, trees, solid, routes.find(r => r.id === 'site_481241696'));
 routes.push(...p1a.routes);
 for (const [index, tree] of trees.entries()) {
   const ring = Array.from({ length: 8 }, (_, i) => {
@@ -364,7 +367,7 @@ const rooms = {
   },
 };
 // A single contiguous draw selects [far, shared] or [shared, near]. Keep the
-// original distant grass/water silhouette without another draw call or material.
+// low-detail water and plaza surfaces without another draw call or material.
 base.vertices = far.vertices.concat(base.vertices, near.vertices);
 const buffers = [],
   ranges = {};
@@ -386,6 +389,7 @@ const metadata = {
   trees,
   p1aLod,
   detailZones,
+  dreamSkyline,
   routes,
   roadIds: CAMPUS_ROADS.map((r) => r.id),
   gateIds,

@@ -1,0 +1,114 @@
+e004560ff03cb204433931730d6b346a8ce31595
+v24.22.3
+11.19.1
+
+up to date in 234ms
+
+> build
+> node tools/build-pages.mjs
+
+{
+  ranges: {
+    base: { offset: 0, count: 39714 },
+    hall: { offset: 635424, count: 4560 },
+    library: { offset: 708384, count: 6786 },
+    canal: { offset: 816960, count: 22965 },
+    connector: { offset: 1184400, count: 2952 },
+    dream: { offset: 1231632, count: 234 }
+  },
+  trees: 68,
+  obstacles: 158
+}
+Pages static root: dist
+{
+  ranges: {
+    base: { offset: 0, count: 39714 },
+    hall: { offset: 635424, count: 4560 },
+    library: { offset: 708384, count: 6786 },
+    canal: { offset: 816960, count: 22965 },
+    connector: { offset: 1184400, count: 2952 },
+    dream: { offset: 1231632, count: 234 }
+  },
+  trees: 68,
+  obstacles: 158
+}
+{
+  ranges: {
+    base: { offset: 0, count: 39714 },
+    hall: { offset: 635424, count: 4560 },
+    library: { offset: 708384, count: 6786 },
+    canal: { offset: 816960, count: 22965 },
+    connector: { offset: 1184400, count: 2952 },
+    dream: { offset: 1231632, count: 234 }
+  },
+  trees: 68,
+  obstacles: 158
+}
+
+> test
+> node --test tests/guestbook-session.mjs tests/public-settings.mjs tests/p1a-spatial.mjs tests/p1bc.mjs tests/p1d.mjs && node tests/spatial.mjs
+
+✔ ServerAdapter attaches the writer session, including after a nickname change (37.802664ms)
+✔ FutureSyncAdapter attaches the writer session, including after a nickname change (1.893014ms)
+✔ source nodes connect P0, the lakeside service way and its sidewalk on walkable grade (35.632447ms)
+✔ only water occupies the source lake and a single surface owns the mapped plaza (65.468265ms)
+ℹ {"lod":"near","waterAreaWU2":707.5336189865841,"dryInsideLakeWU2":0.00016254011022809323,"plazaFloorWU2":149.76221939344566}
+ℹ {"lod":"far","waterAreaWU2":707.533688041603,"dryInsideLakeWU2":0.00004683219906098657,"plazaFloorWU2":149.76218082772448}
+✔ each shoreline edge stops a swept capsule and every seat has a solid base (7.138687ms)
+ℹ {"edgeClearanceWU":[0.6000099999999949,0.6000099999999877,0.6000100000000008,0.6000099999999987,0.6000099999999957,0.600010000000001,0.6000100000000024,0.6000100000000002,0.6000100000000017,0.6000099999999955,0.6000100000000017,0.600009999999997,0.6000099999999956]}
+✔ the two lake-facing shells use the ledger roofs and keep the east footway entrance open (3.840931ms)
+✔ P1A collision, routes, stairs and trees match the parent commit; new solids use source footprints (20.564394ms)
+✔ one water quad occupies the source pool, only the existing coping covers its perimeter (19.486379ms)
+ℹ {"poolAreaWU2":304.3423946042524,"dryOverWaterWU2":0}
+✔ connector dressing respects all seven Agora paving edges and the thirteen lake edges (35.665021ms)
+✔ legacy graphics preference restores and preserves other registry fields (0.787888ms)
+✔ auto needs sustained render windows, recovers and leaves manual selection in control (12.636071ms)
+✔ the distant Dream Center keeps the disputed tree solid, route and open ground (12.126903ms)
+✔ 30 Hz PC retains high; suspension clears mixed windows and recovery takes headroom (6.264124ms)
+✔ unconfigured build keeps optional external services disabled (2.476113ms)
+✔ an external sync gateway is bound to one explicit site origin (1.004464ms)
+✔ server credentials cannot be serialized as Firebase Web App fields (0.39084ms)
+✔ a copied Pages build ignores external services on a different origin (544.141388ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 911.992388
+{"points":174,"independentPort":false,"maxDeltaWU":0,"sweeps":77,"rooms":{"main-gate":{"spatialId":"lmk_main_gate","x":0,"z":-76,"viewYaw":3.141592653589793},"main-building":{"spatialId":"bldg_01","x":49.480531336502,"z":-4.713956611688115,"viewYaw":-2.6309469284025337},"library":{"spatialId":"bldg_jungseok","x":-19.447742592800143,"z":-3.9694703617483755,"viewYaw":2.075980010255096}},"survey":{"corridor_width_m":null,"corridor_length_m":null,"tree_spacing_m":null,"lamp_spacing_m":null,"plaza_dimensions_m":null,"branch_angles_at_south_node":null}}
+
+> test
+> node --test tests/guestbook-session.mjs tests/public-settings.mjs tests/p1a-spatial.mjs tests/p1bc.mjs tests/p1d.mjs && node tests/spatial.mjs
+
+✔ ServerAdapter attaches the writer session, including after a nickname change (62.39496ms)
+✔ FutureSyncAdapter attaches the writer session, including after a nickname change (1.968277ms)
+✔ source nodes connect P0, the lakeside service way and its sidewalk on walkable grade (28.058793ms)
+✔ only water occupies the source lake and a single surface owns the mapped plaza (116.928559ms)
+ℹ {"lod":"near","waterAreaWU2":707.5336189865841,"dryInsideLakeWU2":0.00016254011022809323,"plazaFloorWU2":149.76221939344566}
+ℹ {"lod":"far","waterAreaWU2":707.533688041603,"dryInsideLakeWU2":0.00004683219906098657,"plazaFloorWU2":149.76218082772448}
+✔ each shoreline edge stops a swept capsule and every seat has a solid base (4.619074ms)
+ℹ {"edgeClearanceWU":[0.6000099999999949,0.6000099999999877,0.6000100000000008,0.6000099999999987,0.6000099999999957,0.600010000000001,0.6000100000000024,0.6000100000000002,0.6000100000000017,0.6000099999999955,0.6000100000000017,0.600009999999997,0.6000099999999956]}
+✔ the two lake-facing shells use the ledger roofs and keep the east footway entrance open (6.183723ms)
+✔ P1A collision, routes, stairs and trees match the parent commit; new solids use source footprints (61.780389ms)
+✔ one water quad occupies the source pool, only the existing coping covers its perimeter (26.348775ms)
+ℹ {"poolAreaWU2":304.3423946042524,"dryOverWaterWU2":0}
+✔ connector dressing respects all seven Agora paving edges and the thirteen lake edges (60.248764ms)
+✔ legacy graphics preference restores and preserves other registry fields (0.948931ms)
+✔ auto needs sustained render windows, recovers and leaves manual selection in control (2.46724ms)
+✔ the distant Dream Center keeps the disputed tree solid, route and open ground (10.132988ms)
+✔ 30 Hz PC retains high; suspension clears mixed windows and recovery takes headroom (3.179514ms)
+✔ unconfigured build keeps optional external services disabled (1.746854ms)
+✔ an external sync gateway is bound to one explicit site origin (0.511131ms)
+✔ server credentials cannot be serialized as Firebase Web App fields (0.289186ms)
+✔ a copied Pages build ignores external services on a different origin (623.848424ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1021.806721
+{"points":174,"independentPort":true,"maxDeltaWU":0,"sweeps":77,"rooms":{"main-gate":{"spatialId":"lmk_main_gate","x":0,"z":-76,"viewYaw":3.141592653589793},"main-building":{"spatialId":"bldg_01","x":49.480531336502,"z":-4.713956611688115,"viewYaw":-2.6309469284025337},"library":{"spatialId":"bldg_jungseok","x":-19.447742592800143,"z":-3.9694703617483755,"viewYaw":2.075980010255096}},"survey":{"corridor_width_m":null,"corridor_length_m":null,"tree_spacing_m":null,"lamp_spacing_m":null,"plaza_dimensions_m":null,"branch_angles_at_south_node":null}}

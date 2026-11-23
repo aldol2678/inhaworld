@@ -55,14 +55,17 @@ function ringBorder(batch, outer, inner, color, clip) {
   }
 }
 
-function plazaPaving(batch, plaza, trees, approachMasks) {
+function plazaPaving(near, shared, far, plaza, trees, approachMasks) {
   const center = {
     x: plaza.reduce((sum, p) => sum + p.x, 0) / plaza.length,
     z: plaza.reduce((sum, p) => sum + p.z, 0) / plaza.length,
   };
   const inner = plaza.map((p) => mix(p, center, 0.075));
   const outsideApproach = subtractGround(approachMasks);
-  ringBorder(batch, plaza, inner, '#b3a690', outsideApproach);
+  // Keep the seven mapped corners and the existing border width at every LOD.
+  const course = plaza.map((p, i) => mix(p, inner[i], 0.27));
+  ringBorder(shared, plaza, course, '#9c9682', outsideApproach);
+  ringBorder(shared, course, inner, '#b8ab96', outsideApproach);
   const wells = trees
     .filter((p) => polygonOverlap(p.x, p.z, inner))
     .map((tree) =>
@@ -78,10 +81,11 @@ function plazaPaving(batch, plaza, trees, approachMasks) {
   for (const well of wells) {
     const tree = mix(well[0], well[6], 0.5);
     const soil = well.map((p) => mix(p, tree, 0.17));
-    ringBorder(batch, well, soil, '#978b70', wellInterior);
-    for (const piece of wellInterior(soil)) flat(batch, '#746e52', piece);
+    ringBorder(shared, well, soil, '#978b70', wellInterior);
+    for (const piece of wellInterior(soil)) flat(shared, '#746e52', piece);
   }
   const clip = subtractGround([...approachMasks, ...wells]);
+  for (const piece of clip(inner)) flat(far, '#c9b79e', piece);
   const f = edgeFrame(plaza, 6),
     points = inner.map((p) => f.local(p));
   const u0 = Math.floor(Math.min(...points.map((p) => p.u)));
@@ -115,12 +119,12 @@ function plazaPaving(batch, plaza, trees, approachMasks) {
       const tile = intersectGround(rect(f, u, u + 1.46, v, v + 0.68), inner);
       if (!tile.length) continue;
       const color = row % 7 === 0 ? '#ded5bf' : stone[(row * 3 + col) % stone.length];
-      for (const piece of clip(tile)) flat(batch, (p) => shadedStone(color, p), piece);
+      for (const piece of clip(tile)) flat(near, (p) => shadedStone(color, p), piece);
     }
   }
 }
 
-function bench(batch, solid, id, f, u, v) {
+function bench(batch, solid, id, f, u, v, distant) {
   // One ground-based support rectangle for the complete timber seat and back.
   const hw = 1.06,
     hd = 0.29;
@@ -132,6 +136,13 @@ function bench(batch, solid, id, f, u, v) {
   }
   for (const offset of [-0.18, 0, 0.18]) box('#aa7951', 0, offset, 0.3, [2 * hw, 0.08, 0.15]);
   for (const height of [0.47, 0.62]) box('#996f4d', 0, 0.24, height, [2 * hw, 0.12, 0.08]);
+  if (distant) {
+    // The same seat, back and feet read as four boxes at a distance.
+    distant.box('#aa7951', pointAt(f.at(u, v), 0.30), [2 * hw, 0.08, 0.51], f.yaw);
+    distant.box('#996f4d', pointAt(f.at(u, v + 0.24), 0.55), [2 * hw, 0.26, 0.08], f.yaw);
+    for (const side of [-1, 1])
+      distant.box('#59605a', pointAt(f.at(u + side * 0.76, v), 0.14), [0.12, 0.28, 0.45], f.yaw);
+  }
   const footprint = rect(f, u - hw, u + hw, v - hd, v + hd);
   solid(id, footprint, CAMPUS_GRADE, CAMPUS_GRADE + 0.68);
   return footprint;
@@ -324,7 +335,7 @@ export function agoraInkyung(port, pond) {
     plaza,
     routes,
     clipWater,
-    fillTerrain(shared, near, far, mesh) {
+    fillTerrain(shared, mesh) {
       const outsidePlaza = subtractGround([plaza]);
       for (let i = 0; i < mesh.indices.length; i += 3) {
         const triangle = mesh.indices.slice(i, i + 3).map((index) => ({
@@ -335,15 +346,13 @@ export function agoraInkyung(port, pond) {
           flat(shared, '#93aa77', triangle, 0);
           continue;
         }
-        // Only the intersecting P0 triangles need a second representation.
-        flat(far, '#93aa77', triangle, 0);
-        for (const piece of outsidePlaza(triangle)) flat(near, '#93aa77', piece, 0);
+        for (const piece of outsidePlaza(triangle)) flat(shared, '#93aa77', piece, 0);
       }
     },
     fillWater(batch) {
       pondSurface(batch, water, edges);
     },
-    fillLand(batch, trees, solid, approach) {
+    fillLand(batch, shared, far, trees, solid, approach) {
       const approachMasks = approach.line.slice(1).map((b, i) => {
         const f = roadFrame(approach.line[i], b),
           h = (approach.width + 2.1) / 2;
@@ -363,10 +372,10 @@ export function agoraInkyung(port, pond) {
             for (const piece of clip(strip)) flat(batch, color, piece);
         owners.push(...roadRibbon(route.line, -h - shoulder, h + shoulder));
       }
-      plazaPaving(batch, plaza, trees, approachMasks);
+      plazaPaving(batch, shared, far, plaza, trees, approachMasks);
       for (const i of [0, 4]) {
         const f = edgeFrame(plaza, i);
-        bench(batch, solid, 'agora-seat-' + i, f, f.length * 0.52, -1.2);
+        bench(batch, solid, 'agora-seat-' + i, f, f.length * 0.52, -1.2, far);
       }
       shoreCoping(batch, pond, edges, subtractGround(owners));
       // The pinned pond-surroundings study supports shade planting on the landward

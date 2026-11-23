@@ -20,6 +20,35 @@ function sill(b, f, l, r, y) {
   );
   panel(b, '#aaa99d', f, l, r, y - 0.075, y, 0.115);
 }
+// OSM way 568420970, facility marker 16. Tree 58 intersects the last two
+// elevations below the canopy. The distant study uses the upper outline and
+// only the two tree-clear ground faces. It never defines an entrance or solid.
+export function fillDreamSkyline(batch) {
+  const building = FACILITIES.find((f) => f.id === 'bldg_dream1');
+  const ring = building.rings[0], h = building.height, pitch = h / building.floors;
+  const cut = h / 2; // Three nominal storeys, above the measured game crown.
+  batch.polygon('#9b9c95', ring, h);
+  ring.forEach((_, i) => {
+    const f = edgeFrame(ring, i), len = f.length;
+    const bottom = i < 2 ? 0 : cut;
+    panel(batch, '#d9d2c5', f, 0, len, bottom, h, 0);
+    panel(batch, '#ede7da', f, 0, len, h - 0.25, h, 0.018);
+    for (let y = bottom; y < h - 0.1; y += pitch) {
+      panel(batch, '#748b90', f, 0.43, len - 0.43, y + pitch * 0.34, y + pitch * 0.73, 0.025);
+    }
+  });
+  const silhouetteVertices = batch.vertices.length;
+  ring.forEach((_, i) => {
+    const f = edgeFrame(ring, i), len = f.length;
+    const bays = Math.max(2, Math.round(len / 3.2));
+    for (let j = 1; j < bays; j++) {
+      const u = len * j / bays;
+      panel(batch, '#c9c8bd', f, u - 0.09, u + 0.09, i < 2 ? 0 : cut, h - 0.26, 0.041);
+    }
+  });
+  return { ...building.footprintCenter, silhouetteVertices };
+}
+
 const buildings = [
   { id: 'bldg_lawschool', wall: '#d5c8b6', glass: '#69878a', roof: '#9a9485' },
   { id: 'bldg_06', wall: '#e5dfd2', glass: '#577985', roof: '#92968e' },

@@ -48,7 +48,7 @@ globalThis.recoveryQA = () => {
 """
 
 
-def setup(browser, origin, mobile, dpr=1):
+def setup(browser, origin, mobile, dpr=1, extra_probe=""):
     size=(891,411) if mobile else (1280,720)
     ctx=browser.new_context(viewport=dict(zip(['width','height'],size)),is_mobile=mobile,
                             has_touch=mobile,device_scale_factor=dpr)
@@ -58,7 +58,7 @@ def setup(browser, origin, mobile, dpr=1):
     def route(r):
         if r.request.url==origin+'/src/main.js':
             response=r.fetch()
-            r.fulfill(response=response,body=response.text()+'\n'+PROBE)
+            r.fulfill(response=response,body=response.text()+'\n'+PROBE+'\n'+extra_probe)
         elif r.request.url==origin+'/api/health':
             r.fulfill(status=503,json={})
         elif r.request.url.startswith(origin+'/') and r.request.method=='GET':
