@@ -47,7 +47,7 @@ globalThis.gfxState = () => {
   const gl=renderer.getContext();
   const geo=Object.fromEntries(['base','hall','library','canal','connector','crowns','secondary-crowns']
     .map(n=>scene.getObjectByName(n)).filter(Boolean).map(m=>[m.name,{
-      visible:m.visible, instances:m.isInstancedMesh?m.count:1, range:m.geometry.drawRange.count,
+      visible:m.visible, instances:m.isInstancedMesh?m.count:1, range:Number.isFinite(m.geometry.drawRange.count)?m.geometry.drawRange.count:null,
       vertices:m.geometry.attributes.position.count}]));
   return { tier:typeof quality==='undefined'?'legacy':quality.tier,
     preference:typeof quality==='undefined'?'legacy':quality.preference,
@@ -123,7 +123,7 @@ def pose(p, view):
 
 def dump(path,data):
     path.parent.mkdir(exist_ok=True,parents=True)
-    path.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+    path.write_text(json.dumps(data,ensure_ascii=False,indent=2,allow_nan=False)+'\n')
 
 
 def captures(browser, origins, builds, out, scratch):

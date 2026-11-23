@@ -1,0 +1,194 @@
+{
+  "sourceCommit": "bec0521f9de611c8b91b253a4ef6b1297d2f484d",
+  "parentCommit": "b8356ed67cdac11499ecb1059baf6379d9fca658",
+  "cleanRebuildByteIdentical": true,
+  "before": {
+    "data/layout.bin": {
+      "bytes": 713808,
+      "gzip9Bytes": 149162,
+      "sha256": "74c0069ccf66aa51cba22a20e311ea6a722f18e04959f7e90744a3ad054a60b7"
+    },
+    "data/layout.json": {
+      "bytes": 129589,
+      "gzip9Bytes": 30447,
+      "sha256": "c4d8b9ba948c90c4f4d74663e8461bd91a4a26200392f6416702c0d88d9595ea"
+    },
+    "data/quests.json": {
+      "bytes": 673,
+      "gzip9Bytes": 349,
+      "sha256": "80292111b02a5c8c0c583c4e1d6545d3dd5effb96c1e9d386203363f8621c84b"
+    },
+    "data/rooms.json": {
+      "bytes": 815,
+      "gzip9Bytes": 460,
+      "sha256": "703722708eb53acda33298fa533780ef26ddf7ec7ececee2355fe8b477a039ec"
+    },
+    "index.html": {
+      "bytes": 5649,
+      "gzip9Bytes": 2409,
+      "sha256": "65eb1e8c7e15d825f013bf5e512c760148fa95f8e0f27612827a2cb75888e06b"
+    },
+    "public-config.js": {
+      "bytes": 70,
+      "gzip9Bytes": 73,
+      "sha256": "2a1c19a2a9778ecc122ef0d1cdfec786e8a7ca3623fb7ef6f02614d287eec628"
+    },
+    "src/api.js": {
+      "bytes": 7978,
+      "gzip9Bytes": 2165,
+      "sha256": "bfe4eb1fafc48d254cca42ea597f18169de6a38cfed6ea52cd0d441a7f334ba1"
+    },
+    "src/campus.js": {
+      "bytes": 4347,
+      "gzip9Bytes": 1852,
+      "sha256": "742da4942b09dae5fe0aad40da3793ea4501a9ad1c790584646e43fe57c9424b"
+    },
+    "src/config.js": {
+      "bytes": 315,
+      "gzip9Bytes": 226,
+      "sha256": "1c16dc172ee8322fe6cc17ae791b6dfbc554705b6027f43488b015ecaf581bb8"
+    },
+    "src/firebase-auth-client.js": {
+      "bytes": 6236,
+      "gzip9Bytes": 2082,
+      "sha256": "998db115d8581d767c65c571c14c532984e65204ec5a0880b706fd3d59126e27"
+    },
+    "src/main.js": {
+      "bytes": 23436,
+      "gzip9Bytes": 7133,
+      "sha256": "bb4a1bdbd2fa16014cc48ad1c2eec0acfbc9099c378bf3d3abf66fac3f46b350"
+    },
+    "src/map/polygon-collision.js": {
+      "bytes": 3144,
+      "gzip9Bytes": 1226,
+      "sha256": "2f844663afb6dcae6045dc704d12700cbc2a0ed540f6c8f7b324418fb0affcb4"
+    },
+    "src/map/spatial.js": {
+      "bytes": 2826,
+      "gzip9Bytes": 1103,
+      "sha256": "9f4ae7c1c83a5d6534d2ba4776ba6910184e98a71783571ac25c89517f179525"
+    },
+    "src/store.js": {
+      "bytes": 1444,
+      "gzip9Bytes": 675,
+      "sha256": "d28625e43b0cd848c8685509980e78b8910c3525290e898d44357274207f6764"
+    },
+    "vendor/LICENSE": {
+      "bytes": 1081,
+      "gzip9Bytes": 662,
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    "vendor/three.core.js": {
+      "bytes": 1474799,
+      "gzip9Bytes": 290019,
+      "sha256": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578"
+    },
+    "vendor/three.module.js": {
+      "bytes": 658900,
+      "gzip9Bytes": 129393,
+      "sha256": "104f56145899722094556490d787aae0617cc2fc3382f31df02d724ea1aee341"
+    }
+  },
+  "after": {
+    "data/layout.bin": {
+      "bytes": 1225152,
+      "gzip9Bytes": 271372,
+      "sha256": "552db9bd248f238b7a66d2e5254b177bfddacca06eeff6704f0592fea8e2e7ba"
+    },
+    "data/layout.json": {
+      "bytes": 132361,
+      "gzip9Bytes": 31664,
+      "sha256": "46aef87a7b76656b9a001fd6647cd75bd81257228b0b6c33f63ebedf0ca19f32"
+    },
+    "data/quests.json": {
+      "bytes": 673,
+      "gzip9Bytes": 349,
+      "sha256": "80292111b02a5c8c0c583c4e1d6545d3dd5effb96c1e9d386203363f8621c84b"
+    },
+    "data/rooms.json": {
+      "bytes": 815,
+      "gzip9Bytes": 460,
+      "sha256": "703722708eb53acda33298fa533780ef26ddf7ec7ececee2355fe8b477a039ec"
+    },
+    "index.html": {
+      "bytes": 6653,
+      "gzip9Bytes": 2737,
+      "sha256": "1305b0f5cdcd27d50ef9bc68da9b61959642f24b6e905d5adc2652937801028d"
+    },
+    "public-config.js": {
+      "bytes": 70,
+      "gzip9Bytes": 73,
+      "sha256": "2a1c19a2a9778ecc122ef0d1cdfec786e8a7ca3623fb7ef6f02614d287eec628"
+    },
+    "src/api.js": {
+      "bytes": 7978,
+      "gzip9Bytes": 2165,
+      "sha256": "bfe4eb1fafc48d254cca42ea597f18169de6a38cfed6ea52cd0d441a7f334ba1"
+    },
+    "src/campus.js": {
+      "bytes": 11187,
+      "gzip9Bytes": 4049,
+      "sha256": "65595e3a4728702a2faf56b35ff8621a26182077b66217dcaf670123708df699"
+    },
+    "src/canal-water.js": {
+      "bytes": 2674,
+      "gzip9Bytes": 1208,
+      "sha256": "85a94e8a386ea8f14abc4ada87752d5eb9f77120e2c97247067dbd3251eace9d"
+    },
+    "src/config.js": {
+      "bytes": 315,
+      "gzip9Bytes": 226,
+      "sha256": "1c16dc172ee8322fe6cc17ae791b6dfbc554705b6027f43488b015ecaf581bb8"
+    },
+    "src/firebase-auth-client.js": {
+      "bytes": 6236,
+      "gzip9Bytes": 2082,
+      "sha256": "998db115d8581d767c65c571c14c532984e65204ec5a0880b706fd3d59126e27"
+    },
+    "src/graphics-quality.js": {
+      "bytes": 3926,
+      "gzip9Bytes": 1537,
+      "sha256": "01fda8d592fd2b9028ba5907f1aa1196c27fab626015c3aacd4b22bfb1a00aa2"
+    },
+    "src/main.js": {
+      "bytes": 25317,
+      "gzip9Bytes": 7751,
+      "sha256": "3847168854c09a154d360b44cf3656efd3afaa03ee3c2cd7ea96ca600224a79c"
+    },
+    "src/map/polygon-collision.js": {
+      "bytes": 3144,
+      "gzip9Bytes": 1226,
+      "sha256": "2f844663afb6dcae6045dc704d12700cbc2a0ed540f6c8f7b324418fb0affcb4"
+    },
+    "src/map/spatial.js": {
+      "bytes": 2826,
+      "gzip9Bytes": 1103,
+      "sha256": "9f4ae7c1c83a5d6534d2ba4776ba6910184e98a71783571ac25c89517f179525"
+    },
+    "src/store.js": {
+      "bytes": 1444,
+      "gzip9Bytes": 675,
+      "sha256": "d28625e43b0cd848c8685509980e78b8910c3525290e898d44357274207f6764"
+    },
+    "vendor/LICENSE": {
+      "bytes": 1081,
+      "gzip9Bytes": 662,
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc"
+    },
+    "vendor/three.core.js": {
+      "bytes": 1474799,
+      "gzip9Bytes": 290019,
+      "sha256": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578"
+    },
+    "vendor/three.module.js": {
+      "bytes": 658900,
+      "gzip9Bytes": 129393,
+      "sha256": "104f56145899722094556490d787aae0617cc2fc3382f31df02d724ea1aee341"
+    }
+  },
+  "playZip": {
+    "file": "INHA-WORLD-play.zip",
+    "bytes": 752554,
+    "sha256": "0dc0830460088eae5010a07848b471d9c21cfa92aed69718d95a82215bf972da"
+  }
+}

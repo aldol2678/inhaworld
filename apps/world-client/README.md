@@ -1,5 +1,7 @@
 # INHA WORLD 캠퍼스 클라이언트
 
+중앙 수로 양안과 아고라·인경호 연결부를 걸을 수 있다. 상단 그래픽 메뉴에서 자동 또는 다섯 수동 품질을 선택한다. [P1B·P1C 전후 화면과 기기별 QA](qa/p1bc/README.md)
+
 정적 Pages 앱의 루트는 `apps/world-client/`다. 게임의 표시·입력·저장 계약은 기존 Draft PR #452에서 가져왔다. 맵을 생성하는 Node 코드와 데이터는 `map-sources/`에 있고, 브라우저는 생성한 레이아웃과 Three.js만 읽는다. [원본 PR](https://github.com/aldol2678/inhagame/pull/452) · [원본 커밋](https://github.com/aldol2678/inhagame/commit/aeb5d1d7ff17082e1a7a2a876f1a36fd0bf2b320)
 
 인경호 학생회관·2호관 남관, 호안 수목과 동측 보행로의 후속 고증 결과에는 두 빌드의 동일 카메라 화면과 로컬 입력 검증이 담겨 있다. [현장사진 대조와 플레이 QA](qa/p1a/field-study/README.md)
