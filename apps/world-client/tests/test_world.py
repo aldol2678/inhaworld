@@ -8,6 +8,7 @@ import statistics
 import subprocess
 
 import pytest
+from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -140,8 +141,18 @@ class Driver:
 
 
 def release_pointer(page):
-    page.evaluate("document.exitPointerLock()")
-    page.wait_for_function("document.pointerLockElement === null", polling=20)
+    # Let Chromium present the last synchronous replay before returning the
+    # pointer to the form. The test still requires a browser-confirmed unlock.
+    page.evaluate("""() => new Promise(resolve => requestAnimationFrame(() => {
+        document.exitPointerLock();
+        resolve();
+    }))""")
+    try:
+        page.wait_for_function("document.pointerLockElement === null", polling=20, timeout=2000)
+    except PlaywrightTimeoutError:
+        page.keyboard.press("Escape")
+        page.evaluate("document.exitPointerLock()")
+        page.wait_for_function("document.pointerLockElement === null", polling=20)
 
 
 def hold(page):

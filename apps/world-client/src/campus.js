@@ -33,9 +33,10 @@ function meshFromBatch(bytes, range) {
   const normals = geo.getAttribute('normal').array;
   geo.setAttribute('normal', new THREE.BufferAttribute(Int16Array.from(normals, n => Math.round(n * 32767)), 3, true));
   geo.computeBoundingSphere();
+  // The opaque campus batch uses matte pigments under the fixed sun and sky.
   return new THREE.Mesh(
     geo,
-    new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.91, side: THREE.DoubleSide }),
+    new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }),
   );
 }
 function plantTrees(scene, trees) {
