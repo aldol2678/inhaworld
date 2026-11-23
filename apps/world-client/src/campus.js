@@ -227,8 +227,8 @@ export async function createCampus(scene) {
   // Screen-door opacity keeps the opaque depth ordering of trees and masonry.
   const dream = meshes.dream;
   const coverage = { value: 1 };
-  const dreamMaterial = dream.material = groundLighting(scene).material;
-  const shadeDream = dreamMaterial.onBeforeCompile;
+  const dreamMaterial = dream.material = lighting.material.clone();
+  const shadeDream = lighting.material.onBeforeCompile;
   dreamMaterial.onBeforeCompile = (shader) => {
     shadeDream(shader);
     shader.uniforms.dreamCoverage = coverage;
@@ -245,6 +245,7 @@ export async function createCampus(scene) {
   const region = layout.p1aLod;
   const water = canalWater(layout.obstacles.find((o) => o.id === 'site_218220690').polygon, scene.fog);
   scene.add(water.mesh);
+  let visibilityX, visibilityZ;
   let distance = 110,
     detail = 3;
   return {
@@ -262,6 +263,7 @@ export async function createCampus(scene) {
       for (const resource of resources) resource.dispose();
     },
     setProfile(profile) {
+      visibilityX = undefined;
       distance = profile.distance;
       detail = profile.detail;
       foliage.density(detail);
@@ -271,6 +273,9 @@ export async function createCampus(scene) {
       water.uniforms.phase.value = seconds % (Math.PI * 100);
     },
     updateVisibility(x, z) {
+      if (x === visibilityX && z === visibilityZ) return;
+      visibilityX = x;
+      visibilityZ = z;
       foliage.update(x, z, detail, distance);
       const skyline = layout.dreamSkyline;
       const separation = Math.hypot(x - skyline.x, z - skyline.z);

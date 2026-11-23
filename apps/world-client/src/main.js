@@ -146,6 +146,10 @@ function nearestRoom() {
   return best && bestD <= (best.radius || 9) ? best : null;
 }
 
+function updateHudText(element, text) {
+  if (element.textContent !== text) element.textContent = text;
+}
+
 function refreshHud() {
   const room = nearestRoom();
   const newRoom = room ? room.id : null;
@@ -153,11 +157,11 @@ function refreshHud() {
     currentRoomId = newRoom;
     if (room && progressLoaded) onEnterRoom(room);
   }
-  hudRoom.textContent = room ? room.name : '캠퍼스 길';
-  hudPos.textContent = `x ${player.x.toFixed(1)} · z ${player.z.toFixed(1)}`;
+  updateHudText(hudRoom, room ? room.name : '캠퍼스 길');
+  updateHudText(hudPos, `x ${player.x.toFixed(1)} · z ${player.z.toFixed(1)}`);
   const done = quests.filter((q) => progress[q.id] && progress[q.id].status === 'done').length;
-  hudQuest.textContent = `퀘스트 ${done}/${quests.length}`;
-  hudMode.textContent = mode === 'sync' ? '온라인 (동기화 연결됨)' : mode === 'online' ? '온라인 (로컬 서버 연결됨)' : '로컬 모드 (서버 없음 · 이 기기에 저장)';
+  updateHudText(hudQuest, `퀘스트 ${done}/${quests.length}`);
+  updateHudText(hudMode, mode === 'sync' ? '온라인 (동기화 연결됨)' : mode === 'online' ? '온라인 (로컬 서버 연결됨)' : '로컬 모드 (서버 없음 · 이 기기에 저장)');
 }
 
 async function onEnterRoom(room) {
