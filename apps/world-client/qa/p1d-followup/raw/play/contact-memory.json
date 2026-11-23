@@ -1,0 +1,48 @@
+{
+  "result": "PASS",
+  "contacts": [
+    {
+      "id": "gate_wall_1",
+      "edgeGapWU": 0.587,
+      "contact": [
+        15.6,
+        -100.1
+      ],
+      "retreat": [
+        -0.0,
+        -98.0
+      ]
+    },
+    {
+      "id": "tree-0",
+      "edgeGapWU": 0.584,
+      "contact": [
+        0.6,
+        -69.5
+      ],
+      "retreat": [
+        -0.1,
+        -76.0
+      ]
+    }
+  ],
+  "visits": 36,
+  "measurements": [
+    {
+      "heap": 5337732,
+      "nodes": 295,
+      "lost": false
+    },
+    {
+      "heap": 5343264,
+      "nodes": 295,
+      "lost": false
+    },
+    {
+      "heap": 5363932,
+      "nodes": 295,
+      "lost": false
+    }
+  ],
+  "errors": []
+}

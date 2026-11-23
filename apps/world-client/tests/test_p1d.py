@@ -121,3 +121,27 @@ def test_real_tab_return_discards_preexisting_slow_frames(origin):
     assert data['events'][-2:]==['hidden','visible']
     if OUT:
         (OUT/'tab.json').write_text(json.dumps(data,ensure_ascii=False,indent=2))
+
+
+@pytest.mark.parametrize('mobile',[False,True])
+def test_student_center_agora_door_remains_an_exterior_wall(browser,origin,mobile):
+    ctx,p,errors=setup(browser,origin,mobile,extra_probe=PROBE)
+    try:
+        hold(p)
+        stations=json.loads((ROOT/'qa/p1d-followup/stations.json').read_text())
+        x,z,door_x,door_z=next(s['pose'] for s in stations if s['id']=='student-entry2')
+        length=math.hypot(x-door_x,z-door_z)
+        nx,nz=(x-door_x)/length,(z-door_z)/length
+        p.evaluate('p=>placeP1D(...p)',[x,z])
+        d=Driver(p,ctx.new_cdp_session(p),mobile)
+        d.walk({'x':door_x-2*nx,'z':door_z-2*nz},collision=True)
+        stop=position(p)
+        clearance=(stop[0]-door_x)*nx+(stop[1]-door_z)*nz
+        assert .53<clearance<.67 and not errors
+        # Walk along the closed façade after a head-on stop.
+        d.walk({'x':stop[0]-nz*1.3+nx*.08,'z':stop[1]+nx*1.3+nz*.08})
+        if OUT:
+            (OUT/f'student-door-{p.viewport_size["width"]}.json').write_text(json.dumps(
+                dict(door=[door_x,door_z],stop=stop,clearanceWU=clearance,inputs=d.inputs),indent=2))
+    finally:
+        ctx.close()

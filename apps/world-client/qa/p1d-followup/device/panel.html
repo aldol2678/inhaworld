@@ -1,0 +1,37 @@
+<button id="field-recorder" type="button">기기 측정</button>
+<dialog id="field-options" aria-labelledby="field-title">
+  <h2 id="field-title">기기 성능 측정</h2>
+  <form method="dialog">
+    <label>실행 환경
+      <select name="environment">
+        <option value="unspecified">미지정</option>
+        <option value="android-operator">실물 Android · 직접 기입</option>
+        <option value="desktop">PC</option>
+        <option value="emulation">브라우저 에뮬레이션</option>
+      </select>
+    </label>
+    <label>기기 모델 <input name="model" maxlength="80" placeholder="선택 사항"></label>
+    <label>시작 위치
+      <select name="station">
+        <option value="current">현재 플레이 위치</option>
+        <option value="canal-west">중앙 수로 서안</option>
+        <option value="agora-east">아고라 동쪽 조망</option>
+        <option value="dream-contact">드림센터와 58번 나무</option>
+        <option value="student-entry2">학생회관 입구2</option>
+      </select>
+    </label>
+    <label>화면이 보이는 동안 측정
+      <select name="duration">
+        <option value="30">30초</option>
+        <option value="120">2분</option>
+        <option value="600">10분</option>
+      </select>
+    </label>
+    <output id="field-status" aria-live="polite">시작 후 게임에서 이동하거나 그래픽 설정을 바꿀 수 있습니다.</output>
+    <div>
+      <button type="button" id="field-start">측정 시작</button>
+      <button type="button" id="field-save" disabled>JSON 저장</button>
+      <button type="submit">닫기</button>
+    </div>
+  </form>
+</dialog>

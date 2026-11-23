@@ -1,0 +1,11 @@
+﻿shot,station,label,mappedReference,suggestedLat,suggestedLon,suggestedBearingDeg,observedAt,photoFile,actualLatitude,actualLongitude,actualBearingDeg,cameraLensOrFov,cameraHeightM,referenceObject,measurementMethod,wallToTrunkCentreM,trunkDiameterM,canopyClearanceM,doorOuterWidthM,pathClearWidthM,thresholdRiseM,rampRunM,materialOrFixture,permissionToUse,confidence,notes
+1,agora-east,광장 안에서 동쪽,1099894035 꼭짓점 2~4,37.4492648,126.6560867,90,,,,,,,,,,,,,,,,,,,,
+2,agora-west,광장 안에서 서쪽,1099894035 꼭짓점 6 / 481241696,37.4492648,126.6560867,270,,,,,,,,,,,,,,,,,,,,
+3,agora-south,광장 안에서 남쪽,1099894035 꼭짓점 5 / 568420970,37.4492648,126.6560867,180,,,,,,,,,,,,,,,,,,,,
+4,agora-north,광장 안에서 북쪽,1099894035 꼭짓점 0 / 인경호,37.4492648,126.6560867,0,,,,,,,,,,,,,,,,,,,,
+5,agora-overhead,광장 높은 시점,1099894035의 7개 꼭짓점,,,,,,,,,,,,,,,,,,,,,,,
+6,approach-in,접근로에서 광장 방향,481241696 노드 4741759444→4741759448,37.4491737,126.6558984,114,,,,,,,,,,,,,,,,,,,,
+7,approach-out,접근로에서 역방향,481241696 노드 4741759448→4741759444,37.4490593,126.6562233,294,,,,,,,,,,,,,,,,,,,,
+8,dream-contact,드림센터와 58번 나무,568420970 꼭짓점 2→3 / 게임 tree-58,37.449085,126.6561998,225,,,,,,,,,,,,,,,,,,,,
+9,dream-return,드림센터 3→0번 면,568420970 꼭짓점 3→0 / 표지 16,37.4488691,126.6558377,57,,,,,,,,,,,,,,,,,,,,
+10,student-entry2,학생회관 비룡플라자 입구2,218038027 / 노드 9767122970,37.4491743,126.656265,89,,,,,,,,,,,,,,,,,,,,

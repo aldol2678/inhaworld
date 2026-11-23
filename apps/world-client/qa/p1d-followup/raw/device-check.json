@@ -1,0 +1,44 @@
+{
+  "source": "4ef469da690bf3441558c01942ab3b0ec838262f",
+  "filesVerified": 19,
+  "cases": [
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "browser": "156.0.8078.79",
+      "station": "student-entry2",
+      "errors": [],
+      "normalGameOpened": true,
+      "localRequests": 43,
+      "activeMs": 30015.5,
+      "walkedWU": 3.499990000000001,
+      "summary": {
+        "count": 1747,
+        "fps": 58.26809996631323,
+        "medianMs": 16.699999999999818,
+        "p95Ms": 16.799999999999272
+      }
+    },
+    {
+      "viewport": [
+        891,
+        411
+      ],
+      "browser": "156.0.8078.79",
+      "station": "canal-west",
+      "errors": [],
+      "normalGameOpened": true,
+      "localRequests": 43,
+      "activeMs": 30015.5,
+      "walkedWU": 5.866916668000053,
+      "summary": {
+        "count": 1707,
+        "fps": 57.252100417568045,
+        "medianMs": 16.699999999999818,
+        "p95Ms": 16.799999999999272
+      }
+    }
+  ]
+}

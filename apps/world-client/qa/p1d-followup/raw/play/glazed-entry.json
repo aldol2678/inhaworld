@@ -1,0 +1,32 @@
+{
+  "result": "PASS",
+  "advanceWU": 0.39027364556546845,
+  "inputs": [
+    {
+      "target": [
+        -23.823,
+        -1.55
+      ],
+      "actual": [
+        -19.8,
+        -3.8
+      ],
+      "frames": 14,
+      "error": 4.61,
+      "collision": true
+    },
+    {
+      "target": [
+        -19.448,
+        -3.969
+      ],
+      "actual": [
+        -19.4,
+        -4.0
+      ],
+      "frames": 2,
+      "error": 0.057,
+      "collision": false
+    }
+  ]
+}
