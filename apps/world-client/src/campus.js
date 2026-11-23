@@ -8,7 +8,42 @@ async function readAsset(path, format) {
   if (!response.ok) throw Error('캠퍼스 자료를 불러오지 못했습니다 (' + response.status + '): ' + path);
   return response[format]();
 }
-function meshFromBatch(bytes, range) {
+// Matte static faces have one fixed normal. Evaluate the scene's Lambert sun
+// and hemisphere irradiance once per face, for either winding. The native
+// material still owns fog and output color conversion on both sides.
+function groundLighting(scene) {
+  const sun = scene.children.find((o) => o.isDirectionalLight);
+  const sky = scene.children.find((o) => o.isHemisphereLight);
+  const light = sun.position.clone().sub(sun.target.position).normalize();
+  const up = sky.position.clone().normalize();
+  const irradiance = new THREE.Color();
+  function shade(normal, sign, out) {
+    const weight = (sign * normal.dot(up) + 1) / 2;
+    irradiance.lerpColors(sky.groundColor, sky.color, weight).multiplyScalar(sky.intensity);
+    const direct = Math.max(0, sign * normal.dot(light)) * sun.intensity;
+    irradiance.r += sun.color.r * direct;
+    irradiance.g += sun.color.g * direct;
+    irradiance.b += sun.color.b * direct;
+    irradiance.multiplyScalar(1 / Math.PI).toArray(out);
+  }
+  const material = new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide });
+  material.onBeforeCompile = (shader) => {
+    shader.vertexShader =
+      'attribute vec3 reverseColor; varying vec3 vReverseColor;\n' +
+      shader.vertexShader.replace(
+        '#include <color_vertex>',
+        '#include <color_vertex>\nvReverseColor=reverseColor;',
+      );
+    shader.fragmentShader =
+      'varying vec3 vReverseColor;\n' +
+      shader.fragmentShader.replace(
+        '#include <color_fragment>',
+        'diffuseColor.rgb *= gl_FrontFacing ? vColor.rgb : vReverseColor;',
+      );
+  };
+  return { material, shade };
+}
+function meshFromBatch(bytes, range, lighting) {
   const view = new DataView(bytes, range.offset, range.count * 16);
   const points = new Float32Array(range.count * 3),
     colors = new Float32Array(points.length);
@@ -28,12 +63,14 @@ function meshFromBatch(bytes, range) {
   // colors. Draw-range offsets remain offsets in the original triangle stream.
   const positions = [],
     pigments = [],
-    normals = [],
+    reverse = [],
     indices = [],
     seen = new Map();
   const a = new THREE.Vector3(),
     b = new THREE.Vector3(),
     c = new THREE.Vector3();
+  const front = [],
+    back = [];
   for (let i = 0; i < range.count; i += 3) {
     a.fromArray(points, 3 * i);
     b.fromArray(points, 3 * (i + 1));
@@ -42,6 +79,8 @@ function meshFromBatch(bytes, range) {
     const nx = Math.round(c.x * 32767),
       ny = Math.round(c.y * 32767),
       nz = Math.round(c.z * 32767);
+    lighting.shade(c, 1, front);
+    lighting.shade(c, -1, back);
     for (let j = i; j < i + 3; j++) {
       const k = j * 3;
       const key = [points[k], points[k + 1], points[k + 2], view.getUint32(16 * j + 12), nx, ny, nz].join(
@@ -52,12 +91,10 @@ function meshFromBatch(bytes, range) {
         index = seen.size;
         seen.set(key, index);
         positions.push(points[k], points[k + 1], points[k + 2]);
-        pigments.push(
-          Math.round(65535 * colors[k]),
-          Math.round(65535 * colors[k + 1]),
-          Math.round(65535 * colors[k + 2]),
-        );
-        normals.push(nx, ny, nz);
+        for (let ch = 0; ch < 3; ch++) {
+          pigments.push(Math.min(65535, Math.round(65535 * colors[k + ch] * front[ch])));
+          reverse.push(Math.min(65535, Math.round(65535 * colors[k + ch] * back[ch])));
+        }
       }
       indices.push(index);
     }
@@ -65,11 +102,11 @@ function meshFromBatch(bytes, range) {
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geo.setAttribute('color', new THREE.Uint16BufferAttribute(pigments, 3, true));
-  geo.setAttribute('normal', new THREE.Int16BufferAttribute(normals, 3, true));
+  geo.setAttribute('reverseColor', new THREE.Uint16BufferAttribute(reverse, 3, true));
   geo.setIndex(indices);
   geo.computeBoundingSphere();
   // The opaque campus batch uses matte pigments under the fixed sun and sky.
-  return new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }));
+  return new THREE.Mesh(geo, lighting.material);
 }
 function plantTrees(scene, trees) {
   // The ground and primary crowns cover the two ends of each trunk.
@@ -179,8 +216,9 @@ export async function createCampus(scene) {
   ]);
   const spatial = createSpatial(layout);
   const meshes = {};
+  const lighting = groundLighting(scene);
   for (const [zone, range] of Object.entries(layout.ranges)) {
-    const mesh = meshFromBatch(bytes, range);
+    const mesh = meshFromBatch(bytes, range, lighting);
     mesh.name = zone;
     scene.add(mesh);
     meshes[zone] = mesh;
