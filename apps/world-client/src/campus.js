@@ -28,6 +28,10 @@ function meshFromBatch(bytes, range) {
   geo.setAttribute('position', new THREE.BufferAttribute(points, 3));
   geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   geo.computeVertexNormals();
+  // Unit normals fit a normalized signed short. Keep full precision positions
+  // and linear vertex colors while making room for the extra shore geometry.
+  const normals = geo.getAttribute('normal').array;
+  geo.setAttribute('normal', new THREE.BufferAttribute(Int16Array.from(normals, n => Math.round(n * 32767)), 3, true));
   geo.computeBoundingSphere();
   return new THREE.Mesh(
     geo,
@@ -35,52 +39,37 @@ function meshFromBatch(bytes, range) {
   );
 }
 function plantTrees(scene, trees) {
+  // The ground and primary crowns cover the two ends of each trunk.
   const trunk = new THREE.InstancedMesh(
-    new THREE.CylinderGeometry(0.24, 0.34, 2.5, 7),
+    new THREE.CylinderGeometry(0.24, 0.34, 2.5, 6, 1, true),
     new THREE.MeshStandardMaterial({ color: 0x796453 }),
     trees.length,
   );
-  const willowLobes = 4;
-  const extraCrowns = trees.filter(t => t.form === 'willow').length * willowLobes;
   const crown = new THREE.InstancedMesh(
     new THREE.IcosahedronGeometry(1, 1),
     new THREE.MeshStandardMaterial({ roughness: 1 }),
-    trees.length + extraCrowns,
+    trees.length,
   );
   const transform = new THREE.Object3D();
-  let lobe = trees.length;
   trees.forEach(({ x, z, form, trunkHeight = 2.5 }, i) => {
     transform.position.set(x, trunkHeight / 2, z);
     transform.scale.set(1, trunkHeight / 2.5, 1);
     transform.updateMatrix();
     trunk.setMatrixAt(i, transform.matrix);
     const spread = 1 + 0.14 * Math.sin(i * 2.4);
-    transform.position.y = form ? 4.32 + 0.2 * Math.cos(i) : 3.35;
-    if (form === 'willow') transform.scale.set(3.0 * spread, 1.65, 2.65 * spread);
-    else if (form === 'bank') transform.scale.set(2.05 * spread, 1.95, 1.9 * spread);
+    transform.position.y = form ? 4.68 + 0.44 * Math.cos(i) : 3.35;
+    if (form === 'willow') transform.scale.set(3.0 * spread, 2.15, 2.65 * spread);
+    else if (form === 'bank') transform.scale.set(2.55 * spread, 2.40, 2.35 * spread);
     else transform.scale.set(1.55, 2.05, 1.6);
     transform.rotation.y = i * 1.9;
     transform.updateMatrix();
     crown.setMatrixAt(i, transform.matrix);
-    crown.setColorAt(i, new THREE.Color(form === 'willow' ? 0x708963 : [0x537c55, 0x628153, 0x77935e][i % 3]));
-    if (form === 'willow') {
-      for (let j = 0; j < willowLobes; j++) {
-        const angle = i + j * 2 * Math.PI / willowLobes;
-        transform.position.set(x + 2.0 * spread * Math.cos(angle), 3.82, z + 1.88 * spread * Math.sin(angle));
-        transform.scale.set(0.92, 1.58, 0.81);
-        transform.updateMatrix();
-        crown.setMatrixAt(lobe, transform.matrix);
-        crown.setColorAt(lobe++, new THREE.Color(j % 2 ? 0x69835e : 0x789367));
-      }
-    }
+    const palette = form ? [0x80935d, 0x929d64, 0x6f8b63, 0xa1a367] : [0x537c55, 0x628153, 0x77935e];
+    crown.setColorAt(i, new THREE.Color(palette[i % palette.length]));
   });
   trunk.computeBoundingSphere();
   crown.computeBoundingSphere();
   scene.add(trunk, crown);
-  return (near, firstTree) => {
-    trunk.count = near ? trees.length : firstTree;
-    crown.count = near ? trees.length + extraCrowns : firstTree;
-  };
 }
 export async function createCampus(scene) {
   const [layout, bytes] = await Promise.all([
@@ -98,7 +87,7 @@ export async function createCampus(scene) {
     else
       details.push({ mesh, anchor: spatial.rooms[zone === 'hall' ? 'main-building' : 'library'] });
   }
-  const updateTrees = plantTrees(scene, layout.trees);
+  plantTrees(scene, layout.trees);
   const region = layout.p1aLod;
   return {
     ...spatial,
@@ -107,7 +96,6 @@ export async function createCampus(scene) {
         const near = Math.hypot(x - region.x, z - region.z) < DETAIL_DISTANCE;
         if (near) baseGeometry.setDrawRange(region.farVertices, layout.ranges.base.count - region.farVertices);
         else baseGeometry.setDrawRange(0, region.farVertices + region.sharedVertices);
-        updateTrees(near, region.firstTree);
       }
       for (const { mesh, anchor } of details)
         mesh.visible = Math.hypot(anchor.x - x, anchor.z - z) < DETAIL_DISTANCE;

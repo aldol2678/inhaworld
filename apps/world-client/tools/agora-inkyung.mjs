@@ -1,5 +1,6 @@
 // Build-only P1A surfaces. Polygons and way nodes are GIS inputs; all dressing is estimated.
 import access from '../map-sources/data/reality/evidence/roads/agora-inkyung.json' with { type: 'json' };
+import { FACILITIES } from '../map-sources/src/campus-facilities.js';
 import { CAMPUS_GRADE } from '../src/map/spatial.js';
 import { FLAT_GROUND_Y as Y } from '../map-sources/src/flat-ground-surface.js';
 import { roadFrame, roadTreeClear } from '../map-sources/src/campus-road-layout.js';
@@ -131,7 +132,9 @@ function bench(batch, solid, id, f, u, v) {
   }
   for (const offset of [-0.18, 0, 0.18]) box('#aa7951', 0, offset, 0.3, [2 * hw, 0.08, 0.15]);
   for (const height of [0.47, 0.62]) box('#996f4d', 0, 0.24, height, [2 * hw, 0.12, 0.08]);
-  solid(id, rect(f, u - hw, u + hw, v - hd, v + hd), CAMPUS_GRADE, CAMPUS_GRADE + 0.68);
+  const footprint = rect(f, u - hw, u + hw, v - hd, v + hd);
+  solid(id, footprint, CAMPUS_GRADE, CAMPUS_GRADE + 0.68);
+  return footprint;
 }
 
 function pondSurface(batch, faces, edges) {
@@ -203,6 +206,102 @@ function pondSurface(batch, faces, edges) {
   }
 }
 
+// The outer mortar line meets at the bisector of adjacent source edges. Each
+// cap shares its two end vertices with the next cap, including the closing joint.
+function shoreCoping(batch, pond, edges, clip) {
+  const outer = pond.map((p, i) => {
+    const before = edges[(i + edges.length - 1) % edges.length];
+    const a = before.at(before.length, 1), b = edges[i].at(0, 1);
+    const ax = a.x - p.x, az = a.z - p.z, bx = b.x - p.x, bz = b.z - p.z;
+    const scale = 0.34 / (1 + ax * bx + az * bz);
+    return { x: p.x + (ax + bx) * scale, z: p.z + (az + bz) * scale };
+  });
+  const stone = ['#a8a594', '#b8b2a0', '#b0aa98', '#a7a497'];
+  edges.forEach((edge, i) => {
+    const j = (i + 1) % edges.length, count = Math.ceil(edge.length / 1.25);
+    for (let n = 0; n < count; n++) {
+      const start = n / count, end = (n + 1) / count;
+      const cap = [mix(pond[i], pond[j], start), mix(pond[i], pond[j], end),
+        mix(outer[i], outer[j], end), mix(outer[i], outer[j], start)];
+      for (const piece of clip(cap)) flat(batch, stone[(i + n) % stone.length], piece, Y.EDGE);
+    }
+  });
+}
+
+const foliage = [
+  ['#3e5b48', '#688757', '#99a36c'], ['#465f43', '#7c9254', '#a9ac6d'],
+  ['#3e5b50', '#678969', '#92a677'], ['#536947', '#899558', '#b3ac75'],
+];
+
+// Bake asymmetric crowns with lighter upper leaves into the near static batch.
+// Short shrubs end at grade, taller crowns also have a visible underside.
+function leafCluster(batch, x, y, z, rx, ry, rz, seed, sides) {
+  const [shade, leaf, tip] = foliage[seed % foliage.length];
+  const bottom = [[x, y - ry, z], shade], top = [[x + rx * 0.12, y + ry, z], tip];
+  function ring(radius, level, twist, color) {
+    return Array.from({ length: sides }, (_, i) => {
+      const a = seed + twist + (i * Math.PI * 2) / sides;
+      const r = radius * (1 + 0.12 * Math.sin(3 * a + seed));
+      return [[x + rx * r * Math.cos(a), y + ry * (level + 0.12 * Math.sin(2 * a)),
+        z + rz * r * Math.sin(a)], color];
+    });
+  }
+  const low = ring(0.78, -0.62, 0, shade), belt = ring(1, 0.10, 0.20, leaf);
+  const high = ring(0.65, 0.76, 0.36, tip);
+  if (y <= ry) low.forEach(([position]) => { position[1] = 0; });
+  for (let i = 0; i < sides; i++) {
+    const j = (i + 1) % sides;
+    if (y > ry) batch.coloredTriangle(bottom, low[i], low[j]);
+    for (const [a, b] of [[low, belt], [belt, high]]) {
+      batch.coloredTriangle(a[i], b[i], b[j]);
+      batch.coloredTriangle(a[i], b[j], a[j]);
+    }
+    batch.coloredTriangle(high[i], top, high[j]);
+  }
+}
+
+function bankPlanting(batch, trees, routes, owners, shoulder) {
+  const exclude = [...owners, ...FACILITIES.filter(f => f.kind === 'building').flatMap(f => f.rings.slice(0, 1))];
+  const clear = (x, z, r) => !exclude.some(ring => polygonOverlap(x, z, ring, r));
+  trees.forEach(({ x, z, form }, i) => {
+    if (!form) return;
+    const willow = form === 'willow';
+    const count = willow ? 4 : 3;
+    for (let j = 0; j < count; j++) {
+      const a = i + (j * 2 * Math.PI) / count;
+      const height = (willow ? 4.35 : 5.1) + 0.98 * Math.sin(2 * a);
+      const cx = x + 1.7 * Math.cos(a), cz = z + 1.6 * Math.sin(a);
+      if (!clear(cx, cz, 2.05)) continue;
+      leafCluster(batch, cx, height, cz, 1.5 + 0.24 * Math.cos(a),
+        willow ? 1.72 : 1.27, 1.42, i * 3 + j, 7);
+    }
+    // Low, irregular planting between the trunks also frames the opposite bank
+    // at eye level. Leave dry openings for the seat and the walking surfaces.
+    const next = trees[i + 1];
+    if (next?.form) {
+      const p = mix({ x, z }, next, 0.40 + 0.12 * Math.sin(i));
+      if (clear(p.x, p.z, 1.90) && roadTreeClear(p, 1.7))
+        leafCluster(batch, p.x, 0.78, p.z, 1.63, 0.94, 1.37, i + 2, 7);
+    }
+  });
+  // Low planting uses only dry verges. None of these soft clusters creates a
+  // trunk, moves a bench or implies a surveyed planting position.
+  let seed = 0;
+  for (const route of routes) {
+    route.line.slice(1).forEach((b, i) => {
+      const f = roadFrame(route.line[i], b);
+      for (let u = 2.2; u < f.length - 1; u += 4.7 + 1.25 * Math.sin(u)) {
+        for (const side of [-1, 1]) {
+          const index = seed++, radius = 0.83 + 0.24 * Math.cos(index * 1.7);
+          const p = f.at(u, side * (route.width / 2 + shoulder + radius + 0.46));
+          if (!roadTreeClear(p, radius) || !clear(p.x, p.z, radius + 0.2)) continue;
+          leafCluster(batch, p.x, 0.40, p.z, radius, 0.49 + 0.09 * Math.sin(index), radius, index, 6);
+        }
+      }
+    });
+  }
+}
+
 export function agoraInkyung(port, pond) {
   const plaza = port.projectPolygon(port.LANDMARKS.find((f) => f.id === 'lmk_agora_plaza').polygon);
   const water = triangles(pond),
@@ -268,24 +367,7 @@ export function agoraInkyung(port, pond) {
         const f = edgeFrame(plaza, i);
         bench(batch, solid, 'agora-seat-' + i, f, f.length * 0.52, -1.2);
       }
-      const outsidePaving = subtractGround(owners);
-      const stone = ['#ada995', '#a4a08e', '#b7b39d'];
-      for (const [i, f] of edges.entries()) {
-        // Flush segmented coping follows the irregular bank. Keep the junction
-        // and the true water boundary open and assign only exposed land to it.
-        const count = Math.ceil(f.length / 1.25);
-        for (let n = 0; n < count; n++) {
-          const margin = 0.34 + 0.08 * Math.sin(i + n * 2.1);
-          const cap = rect(
-            f,
-            (n * f.length) / count + 0.02,
-            ((n + 1) * f.length) / count - 0.02,
-            0,
-            margin,
-          );
-          for (const piece of outsidePaving(cap)) flat(batch, stone[(n + i) % 3], piece, Y.EDGE);
-        }
-      }
+      shoreCoping(batch, pond, edges, subtractGround(owners));
       // The pinned pond-surroundings study supports shade planting on the landward
       // bank. Spacing, species silhouettes and seating positions are presentation.
       for (let i = 3; i < edges.length; i++) {
@@ -302,7 +384,8 @@ export function agoraInkyung(port, pond) {
         }
       }
       const west = edges[8];
-      bench(batch, solid, 'inkyung-seat-west', west, west.length * 0.55, 1.25);
+      const seat = bench(batch, solid, 'inkyung-seat-west', west, west.length * 0.55, 1.25);
+      bankPlanting(batch, trees, routes, [...owners, seat], shoulder);
     },
   };
 }
