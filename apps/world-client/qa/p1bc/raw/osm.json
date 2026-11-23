@@ -1,0 +1,137 @@
+[
+  {
+    "id": "site_218215618",
+    "way": 218215618,
+    "version": 9,
+    "uniqueNodes": 17,
+    "ledgerNodes": 18,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/218215618/full.json"
+  },
+  {
+    "id": "site_218220046",
+    "way": 218220046,
+    "version": 6,
+    "uniqueNodes": 22,
+    "ledgerNodes": 23,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/218220046/full.json"
+  },
+  {
+    "id": "site_218221011",
+    "way": 218221011,
+    "version": 6,
+    "uniqueNodes": 11,
+    "ledgerNodes": 12,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/218221011/full.json"
+  },
+  {
+    "id": "site_258995412",
+    "way": 258995412,
+    "version": 3,
+    "uniqueNodes": 5,
+    "ledgerNodes": 6,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/258995412/full.json"
+  },
+  {
+    "id": "site_218220690",
+    "way": 218220690,
+    "version": 7,
+    "uniqueNodes": 4,
+    "ledgerNodes": 5,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/218220690/full.json"
+  },
+  {
+    "id": "site_481241657",
+    "way": 481241657,
+    "version": 1,
+    "uniqueNodes": 4,
+    "ledgerNodes": 4,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/481241657/full.json"
+  },
+  {
+    "id": "site_258995842",
+    "way": 258995842,
+    "version": 2,
+    "uniqueNodes": 4,
+    "ledgerNodes": 4,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/258995842/full.json"
+  },
+  {
+    "id": "site_481241696",
+    "way": 481241696,
+    "version": 1,
+    "uniqueNodes": 5,
+    "ledgerNodes": 5,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/481241696/full.json"
+  },
+  {
+    "id": "bldg_02_south",
+    "way": 219983082,
+    "version": 8,
+    "uniqueNodes": 21,
+    "ledgerNodes": 22,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/219983082/full.json"
+  },
+  {
+    "id": "bldg_06",
+    "way": 568420968,
+    "version": 1,
+    "uniqueNodes": 4,
+    "ledgerNodes": 5,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/568420968/full.json"
+  },
+  {
+    "id": "bldg_07",
+    "way": 218038027,
+    "version": 6,
+    "uniqueNodes": 29,
+    "ledgerNodes": 30,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/218038027/full.json"
+  },
+  {
+    "id": "bldg_lawschool",
+    "way": 217950511,
+    "version": 5,
+    "uniqueNodes": 32,
+    "ledgerNodes": 33,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/217950511/full.json"
+  },
+  {
+    "id": "bldg_hawaii",
+    "way": 218037242,
+    "version": 4,
+    "uniqueNodes": 8,
+    "ledgerNodes": 9,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/218037242/full.json"
+  },
+  {
+    "id": "lmk_agora_plaza",
+    "way": 1099894035,
+    "version": 1,
+    "uniqueNodes": 7,
+    "ledgerNodes": 8,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/1099894035/full.json"
+  },
+  {
+    "id": "lmk_inkyung_pond",
+    "way": 218264623,
+    "version": 7,
+    "uniqueNodes": 13,
+    "ledgerNodes": 14,
+    "identicalOrderedWGS84": true,
+    "url": "https://api.openstreetmap.org/api/0.6/way/218264623/full.json"
+  }
+]

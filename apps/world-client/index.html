@@ -7,13 +7,20 @@
 <style>
   body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: #101820; color: #eef2f5; }
   header { padding: 12px 16px; background: #1a2a3a; }
+  header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 10px; }
+  header p { grid-column: 1 / -1; }
+  .graphics { display: inline-flex; gap: 5px; align-items: center; font-size: 13px; }
+  .graphics select { min-height: 32px; padding: 2px 5px; background: #22374a; color: #fff; border: 1px solid #708497; border-radius: 4px; }
+  #graphics-resolved { color: #c4d6df; }
+  #graphics-resolved:empty { display: none; }
   header h1 { margin: 0; font-size: 20px; }
   header p { margin: 4px 0 0; color: #b8c8d8; font-size: 13px; }
   #hud { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 8px 16px; background: #22374a; font-size: 14px; }
   #hud b { color: #ffd97a; }
   main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 0; }
   #scene-wrap { position: relative; min-height: 480px; }
-  #scene { width: 100%; height: 70vh; min-height: 480px; display: block; touch-action: none; }
+  #scene-input { touch-action: none; }
+  #scene { pointer-events: none; width: 100%; height: 70vh; min-height: 480px; display: block; touch-action: none; }
   #joy-base { display: none; position: fixed; z-index: 2; width: 120px; height: 120px; border: 2px solid rgba(255,255,255,.6); border-radius: 50%; background: rgba(255,255,255,.08); pointer-events: none; }
   #joy-knob { position: absolute; left: 35px; top: 35px; width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,.7); }
   #panel { padding: 12px 16px; background: #16222e; }
@@ -45,6 +52,10 @@
 <body>
 <header>
   <h1>INHA WORLD v0.1</h1>
+  <div class="graphics"><label for="graphics-quality">그래픽</label>
+    <select id="graphics-quality"><option value="auto">자동</option><option value="very_low">매우 낮음</option><option value="low">낮음</option><option value="medium">중간</option><option value="high">높음</option><option value="ultra">울트라</option></select>
+    <output id="graphics-resolved" aria-label="자동 적용 품질" aria-live="polite"></output>
+  </div>
   <p>새로 짓는 최소 playable 캠퍼스 — 걷기 · 방명록 · 퀘스트 3개. 정적 파일 + 선택적 로컬 서버.</p>
 </header>
 <div id="hud">
@@ -55,7 +66,7 @@
 </div>
 <main>
   <div id="scene-wrap">
-    <canvas id="scene"></canvas>
+    <div id="scene-input"><canvas id="scene"></canvas></div>
     <div id="joy-base"><div id="joy-knob"></div></div>
   </div>
   <section id="panel">

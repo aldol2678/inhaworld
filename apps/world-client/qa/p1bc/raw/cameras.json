@@ -1,0 +1,2797 @@
+{
+  "1280x720": {
+    "before": {
+      "gate": {
+        "position": [
+          0,
+          2.2,
+          -98
+        ],
+        "yaw": 3.141592653589793,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 5,
+        "triangles": 17968,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "hall": {
+        "position": [
+          46.8,
+          2.2,
+          -19.9
+        ],
+        "yaw": -2.8546539006590237,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 4,
+        "triangles": 18850,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "library": {
+        "position": [
+          -8,
+          2.2,
+          -10.25
+        ],
+        "yaw": 2.0721027324165595,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 4,
+        "triangles": 16448,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "canal": {
+        "position": [
+          41,
+          2.2,
+          -12
+        ],
+        "yaw": 0.4704042629365914,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 4,
+        "triangles": 18850,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "agora": {
+        "position": [
+          121.8,
+          2.2,
+          -10.4
+        ],
+        "yaw": -2.310771210770768,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 3,
+        "triangles": 17330,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "pond": {
+        "position": [
+          125.6,
+          2.2,
+          5.05
+        ],
+        "yaw": 2.8457080951321982,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 3,
+        "triangles": 17330,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "canal-west": {
+        "position": [
+          7,
+          2.2,
+          -67
+        ],
+        "yaw": -2.5535900500422257,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 5,
+        "triangles": 17968,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "canal-east": {
+        "position": [
+          30.5,
+          2.2,
+          -50
+        ],
+        "yaw": 2.1479885406683574,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 4,
+        "triangles": 16448,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "lawns": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 5,
+        "triangles": 17968,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "connector": {
+        "position": [
+          99.5,
+          2.2,
+          1.7
+        ],
+        "yaw": -1.1207786048088242,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 3,
+        "triangles": 17330,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "student-entry": {
+        "position": [
+          136.7,
+          2.2,
+          23.6
+        ],
+        "yaw": -0.754559614054791,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 3,
+        "triangles": 17330,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "graphics": {
+        "tier": "legacy",
+        "preference": "legacy",
+        "aa": "native-msaa-4",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "css": [
+          940,
+          504
+        ],
+        "renderbuffers": {
+          "buffers": 0,
+          "logicalBytes": 0
+        },
+        "geo": {
+          "base": {
+            "visible": true,
+            "instances": 1,
+            "range": 33222,
+            "vertices": 33267
+          },
+          "hall": {
+            "visible": true,
+            "instances": 1,
+            "range": null,
+            "vertices": 4560
+          },
+          "library": {
+            "visible": false,
+            "instances": 1,
+            "range": null,
+            "vertices": 6786
+          }
+        },
+        "error": 0
+      }
+    },
+    "after": {
+      "gate": {
+        "position": [
+          0,
+          2.2,
+          -98
+        ],
+        "yaw": 3.141592653589793,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 25837,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 36,
+          "deleted": 0,
+          "bytes": 1349020
+        },
+        "contextLost": false
+      },
+      "hall": {
+        "position": [
+          46.8,
+          2.2,
+          -19.9
+        ],
+        "yaw": -2.8546539006590237,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 28537,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "library": {
+        "position": [
+          -8,
+          2.2,
+          -10.25
+        ],
+        "yaw": 2.0721027324165595,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 6,
+        "triangles": 24215,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "canal": {
+        "position": [
+          41,
+          2.2,
+          -12
+        ],
+        "yaw": 0.4704042629365914,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 28517,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "agora": {
+        "position": [
+          121.8,
+          2.2,
+          -10.4
+        ],
+        "yaw": -2.310771210770768,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 5,
+        "triangles": 20704,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "pond": {
+        "position": [
+          125.6,
+          2.2,
+          5.05
+        ],
+        "yaw": 2.8457080951321982,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 6,
+        "triangles": 26555,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "canal-west": {
+        "position": [
+          7,
+          2.2,
+          -67
+        ],
+        "yaw": -2.5535900500422257,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 9,
+        "triangles": 26877,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "canal-east": {
+        "position": [
+          30.5,
+          2.2,
+          -50
+        ],
+        "yaw": 2.1479885406683574,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 7,
+        "triangles": 28299,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "lawns": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 25837,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "connector": {
+        "position": [
+          99.5,
+          2.2,
+          1.7
+        ],
+        "yaw": -1.1207786048088242,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 6,
+        "triangles": 26735,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "student-entry": {
+        "position": [
+          136.7,
+          2.2,
+          23.6
+        ],
+        "yaw": -0.754559614054791,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 5,
+        "triangles": 20544,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "graphics": {
+        "tier": "high",
+        "preference": "high",
+        "aa": "native-msaa-4",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "css": [
+          940,
+          504
+        ],
+        "renderbuffers": {
+          "buffers": 0,
+          "logicalBytes": 0
+        },
+        "geo": {
+          "base": {
+            "visible": true,
+            "instances": 1,
+            "range": 39264,
+            "vertices": 23204
+          },
+          "hall": {
+            "visible": true,
+            "instances": 1,
+            "range": null,
+            "vertices": 3014
+          },
+          "library": {
+            "visible": false,
+            "instances": 1,
+            "range": null,
+            "vertices": 3984
+          },
+          "canal": {
+            "visible": true,
+            "instances": 1,
+            "range": 17793,
+            "vertices": 18710
+          },
+          "connector": {
+            "visible": true,
+            "instances": 1,
+            "range": 2700,
+            "vertices": 2059
+          },
+          "crowns": {
+            "visible": true,
+            "instances": 68,
+            "range": null,
+            "vertices": 240
+          },
+          "secondary-crowns": {
+            "visible": true,
+            "instances": 15,
+            "range": null,
+            "vertices": 60
+          }
+        },
+        "error": 0
+      }
+    },
+    "presets": {
+      "auto": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 25837,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 36,
+          "deleted": 0,
+          "bytes": 1349020
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "high",
+          "preference": "auto",
+          "aa": "native-msaa-4",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            940,
+            504
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 17793,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 240
+            },
+            "secondary-crowns": {
+              "visible": true,
+              "instances": 22,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "very_low": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          611,
+          327
+        ],
+        "visible": [
+          "base",
+          "trunks",
+          "crowns",
+          "reflecting-pool"
+        ],
+        "calls": 4,
+        "triangles": 11604,
+        "geometries": 4,
+        "textures": 1,
+        "pixelRatio": 0.65,
+        "glBuffers": {
+          "created": 54,
+          "deleted": 36,
+          "bytes": 648286
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "very_low",
+          "preference": "very_low",
+          "aa": "off",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            940,
+            504
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 60
+            },
+            "secondary-crowns": {
+              "visible": false,
+              "instances": 0,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "low": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          752,
+          403
+        ],
+        "visible": [
+          "base",
+          "canal",
+          "trunks",
+          "crowns",
+          "reflecting-pool"
+        ],
+        "calls": 5,
+        "triangles": 11738,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 0.8,
+        "glBuffers": {
+          "created": 58,
+          "deleted": 36,
+          "bytes": 1143256
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "low",
+          "preference": "low",
+          "aa": "off",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            940,
+            504
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 402,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 60
+            },
+            "secondary-crowns": {
+              "visible": false,
+              "instances": 0,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "medium": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 7,
+        "triangles": 20554,
+        "geometries": 7,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 68,
+          "deleted": 36,
+          "bytes": 1267564
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "medium",
+          "preference": "medium",
+          "aa": "off",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            940,
+            504
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 7344,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 240
+            },
+            "secondary-crowns": {
+              "visible": true,
+              "instances": 8,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "high": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 25837,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 104,
+          "deleted": 68,
+          "bytes": 1349020
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "high",
+          "preference": "high",
+          "aa": "native-msaa-4",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            940,
+            504
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 17793,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 240
+            },
+            "secondary-crowns": {
+              "visible": true,
+              "instances": 22,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "ultra": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 9,
+        "triangles": 28905,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 108,
+          "deleted": 68,
+          "bytes": 1404340
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "ultra",
+          "preference": "ultra",
+          "aa": "native-msaa-4",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            940,
+            504
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 22965,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": true,
+              "instances": 1,
+              "range": 2952,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 240
+            },
+            "secondary-crowns": {
+              "visible": true,
+              "instances": 40,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      }
+    }
+  },
+  "891x411": {
+    "before": {
+      "gate": {
+        "position": [
+          0,
+          2.2,
+          -98
+        ],
+        "yaw": 3.141592653589793,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 5,
+        "triangles": 17968,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "hall": {
+        "position": [
+          46.8,
+          2.2,
+          -19.9
+        ],
+        "yaw": -2.8546539006590237,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 4,
+        "triangles": 18850,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "library": {
+        "position": [
+          -8,
+          2.2,
+          -10.25
+        ],
+        "yaw": 2.0721027324165595,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 4,
+        "triangles": 16448,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "canal": {
+        "position": [
+          41,
+          2.2,
+          -12
+        ],
+        "yaw": 0.4704042629365914,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 5,
+        "triangles": 21112,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "agora": {
+        "position": [
+          121.8,
+          2.2,
+          -10.4
+        ],
+        "yaw": -2.310771210770768,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 3,
+        "triangles": 17330,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "pond": {
+        "position": [
+          125.6,
+          2.2,
+          5.05
+        ],
+        "yaw": 2.8457080951321982,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 4,
+        "triangles": 18850,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "canal-west": {
+        "position": [
+          7,
+          2.2,
+          -67
+        ],
+        "yaw": -2.5535900500422257,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 5,
+        "triangles": 17968,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "canal-east": {
+        "position": [
+          30.5,
+          2.2,
+          -50
+        ],
+        "yaw": 2.1479885406683574,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 5,
+        "triangles": 17968,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "lawns": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 5,
+        "triangles": 17968,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "connector": {
+        "position": [
+          99.5,
+          2.2,
+          1.7
+        ],
+        "yaw": -1.1207786048088242,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 3,
+        "triangles": 17330,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "student-entry": {
+        "position": [
+          136.7,
+          2.2,
+          23.6
+        ],
+        "yaw": -0.754559614054791,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "Mesh",
+          "Mesh"
+        ],
+        "calls": 3,
+        "triangles": 17330,
+        "geometries": 5,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 19,
+          "deleted": 0,
+          "bytes": 1356110
+        },
+        "contextLost": false
+      },
+      "graphics": {
+        "tier": "legacy",
+        "preference": "legacy",
+        "aa": "native-msaa-4",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "css": [
+          891,
+          288
+        ],
+        "renderbuffers": {
+          "buffers": 0,
+          "logicalBytes": 0
+        },
+        "geo": {
+          "base": {
+            "visible": true,
+            "instances": 1,
+            "range": 33222,
+            "vertices": 33267
+          },
+          "hall": {
+            "visible": true,
+            "instances": 1,
+            "range": null,
+            "vertices": 4560
+          },
+          "library": {
+            "visible": false,
+            "instances": 1,
+            "range": null,
+            "vertices": 6786
+          }
+        },
+        "error": 0
+      }
+    },
+    "after": {
+      "gate": {
+        "position": [
+          0,
+          2.2,
+          -98
+        ],
+        "yaw": 3.141592653589793,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 25837,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 36,
+          "deleted": 0,
+          "bytes": 1349020
+        },
+        "contextLost": false
+      },
+      "hall": {
+        "position": [
+          46.8,
+          2.2,
+          -19.9
+        ],
+        "yaw": -2.8546539006590237,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 7,
+        "triangles": 28535,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "library": {
+        "position": [
+          -8,
+          2.2,
+          -10.25
+        ],
+        "yaw": 2.0721027324165595,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 6,
+        "triangles": 24215,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "canal": {
+        "position": [
+          41,
+          2.2,
+          -12
+        ],
+        "yaw": 0.4704042629365914,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 9,
+        "triangles": 30779,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "agora": {
+        "position": [
+          121.8,
+          2.2,
+          -10.4
+        ],
+        "yaw": -2.310771210770768,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 5,
+        "triangles": 20704,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "pond": {
+        "position": [
+          125.6,
+          2.2,
+          5.05
+        ],
+        "yaw": 2.8457080951321982,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 7,
+        "triangles": 28075,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "canal-west": {
+        "position": [
+          7,
+          2.2,
+          -67
+        ],
+        "yaw": -2.5535900500422257,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 9,
+        "triangles": 26877,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "canal-east": {
+        "position": [
+          30.5,
+          2.2,
+          -50
+        ],
+        "yaw": 2.1479885406683574,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 29819,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "lawns": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 25837,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "connector": {
+        "position": [
+          99.5,
+          2.2,
+          1.7
+        ],
+        "yaw": -1.1207786048088242,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 6,
+        "triangles": 26735,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "student-entry": {
+        "position": [
+          136.7,
+          2.2,
+          23.6
+        ],
+        "yaw": -0.754559614054791,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 6,
+        "triangles": 26475,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 40,
+          "deleted": 0,
+          "bytes": 1404340
+        },
+        "contextLost": false
+      },
+      "graphics": {
+        "tier": "high",
+        "preference": "high",
+        "aa": "native-msaa-4",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "css": [
+          891,
+          288
+        ],
+        "renderbuffers": {
+          "buffers": 0,
+          "logicalBytes": 0
+        },
+        "geo": {
+          "base": {
+            "visible": true,
+            "instances": 1,
+            "range": 39264,
+            "vertices": 23204
+          },
+          "hall": {
+            "visible": true,
+            "instances": 1,
+            "range": null,
+            "vertices": 3014
+          },
+          "library": {
+            "visible": false,
+            "instances": 1,
+            "range": null,
+            "vertices": 3984
+          },
+          "canal": {
+            "visible": true,
+            "instances": 1,
+            "range": 17793,
+            "vertices": 18710
+          },
+          "connector": {
+            "visible": true,
+            "instances": 1,
+            "range": 2700,
+            "vertices": 2059
+          },
+          "crowns": {
+            "visible": true,
+            "instances": 68,
+            "range": null,
+            "vertices": 240
+          },
+          "secondary-crowns": {
+            "visible": true,
+            "instances": 15,
+            "range": null,
+            "vertices": 60
+          }
+        },
+        "error": 0
+      }
+    },
+    "presets": {
+      "auto": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 7,
+        "triangles": 20554,
+        "geometries": 7,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 32,
+          "deleted": 0,
+          "bytes": 1267564
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "medium",
+          "preference": "auto",
+          "aa": "off",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            891,
+            288
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 7344,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 240
+            },
+            "secondary-crowns": {
+              "visible": true,
+              "instances": 8,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "very_low": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          579,
+          187
+        ],
+        "visible": [
+          "base",
+          "trunks",
+          "crowns",
+          "reflecting-pool"
+        ],
+        "calls": 4,
+        "triangles": 11604,
+        "geometries": 7,
+        "textures": 1,
+        "pixelRatio": 0.65,
+        "glBuffers": {
+          "created": 32,
+          "deleted": 0,
+          "bytes": 1267564
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "very_low",
+          "preference": "very_low",
+          "aa": "off",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            891,
+            288
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 60
+            },
+            "secondary-crowns": {
+              "visible": false,
+              "instances": 0,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "low": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          712,
+          230
+        ],
+        "visible": [
+          "base",
+          "canal",
+          "trunks",
+          "crowns",
+          "reflecting-pool"
+        ],
+        "calls": 5,
+        "triangles": 11738,
+        "geometries": 7,
+        "textures": 1,
+        "pixelRatio": 0.8,
+        "glBuffers": {
+          "created": 32,
+          "deleted": 0,
+          "bytes": 1267564
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "low",
+          "preference": "low",
+          "aa": "off",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            891,
+            288
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 402,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 60
+            },
+            "secondary-crowns": {
+              "visible": false,
+              "instances": 0,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "medium": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 7,
+        "triangles": 20554,
+        "geometries": 7,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 32,
+          "deleted": 0,
+          "bytes": 1267564
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "medium",
+          "preference": "medium",
+          "aa": "off",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            891,
+            288
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": false,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 7344,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 240
+            },
+            "secondary-crowns": {
+              "visible": true,
+              "instances": 8,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "high": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 8,
+        "triangles": 25837,
+        "geometries": 8,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 68,
+          "deleted": 32,
+          "bytes": 1349020
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "high",
+          "preference": "high",
+          "aa": "native-msaa-4",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            891,
+            288
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 17793,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": false,
+              "instances": 1,
+              "range": 0,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 240
+            },
+            "secondary-crowns": {
+              "visible": true,
+              "instances": 22,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      },
+      "ultra": {
+        "position": [
+          1,
+          34,
+          -99
+        ],
+        "yaw": -2.664247271216121,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "visible": [
+          "base",
+          "hall",
+          "library",
+          "canal",
+          "connector",
+          "trunks",
+          "crowns",
+          "secondary-crowns",
+          "reflecting-pool"
+        ],
+        "calls": 9,
+        "triangles": 28905,
+        "geometries": 9,
+        "textures": 1,
+        "pixelRatio": 1,
+        "glBuffers": {
+          "created": 72,
+          "deleted": 32,
+          "bytes": 1404340
+        },
+        "contextLost": false,
+        "graphics": {
+          "tier": "ultra",
+          "preference": "ultra",
+          "aa": "native-msaa-4",
+          "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+          "css": [
+            891,
+            288
+          ],
+          "renderbuffers": {
+            "buffers": 0,
+            "logicalBytes": 0
+          },
+          "geo": {
+            "base": {
+              "visible": true,
+              "instances": 1,
+              "range": 28278,
+              "vertices": 23204
+            },
+            "hall": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3014
+            },
+            "library": {
+              "visible": true,
+              "instances": 1,
+              "range": null,
+              "vertices": 3984
+            },
+            "canal": {
+              "visible": true,
+              "instances": 1,
+              "range": 22965,
+              "vertices": 18710
+            },
+            "connector": {
+              "visible": true,
+              "instances": 1,
+              "range": 2952,
+              "vertices": 2059
+            },
+            "crowns": {
+              "visible": true,
+              "instances": 68,
+              "range": null,
+              "vertices": 240
+            },
+            "secondary-crowns": {
+              "visible": true,
+              "instances": 40,
+              "range": null,
+              "vertices": 60
+            }
+          },
+          "error": 0
+        }
+      }
+    }
+  }
+}

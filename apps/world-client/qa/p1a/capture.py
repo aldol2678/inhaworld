@@ -36,6 +36,7 @@ globalThis.captureMapView = ([x, z, targetX, targetZ, height, pitch]) => {
     updateCamera();
     if (height !== undefined) { camera.position.y = height; camera.rotation.x = pitch; }
     campus.updateVisibility(x, z);
+    campus.updateWater?.(0);
     renderer.render(scene, camera);
     return {
         position: camera.position.toArray(),
@@ -72,6 +73,32 @@ class QuietHandler(SimpleHTTPRequestHandler):
         pass
 
 
+BUFFER_PROBE = """(() => {
+              const counts = globalThis.qaBufferCounts = {created: 0, deleted: 0, bytes: 0};
+              const sizes = new Map();
+              const gl = WebGL2RenderingContext.prototype;
+              const allocate = gl.bufferData;
+              gl.bufferData = function (target, data, ...args) {
+                const result = allocate.call(this, target, data, ...args);
+                const binding = target === this.ARRAY_BUFFER ? this.ARRAY_BUFFER_BINDING : this.ELEMENT_ARRAY_BUFFER_BINDING;
+                const buffer = this.getParameter(binding);
+                const bytes = this.getBufferParameter(target, this.BUFFER_SIZE);
+                counts.bytes += bytes - (sizes.get(buffer) || 0);
+                sizes.set(buffer, bytes);
+                return result;
+              };
+              for (const [key, operation] of [['created','createBuffer'],['deleted','deleteBuffer']]) {
+                const original = gl[operation];
+                gl[operation] = function (...args) {
+                  const value = original.apply(this, args);
+                  if (key === 'created' ? value : args[0]) counts[key]++;
+                  if (key === 'deleted') { counts.bytes -= sizes.get(args[0]) || 0; sizes.delete(args[0]); }
+                  return value;
+                };
+              }
+            })();"""
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("dist", type=Path)
@@ -103,30 +130,7 @@ def main():
             page = ctx.new_page()
             page.add_init_script(path=Path(__file__).resolve().parents[2] / "tests/world-driver.js")
             # Count actual WebGL buffer objects on this disposable QA document.
-            page.add_init_script("""(() => {
-              const counts = globalThis.qaBufferCounts = {created: 0, deleted: 0, bytes: 0};
-              const sizes = new Map();
-              const gl = WebGL2RenderingContext.prototype;
-              const allocate = gl.bufferData;
-              gl.bufferData = function (target, data, ...args) {
-                const result = allocate.call(this, target, data, ...args);
-                const binding = target === this.ARRAY_BUFFER ? this.ARRAY_BUFFER_BINDING : this.ELEMENT_ARRAY_BUFFER_BINDING;
-                const buffer = this.getParameter(binding);
-                const bytes = this.getBufferParameter(target, this.BUFFER_SIZE);
-                counts.bytes += bytes - (sizes.get(buffer) || 0);
-                sizes.set(buffer, bytes);
-                return result;
-              };
-              for (const [key, operation] of [['created','createBuffer'],['deleted','deleteBuffer']]) {
-                const original = gl[operation];
-                gl[operation] = function (...args) {
-                  const value = original.apply(this, args);
-                  if (key === 'created' ? value : args[0]) counts[key]++;
-                  if (key === 'deleted') { counts.bytes -= sizes.get(args[0]) || 0; sizes.delete(args[0]); }
-                  return value;
-                };
-              }
-            })();""")
+            page.add_init_script(BUFFER_PROBE)
             errors = []
             page.on("pageerror", lambda err: errors.append(str(err)))
 
