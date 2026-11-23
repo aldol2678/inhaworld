@@ -5,6 +5,6 @@
   "engines": {"node": ">=24"},
   "scripts": {
     "build": "node tools/build-pages.mjs",
-    "test": "node --test tests/guestbook-session.mjs tests/public-settings.mjs tests/p1a-spatial.mjs tests/p1bc.mjs && node tests/spatial.mjs"
+    "test": "node --test tests/guestbook-session.mjs tests/public-settings.mjs tests/p1a-spatial.mjs tests/p1bc.mjs tests/p1d.mjs && node tests/spatial.mjs"
   }
 }

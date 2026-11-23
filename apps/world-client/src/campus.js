@@ -223,6 +223,24 @@ export async function createCampus(scene) {
     scene.add(mesh);
     meshes[zone] = mesh;
   }
+  // Fade this survey-limited model out before the player reaches the site.
+  // Screen-door opacity keeps the opaque depth ordering of trees and masonry.
+  const dream = meshes.dream;
+  const coverage = { value: 1 };
+  const dreamMaterial = dream.material = groundLighting(scene).material;
+  const shadeDream = dreamMaterial.onBeforeCompile;
+  dreamMaterial.onBeforeCompile = (shader) => {
+    shadeDream(shader);
+    shader.uniforms.dreamCoverage = coverage;
+    shader.fragmentShader = 'uniform float dreamCoverage;\n' + shader.fragmentShader.replace(
+      '#include <alphatest_fragment>',
+      `#include <alphatest_fragment>
+       if (dreamCoverage < 1.0) {
+         float threshold = fract(52.9829189 * fract(dot(gl_FragCoord.xy, vec2(0.06711056, 0.00583715))));
+         if (threshold >= dreamCoverage) discard;
+       }`,
+    );
+  };
   const foliage = plantTrees(scene, layout.trees);
   const region = layout.p1aLod;
   const water = canalWater(layout.obstacles.find((o) => o.id === 'site_218220690').polygon, scene.fog);
@@ -254,6 +272,13 @@ export async function createCampus(scene) {
     },
     updateVisibility(x, z) {
       foliage.update(x, z, detail, distance);
+      const skyline = layout.dreamSkyline;
+      const separation = Math.hypot(x - skyline.x, z - skyline.z);
+      const fadeIn = THREE.MathUtils.smoothstep(separation, 21, 38);
+      coverage.value = fadeIn * (1 - THREE.MathUtils.smoothstep(separation, distance - 12, distance));
+      dream.visible = coverage.value > 0;
+      dream.geometry.setDrawRange(0, detail >= 2 && separation < distance * 0.65
+        ? layout.ranges.dream.count : skyline.silhouetteVertices);
       const close = (anchor, limit) => Math.hypot(anchor.x - x, anchor.z - z) < limit;
       if (close(region, Math.max(75, distance)))
         meshes.base.geometry.setDrawRange(region.farVertices, layout.ranges.base.count - region.farVertices);

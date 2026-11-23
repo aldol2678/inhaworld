@@ -113,7 +113,7 @@ test('only water occupies the source lake and a single surface owns the mapped p
     // Baked coordinates are Float32 while the source rings are Float64.
     assert(Math.abs(water - Math.abs(signedArea(lake))) < 0.002, 'water area ' + water);
     assert(dry < 0.002, 'dry surface inside lake ' + dry);
-    if (lod === 'near') assert(Math.abs(plazaFloor - Math.abs(signedArea(plaza))) < 0.002, 'plaza area ' + plazaFloor);
+    assert(Math.abs(plazaFloor - Math.abs(signedArea(plaza))) < 0.002, 'plaza area ' + plazaFloor);
     t.diagnostic(JSON.stringify({ lod, waterAreaWU2: water, dryInsideLakeWU2: dry, plazaFloorWU2: plazaFloor }));
   }
 });

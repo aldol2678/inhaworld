@@ -44,8 +44,8 @@ function saveQuality(storage, value) {
 }
 
 export function initialTier({ width, height, dpr, touch, maxTextureSize }) {
-  const pixels = width * height * dpr ** 2;
-  if (maxTextureSize < 4096 || pixels > 5e6) return 'low';
+  const pixels = width * height * Math.min(dpr, profiles.high.pixelCap) ** 2;
+  if (maxTextureSize < 4096) return 'low';
   if (touch) return pixels < 1.2e6 && maxTextureSize >= 8192 ? 'medium' : 'low';
   return pixels <= 2.5e6 && maxTextureSize >= 8192 ? 'high' : 'medium';
 }
@@ -53,11 +53,11 @@ export function initialTier({ width, height, dpr, touch, maxTextureSize }) {
 export function createQuality({ device, storage, apply }) {
   let preference = readQuality(storage);
   let tier = preference === 'auto' ? initialTier(device()) : preference;
-  let last, elapsed, slow, fast, cooldown;
-  const samples = [];
+  let touch, last, elapsed, count, lateFrames, quickFrames, slow, fast, cooldown;
   function reset(hold = 0) {
+    touch = device().touch;
     last = null;
-    samples.length = elapsed = slow = fast = 0;
+    count = lateFrames = quickFrames = elapsed = slow = fast = 0;
     cooldown = hold;
   }
   function select(value) {
@@ -82,16 +82,20 @@ export function createQuality({ device, storage, apply }) {
       cooldown -= dt;
       return;
     }
-    samples.push(dt);
+    // Count threshold crossings for the 75th percentile without allocating
+    // or sorting on the frame path. Allow a stable 30 Hz PC to retain high.
+    const late = touch ? 29 : 38;
+    const quick = touch || tier === 'high' ? 19 : 23;
+    count++;
+    if (dt > late) lateFrames++;
+    if (dt < quick) quickFrames++;
     elapsed += dt;
-    if (elapsed < 2000 || samples.length < 8) return;
-    samples.sort((a, b) => a - b);
-    const p75 = samples[Math.ceil(samples.length * 0.75) - 1];
-    samples.length = elapsed = 0;
-    slow = p75 > 29 ? slow + 1 : 0;
-    fast = p75 < 19 ? fast + 1 : 0;
+    if (elapsed < 2000 || count < 8) return;
+    slow = lateFrames > count - Math.ceil(0.75 * count) ? slow + 1 : 0;
+    fast = quickFrames >= Math.ceil(0.75 * count) ? fast + 1 : 0;
+    count = lateFrames = quickFrames = elapsed = 0;
     const index = tiers.indexOf(tier);
-    const ceiling = device().touch ? tiers.indexOf('high') : tiers.length - 1;
+    const ceiling = touch ? tiers.indexOf('high') : tiers.length - 1;
     const lower = slow >= 2 && index > 0;
     const higher = fast >= 5 && index < ceiling;
     if (lower || higher) {

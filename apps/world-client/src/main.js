@@ -38,7 +38,7 @@ nicknameInput.value = store.nickname() || '';
 // ---- 3D setup ----
 const inputSurface = $('scene-input');
 let canvas = $('scene');
-const device = maxTextureSize => ({ width: innerWidth, height: innerHeight, dpr: devicePixelRatio || 1,
+const device = maxTextureSize => ({ width: canvas.clientWidth || innerWidth, height: canvas.clientHeight || innerHeight, dpr: devicePixelRatio || 1,
   touch: matchMedia('(pointer: coarse)').matches, maxTextureSize });
 const savedQuality = readQuality(window.localStorage);
 let requestedAA = profiles[savedQuality === 'auto' ? initialTier(device(8192)) : savedQuality].antialias;
@@ -73,11 +73,16 @@ const joyBase = $('joy-base');
 const joyKnob = $('joy-knob');
 
 const qualitySelect = $('graphics-quality');
-let profile;
+let profile, sizedRenderer, sizedWidth, sizedHeight;
 function resize() {
   const w = canvas.clientWidth || window.innerWidth;
   const h = canvas.clientHeight || 480;
-  renderer.setDrawingBufferSize(w, h, Math.min(window.devicePixelRatio || 1, profile.pixelCap));
+  const ratio = Math.min(window.devicePixelRatio || 1, profile.pixelCap);
+  if (renderer === sizedRenderer && w === sizedWidth && h === sizedHeight && ratio === renderer.getPixelRatio()) return;
+  renderer.setDrawingBufferSize(w, h, ratio);
+  sizedRenderer = renderer;
+  sizedWidth = w;
+  sizedHeight = h;
 
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
@@ -86,16 +91,17 @@ const quality = createQuality({
   device: () => device(renderer.capabilities.maxTextureSize),
   storage: window.localStorage,
   apply(tier, preference) {
-    profile = profiles[tier];
+    const nextProfile = profiles[tier];
     qualitySelect.value = preference;
-    $('graphics-resolved').textContent = preference === 'auto' ? profile.label : '';
+    $('graphics-resolved').textContent = preference === 'auto' ? nextProfile.label : '';
+    if (nextProfile === profile && requestedAA === nextProfile.antialias) return;
+    profile = nextProfile;
     // WebGL fixes default framebuffer AA at context creation. Recreate only on
     // a boundary crossing. The input surface, camera and simulation stay live.
     if (requestedAA !== profile.antialias) {
-      requestedAA = profile.antialias;
       const next = canvas.cloneNode(false);
       let replacement;
-      try { replacement = new THREE.WebGLRenderer({canvas: next, antialias: requestedAA}); }
+      try { replacement = new THREE.WebGLRenderer({canvas: next, antialias: profile.antialias}); }
       catch { /* The current context remains usable if the device cannot allocate a second one. */ }
       if (replacement) {
         campus.releaseGpu();
@@ -104,6 +110,7 @@ const quality = createQuality({
         canvas.replaceWith(next);
         canvas = next;
         renderer = replacement;
+        requestedAA = profile.antialias;
       }
     }
     campus.setProfile(profile);
@@ -111,7 +118,13 @@ const quality = createQuality({
   },
 });
 qualitySelect.addEventListener('change', () => quality.select(qualitySelect.value));
-window.addEventListener('resize', resize);
+function viewportChanged() {
+  quality.resume();
+  resize();
+}
+window.addEventListener('resize', viewportChanged);
+document.addEventListener('fullscreenchange', viewportChanged);
+window.addEventListener('pageshow', viewportChanged);
 document.addEventListener('visibilitychange', () => quality.resume());
 
 function updateCamera() {
@@ -605,7 +618,7 @@ function tick(now) {
   campus.updateVisibility(player.x,player.z);
   campus.updateWater(now / 1000);
   renderer.render(scene, camera);
-  if (!document.hidden) quality.frame(performance.now());
+  if (!document.hidden) quality.frame(now);
   requestAnimationFrame(tick);
 }
 
