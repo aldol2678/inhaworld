@@ -45,14 +45,16 @@ assert.equal(Object.keys(layout.walkwaySurvey).length, 6);
 assert(Object.values(layout.walkwaySurvey).every((v) => v === null));
 assert.deepEqual(
   layout.obstacles.filter((o) => o.id.startsWith('bldg_')).map((o) => o.id),
-  ['bldg_01', 'bldg_jungseok'],
+  ['bldg_01', 'bldg_jungseok', 'bldg_02_south', 'bldg_07'],
 );
-assert.equal(layout.routes.length, 8);
+assert.deepEqual(layout.routes.slice(0, 8).map(r => r.id),
+  sites.features.filter(f => f.kind === 'path').map(f => f.id));
+assert.deepEqual(layout.routes.slice(8).map(r => r.sourceId), ['osm_way_481241663', 'osm_way_1063267429']);
 for (const p of [world.spawn, ...Object.values(world.rooms)]) assert(world.canStand(p.x, p.z));
 let sweeps = 0;
 for (const body of layout.obstacles.filter(
   (o) =>
-    ['bldg_01', 'bldg_jungseok', 'site_218220690', 'lmk_inkyung_pond'].includes(o.id) ||
+    ['bldg_01', 'bldg_jungseok', 'bldg_02_south', 'bldg_07', 'site_218220690', 'lmk_inkyung_pond'].includes(o.id) ||
     o.id.startsWith('tree-'),
 )) {
   let checked = false;

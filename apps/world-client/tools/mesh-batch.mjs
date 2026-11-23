@@ -8,17 +8,29 @@ import {
   Vector3,
 } from '../vendor/three.module.js';
 
+import { triangulatePolygon } from '../map-sources/src/reality-adapter.js';
+
 const unitBox = new BoxGeometry(1, 1, 1);
 const up = new Vector3(0, 1, 0);
 const cylinders = new Map();
 export class MeshBatch {
   vertices = [];
   triangle(color, a, b, c) {
-    this.vertices.push([a, color], [b, color], [c, color]);
+    this.coloredTriangle([a, color], [b, color], [c, color]);
+  }
+  coloredTriangle(a, b, c) {
+    this.vertices.push(a, b, c);
   }
   quad(color, a, b, c, d) {
     this.triangle(color, a, b, c);
     this.triangle(color, a, c, d);
+  }
+  polygon(color, ring, y) {
+    const indices = triangulatePolygon(ring);
+    for (let i = 0; i < indices.length; i += 3) {
+      const corners = indices.slice(i, i + 3).map(j => [ring[j].x, y, ring[j].z]);
+      this.triangle(color, ...corners);
+    }
   }
   primitive(color, geometry, center, rotation, scale) {
     const m = new Matrix4().compose(center, rotation, scale);

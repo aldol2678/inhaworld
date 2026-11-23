@@ -1,6 +1,8 @@
 import * as THREE from '../vendor/three.module.js';
 import { createSpatial } from './map/spatial.js';
 
+const DETAIL_DISTANCE = 110;
+
 async function readAsset(path, format) {
   const response = await fetch(new URL('../data/' + path, import.meta.url));
   if (!response.ok) throw Error('캠퍼스 자료를 불러오지 못했습니다 (' + response.status + '): ' + path);
@@ -26,15 +28,21 @@ function meshFromBatch(bytes, range) {
   geo.setAttribute('position', new THREE.BufferAttribute(points, 3));
   geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   geo.computeVertexNormals();
+  // Unit normals fit a normalized signed short. Keep full precision positions
+  // and linear vertex colors while making room for the extra shore geometry.
+  const normals = geo.getAttribute('normal').array;
+  geo.setAttribute('normal', new THREE.BufferAttribute(Int16Array.from(normals, n => Math.round(n * 32767)), 3, true));
   geo.computeBoundingSphere();
+  // The opaque campus batch uses matte pigments under the fixed sun and sky.
   return new THREE.Mesh(
     geo,
-    new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.91, side: THREE.DoubleSide }),
+    new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }),
   );
 }
 function plantTrees(scene, trees) {
+  // The ground and primary crowns cover the two ends of each trunk.
   const trunk = new THREE.InstancedMesh(
-    new THREE.CylinderGeometry(0.24, 0.34, 2.5, 7),
+    new THREE.CylinderGeometry(0.24, 0.34, 2.5, 6, 1, true),
     new THREE.MeshStandardMaterial({ color: 0x796453 }),
     trees.length,
   );
@@ -44,18 +52,24 @@ function plantTrees(scene, trees) {
     trees.length,
   );
   const transform = new THREE.Object3D();
-  trees.forEach(({ x, z }, i) => {
-    transform.position.set(x, 1.25, z);
-    transform.scale.set(1, 1, 1);
+  trees.forEach(({ x, z, form, trunkHeight = 2.5 }, i) => {
+    transform.position.set(x, trunkHeight / 2, z);
+    transform.scale.set(1, trunkHeight / 2.5, 1);
     transform.updateMatrix();
     trunk.setMatrixAt(i, transform.matrix);
-    transform.position.y = 3.35;
-    transform.scale.set(1.55, 2.05, 1.6);
+    const spread = 1 + 0.14 * Math.sin(i * 2.4);
+    transform.position.y = form ? 4.68 + 0.44 * Math.cos(i) : 3.35;
+    if (form === 'willow') transform.scale.set(3.0 * spread, 2.15, 2.65 * spread);
+    else if (form === 'bank') transform.scale.set(2.55 * spread, 2.40, 2.35 * spread);
+    else transform.scale.set(1.55, 2.05, 1.6);
     transform.rotation.y = i * 1.9;
     transform.updateMatrix();
     crown.setMatrixAt(i, transform.matrix);
-    crown.setColorAt(i, new THREE.Color([0x537c55, 0x628153, 0x77935e][i % 3]));
+    const palette = form ? [0x80935d, 0x929d64, 0x6f8b63, 0xa1a367] : [0x537c55, 0x628153, 0x77935e];
+    crown.setColorAt(i, new THREE.Color(palette[i % palette.length]));
   });
+  trunk.computeBoundingSphere();
+  crown.computeBoundingSphere();
   scene.add(trunk, crown);
 }
 export async function createCampus(scene) {
@@ -65,19 +79,27 @@ export async function createCampus(scene) {
   ]);
   const spatial = createSpatial(layout),
     details = [];
+  let baseGeometry;
   for (const [zone, range] of Object.entries(layout.ranges)) {
     const mesh = meshFromBatch(bytes, range);
     mesh.name = zone;
     scene.add(mesh);
-    if (zone !== 'base')
+    if (zone === 'base') baseGeometry = mesh.geometry;
+    else
       details.push({ mesh, anchor: spatial.rooms[zone === 'hall' ? 'main-building' : 'library'] });
   }
   plantTrees(scene, layout.trees);
+  const region = layout.p1aLod;
   return {
     ...spatial,
     updateVisibility(x, z) {
+      if (region) {
+        const near = Math.hypot(x - region.x, z - region.z) < DETAIL_DISTANCE;
+        if (near) baseGeometry.setDrawRange(region.farVertices, layout.ranges.base.count - region.farVertices);
+        else baseGeometry.setDrawRange(0, region.farVertices + region.sharedVertices);
+      }
       for (const { mesh, anchor } of details)
-        mesh.visible = Math.hypot(anchor.x - x, anchor.z - z) < 110;
+        mesh.visible = Math.hypot(anchor.x - x, anchor.z - z) < DETAIL_DISTANCE;
     },
   };
 }

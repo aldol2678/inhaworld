@@ -1,0 +1,886 @@
+{
+  "pc": {
+    "viewport": [
+      1280,
+      720
+    ],
+    "chromium": "156.0.8078.79",
+    "views": {
+      "gate": {
+        "position": [
+          0,
+          2.2,
+          -98
+        ],
+        "yaw": 3.141592653589793,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 5,
+          "triangles": 17979,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "d1c8926337464955433e1cbb66f463f8da5c28d4e25964b25f790eab66139987"
+        },
+        "after": {
+          "calls": 5,
+          "triangles": 17968,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "00825dc5019394db94495f724f63c09682c41853a4bbec6b6dcd8ef9ee01d759"
+        },
+        "changedPixels": 248096,
+        "changedPixelsOver8": 1497,
+        "changedBoundsXYXY": [
+          0,
+          180,
+          940,
+          504
+        ],
+        "maxChannelDelta": 118
+      },
+      "hall": {
+        "position": [
+          46.8,
+          2.2,
+          -19.9
+        ],
+        "yaw": -2.8546539006590237,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 4,
+          "triangles": 19021,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "412b68dc8c9347da90e22c66bfea1fb265bbecac166ffd622ea1dc71a49a259f"
+        },
+        "after": {
+          "calls": 4,
+          "triangles": 18850,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "88d3691204e5a009edb2912f4b9465604d55eb17edc6d7bc6d20fe8de56911b9"
+        },
+        "changedPixels": 360885,
+        "changedPixelsOver8": 0,
+        "changedBoundsXYXY": [
+          0,
+          54,
+          940,
+          504
+        ],
+        "maxChannelDelta": 5
+      },
+      "library": {
+        "position": [
+          -8,
+          2.2,
+          -10.25
+        ],
+        "yaw": 2.0721027324165595,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 4,
+          "triangles": 16459,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "d138b16c4859b4e7b2f952e48565b52ff6666e6faa2c1d1daa2a5449a90ffc60"
+        },
+        "after": {
+          "calls": 4,
+          "triangles": 16448,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "682c11583b9d31238c447d9ff535c745f8c3c8db2e884f92959665e83d27fe73"
+        },
+        "changedPixels": 473186,
+        "changedPixelsOver8": 0,
+        "changedBoundsXYXY": [
+          0,
+          0,
+          940,
+          504
+        ],
+        "maxChannelDelta": 4
+      },
+      "canal": {
+        "position": [
+          41,
+          2.2,
+          -12
+        ],
+        "yaw": 0.4704042629365914,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 4,
+          "triangles": 19021,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "667aecbbafdbc72d78602b83c5b92dd1c529815e1785bb925935ff094a652cb5"
+        },
+        "after": {
+          "calls": 4,
+          "triangles": 18850,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "34fa372c8882c77c2cb4cdb81c34c67208f445d55d2ecafeee010ec57ac130c2"
+        },
+        "changedPixels": 188229,
+        "changedPixelsOver8": 383,
+        "changedBoundsXYXY": [
+          0,
+          250,
+          940,
+          504
+        ],
+        "maxChannelDelta": 94
+      },
+      "agora": {
+        "position": [
+          121.8,
+          2.2,
+          -10.4
+        ],
+        "yaw": -2.310771210770768,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 3,
+          "triangles": 17501,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "fec34691d00528fe4aa1a8ce3f75e147039fefee6433d05316c6acf591c0ca98"
+        },
+        "after": {
+          "calls": 3,
+          "triangles": 17330,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "f9693fb0f8f8d028e405c327c0ae205679786fafc39448545d91ce08cf704d7b"
+        },
+        "changedPixels": 306170,
+        "changedPixelsOver8": 103457,
+        "changedBoundsXYXY": [
+          0,
+          0,
+          940,
+          504
+        ],
+        "maxChannelDelta": 201
+      },
+      "pond": {
+        "position": [
+          125.6,
+          2.2,
+          5.05
+        ],
+        "yaw": 2.8457080951321982,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 3,
+          "triangles": 17501,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "3a0793b5347a6a71f5be5738657bdc051961d7dd5f1ca7c3e5f64573550d0930"
+        },
+        "after": {
+          "calls": 3,
+          "triangles": 17330,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "956975379aa1e67d21c7930d9d38dade6dee7f44e341b878e45919d775ae7301"
+        },
+        "changedPixels": 295411,
+        "changedPixelsOver8": 84883,
+        "changedBoundsXYXY": [
+          0,
+          79,
+          940,
+          504
+        ],
+        "maxChannelDelta": 210
+      },
+      "west-bank": {
+        "position": [
+          109,
+          2.2,
+          22
+        ],
+        "yaw": -1.35970299357215,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 3,
+          "triangles": 17501,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "9fc2c41fa07b42e1dd31e8bfb7f8e7963cf5aeed4869532e2b98d900de85f1a3"
+        },
+        "after": {
+          "calls": 3,
+          "triangles": 17330,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "2ae686aa99a4bbc8a797208444f59500baf89567667bcbbdbf9b01e516b61592"
+        },
+        "changedPixels": 421337,
+        "changedPixelsOver8": 194125,
+        "changedBoundsXYXY": [
+          0,
+          0,
+          940,
+          504
+        ],
+        "maxChannelDelta": 211
+      },
+      "lake-oblique": {
+        "position": [
+          103,
+          26,
+          -16
+        ],
+        "yaw": -2.5636907166275478,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 3,
+          "triangles": 17501,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "98560681a8e362c2748c1cfcecb70d8c1ae3936e75a82e6b136768252c532b9c"
+        },
+        "after": {
+          "calls": 3,
+          "triangles": 17330,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "0c412bb01892b4e884777694afcdfd45c0b03e4d9dd5c1b77fcc1936215d9001"
+        },
+        "changedPixels": 310586,
+        "changedPixelsOver8": 113458,
+        "changedBoundsXYXY": [
+          0,
+          144,
+          940,
+          504
+        ],
+        "maxChannelDelta": 131
+      },
+      "lake-plan": {
+        "position": [
+          122.56,
+          34,
+          19.25
+        ],
+        "yaw": -1.125946861348538,
+        "pitch": -1.5707963267948966,
+        "fov": 70,
+        "buffer": [
+          940,
+          504
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 3,
+          "triangles": 17501,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "27b610864200baf78d01e16f6f6d9fa1c1907328eab0a179009b7cf1a7393020"
+        },
+        "after": {
+          "calls": 3,
+          "triangles": 17330,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "667d79a58a388e14a77fad73a6271710d6736f9442706d3477e397f2dd26f986"
+        },
+        "changedPixels": 456526,
+        "changedPixelsOver8": 80058,
+        "changedBoundsXYXY": [
+          0,
+          0,
+          940,
+          504
+        ],
+        "maxChannelDelta": 129
+      }
+    },
+    "stableAcross24VisibilityChangesAndReload": true
+  },
+  "mobile": {
+    "viewport": [
+      891,
+      411
+    ],
+    "chromium": "156.0.8078.79",
+    "views": {
+      "gate": {
+        "position": [
+          0,
+          2.2,
+          -98
+        ],
+        "yaw": 3.141592653589793,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 5,
+          "triangles": 17979,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "06a75dc2bb85051333ab9aeb7cdcb2060565291b5aaf2d96e9ac4145382bd2c8"
+        },
+        "after": {
+          "calls": 5,
+          "triangles": 17968,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "86685aae3d37a8c65811356d05380ce1961d61d29e995931f0e450083720b9be"
+        },
+        "changedPixels": 131939,
+        "changedPixelsOver8": 1214,
+        "changedBoundsXYXY": [
+          0,
+          103,
+          891,
+          288
+        ],
+        "maxChannelDelta": 123
+      },
+      "hall": {
+        "position": [
+          46.8,
+          2.2,
+          -19.9
+        ],
+        "yaw": -2.8546539006590237,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 4,
+          "triangles": 19021,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "24579fd6af01c6c5f0182b787c9428ccae73451555581de6fd6b3e97d904bb48"
+        },
+        "after": {
+          "calls": 4,
+          "triangles": 18850,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "9f19dfad76c8243f21ff93a0d0fe9274588f2462f4f59c8e65e90037ccdebf2e"
+        },
+        "changedPixels": 166561,
+        "changedPixelsOver8": 3846,
+        "changedBoundsXYXY": [
+          0,
+          31,
+          891,
+          288
+        ],
+        "maxChannelDelta": 154
+      },
+      "library": {
+        "position": [
+          -8,
+          2.2,
+          -10.25
+        ],
+        "yaw": 2.0721027324165595,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 4,
+          "triangles": 16459,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "2ffe1b80fa2fcccc29ee7dfaa38dd1abc16f4004512ed18212c691e833a3f257"
+        },
+        "after": {
+          "calls": 4,
+          "triangles": 16448,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "b63264f03a905159978ee26c8f2997d092bfbcf34e2a24f57b2ecaf08a8cbe3c"
+        },
+        "changedPixels": 222800,
+        "changedPixelsOver8": 0,
+        "changedBoundsXYXY": [
+          0,
+          0,
+          891,
+          288
+        ],
+        "maxChannelDelta": 4
+      },
+      "canal": {
+        "position": [
+          41,
+          2.2,
+          -12
+        ],
+        "yaw": 0.4704042629365914,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 5,
+          "triangles": 21283,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "cee72de51dbefdb01ad3cf73b41e6c422ffa0feade55031ad6571d489524a9aa"
+        },
+        "after": {
+          "calls": 5,
+          "triangles": 21112,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "53d9d146c7a718c03a8701cbf525c70c8a414df74ae121b70cd35cdb1c03ca82"
+        },
+        "changedPixels": 96326,
+        "changedPixelsOver8": 468,
+        "changedBoundsXYXY": [
+          0,
+          60,
+          891,
+          288
+        ],
+        "maxChannelDelta": 96
+      },
+      "agora": {
+        "position": [
+          121.8,
+          2.2,
+          -10.4
+        ],
+        "yaw": -2.310771210770768,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 3,
+          "triangles": 17501,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "2b616f3954b24c3b2e48da820921fb98c89cfaeef6a11ba46f36bd13984be7c6"
+        },
+        "after": {
+          "calls": 3,
+          "triangles": 17330,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "6aff50bd175b086138941c9a37623566d27f0a740f9bb0c4c9c2e649638eac14"
+        },
+        "changedPixels": 161101,
+        "changedPixelsOver8": 48780,
+        "changedBoundsXYXY": [
+          0,
+          0,
+          891,
+          288
+        ],
+        "maxChannelDelta": 201
+      },
+      "pond": {
+        "position": [
+          125.6,
+          2.2,
+          5.05
+        ],
+        "yaw": 2.8457080951321982,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 4,
+          "triangles": 19021,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "2855e537d0f80395976529556780efa5fd6813a8bce7a49a1e7ed01a24508cf3"
+        },
+        "after": {
+          "calls": 4,
+          "triangles": 18850,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "6ab0ef2a3625e1f7a40804252bfa1a72e0a2a6bf0f5d61a439426491e5298751"
+        },
+        "changedPixels": 180810,
+        "changedPixelsOver8": 75471,
+        "changedBoundsXYXY": [
+          0,
+          0,
+          891,
+          288
+        ],
+        "maxChannelDelta": 210
+      },
+      "west-bank": {
+        "position": [
+          109,
+          2.2,
+          22
+        ],
+        "yaw": -1.35970299357215,
+        "pitch": 0,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 3,
+          "triangles": 17501,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "8f97af1a60a0755f1101b180b4910efd18aaf919a80f17d67ed8a538ad0f0877"
+        },
+        "after": {
+          "calls": 3,
+          "triangles": 17330,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "52b86bc2f1a1a7cbd1549a33f6452c4b7f5dd1b10f1c25ebdf6aea8cbe840764"
+        },
+        "changedPixels": 202553,
+        "changedPixelsOver8": 82619,
+        "changedBoundsXYXY": [
+          0,
+          0,
+          891,
+          288
+        ],
+        "maxChannelDelta": 211
+      },
+      "lake-oblique": {
+        "position": [
+          103,
+          26,
+          -16
+        ],
+        "yaw": -2.5636907166275478,
+        "pitch": -0.4,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 3,
+          "triangles": 17501,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "125ffce2dbcf33837663eddeca11b214b28e56217da48aa4038b175e9155e036"
+        },
+        "after": {
+          "calls": 3,
+          "triangles": 17330,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "bd0385b6ada19fcb3dccbcf45799e66a627bd8b9fc91969f18deb8c7024a8c50"
+        },
+        "changedPixels": 161438,
+        "changedPixelsOver8": 51500,
+        "changedBoundsXYXY": [
+          0,
+          82,
+          891,
+          288
+        ],
+        "maxChannelDelta": 111
+      },
+      "lake-plan": {
+        "position": [
+          122.56,
+          34,
+          19.25
+        ],
+        "yaw": -1.125946861348538,
+        "pitch": -1.5707963267948966,
+        "fov": 70,
+        "buffer": [
+          891,
+          288
+        ],
+        "pixelRatio": 1,
+        "before": {
+          "calls": 3,
+          "triangles": 17501,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1423104
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "59e95a6c41ac536b7b10286ef5843a29e87e88bd0e23cf6a81d5bdc1fbb3fee2"
+        },
+        "after": {
+          "calls": 3,
+          "triangles": 17330,
+          "glBuffers": {
+            "created": 19,
+            "deleted": 0,
+            "bytes": 1356110
+          },
+          "geometries": 5,
+          "textures": 1,
+          "pngSha256": "7620cb84bbce57e2a2effb39b35cb05bcab895a94f36f4af734d2196c4d15278"
+        },
+        "changedPixels": 246743,
+        "changedPixelsOver8": 31752,
+        "changedBoundsXYXY": [
+          0,
+          0,
+          891,
+          288
+        ],
+        "maxChannelDelta": 99
+      }
+    },
+    "stableAcross24VisibilityChangesAndReload": true
+  }
+}

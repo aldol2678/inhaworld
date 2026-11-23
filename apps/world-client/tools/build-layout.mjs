@@ -2,6 +2,7 @@
 import { writeFile, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { MeshBatch } from './mesh-batch.mjs';
+import { agoraInkyung } from './agora-inkyung.mjs';
 import { spatialSource } from './spatial-source.mjs';
 const port = await spatialSource(process.env.MOA_CAMPUS_DATA);
 import { BUILDINGS, LIBRARY_ROOF_PARTS } from '../map-sources/src/basic-campus.js';
@@ -9,7 +10,7 @@ import {
   buildCampusTerrainGeometry,
   buildCampusTerrainSidesGeometry,
 } from '../map-sources/src/campus-terrain-geometry.js';
-import { triangulatePolygon } from '../map-sources/src/reality-adapter.js';
+import { fillInkyungBuildings } from './inkyung-buildings.mjs';
 import { polygonOverlap } from '../map-sources/src/polygon-collision.js';
 import {
   CAMPUS_ROADS,
@@ -68,13 +69,6 @@ const obstacles = [];
 function solid(id, polygon, minY = -5, maxY = 40) {
   obstacles.push({ id, polygon, minY, maxY });
 }
-function face(batch, color, ring, y) {
-  const indices = triangulatePolygon(ring);
-  for (let i = 0; i < indices.length; i += 3) {
-    const corners = indices.slice(i, i + 3).map((j) => [ring[j].x, y, ring[j].z]);
-    batch.triangle(color, ...corners);
-  }
-}
 function terrainMesh(color, mesh) {
   for (let i = 0; i < mesh.indices.length; i += 3) {
     base.triangle(
@@ -84,24 +78,26 @@ function terrainMesh(color, mesh) {
   }
 }
 const cutouts = water.map((f) => port.projectPolygon(f.polygon));
-terrainMesh(
-  '#93aa77',
-  buildCampusTerrainGeometry(bounds, [...cutouts, ...depressions.map((d) => d.ring)]),
-);
+const p1a = agoraInkyung(port, cutouts[0]);
+const near = new MeshBatch(), far = new MeshBatch();
+far.polygon('#5597a3', cutouts[0], 0.025);
+p1a.fillTerrain(base, near, far,
+  buildCampusTerrainGeometry(bounds, [...cutouts, ...depressions.map((d) => d.ring)]));
 for (const d of depressions) {
-  face(base, '#829770', d.ring, d.y);
+  base.polygon('#829770', d.ring, d.y);
   terrainMesh('#928777', buildCampusTerrainSidesGeometry(d.ring, d.y));
 }
 for (const [i, feature] of water.entries()) {
   const ring = cutouts[i];
-  face(base, '#5597a3', ring, 0.025);
+  if (feature.id === 'lmk_inkyung_pond') p1a.fillWater(near);
+  else base.polygon('#5597a3', ring, 0.025);
   solid(feature.id, ring);
   if (feature.kind === 'reflecting_pool')
     for (const quad of gateCentralPoolRimFaces(ring)) base.quad('#c7c3b4', ...quad);
 }
 const routes = [];
 for (const f of port.SITE_FEATURES) {
-  if (f.kind === 'lawn') face(base, '#80a46b', port.projectPolygon(f.polygon), 0.018);
+  if (f.kind === 'lawn') base.polygon('#80a46b', port.projectPolygon(f.polygon), 0.018);
   if (f.kind !== 'path') continue;
   const line = f.line.map((ll) => port.geoToWorld(...ll)),
     width = CAMPUS_PATH_WIDTHS[f.id] ?? 3.5;
@@ -124,7 +120,7 @@ for (const f of port.SITE_FEATURES) {
         [frame.length, 1],
         [0, 1],
       ].map(([u, side]) => frame.at(u, (side * w) / 2));
-      fillLegacyGateGround(base, color, ring, y);
+      for (const piece of p1a.clipWater(ring)) fillLegacyGateGround(base, color, piece, y);
     }
   }
 }
@@ -147,7 +143,7 @@ for (const w of MAIN_HALL_WALKWAYS) {
   };
   const end = w.frame.length - (crossing.width + 2.1) / 2,
     h = w.width / 2;
-  face(base, '#bbb7a9', [meet(-h), meet(h), w.frame.at(end, h), w.frame.at(end, -h)], 0.033);
+  base.polygon('#bbb7a9', [meet(-h), meet(h), w.frame.at(end, h), w.frame.at(end, -h)], 0.033);
 }
 const gateIds = [];
 for (const e of MAIN_GATE_EDITOR_WORLD.entities) {
@@ -161,7 +157,7 @@ for (const e of MAIN_GATE_EDITOR_WORLD.entities) {
 for (const b of BUILDINGS) {
   const ring = b.vertices;
   solid(b.id, ring, 0, b.height);
-  face(base, '#848989', ring, b.height);
+  base.polygon('#848989', ring, b.height);
   for (let i = 0; i < ring.length; i++) {
     const a = ring[i],
       v = ring[(i + 1) % ring.length];
@@ -306,12 +302,20 @@ for (const f of routes.filter((r) =>
       }
   }
 }
+fillInkyungBuildings(base, near, solid, port.geoToWorld(water[0].lat, water[0].lon),
+  p1a.routes.find(r => r.highway === 'footway'));
+const p1aLod = {
+  ...port.geoToWorld(water[0].lat, water[0].lon), firstTree: trees.length,
+  farVertices: far.vertices.length, sharedVertices: base.vertices.length,
+};
+p1a.fillLand(near, trees, solid, routes.find(r => r.id === 'site_481241696'));
+routes.push(...p1a.routes);
 for (const [index, tree] of trees.entries()) {
   const ring = Array.from({ length: 8 }, (_, i) => {
     const angle = (i * Math.PI) / 4;
     return { x: tree.x + 0.34 * Math.cos(angle), z: tree.z + 0.34 * Math.sin(angle) };
   });
-  solid('tree-' + index, ring, 0, 2.5);
+  solid('tree-' + index, ring, 0, tree.trunkHeight ?? 2.5);
 }
 const gate = port.TOUR_STOPS.find((stop) => stop.id === 'gate');
 const entrance = port.MAIN_ENTRANCE;
@@ -331,6 +335,9 @@ const rooms = {
     viewYaw: Math.atan2(lib.x - libWall.x, lib.z - libWall.z),
   },
 };
+// A single contiguous draw selects [far, shared] or [shared, near]. Keep the
+// original distant grass/water silhouette without another draw call or material.
+base.vertices = far.vertices.concat(base.vertices, near.vertices);
 const buffers = [],
   ranges = {};
 let offset = 0;
@@ -349,6 +356,7 @@ const metadata = {
   cells,
   depressions,
   trees,
+  p1aLod,
   routes,
   roadIds: CAMPUS_ROADS.map((r) => r.id),
   gateIds,

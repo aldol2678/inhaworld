@@ -1,0 +1,384 @@
+{
+  "dateUTC": "2026-11-23",
+  "baseline": "ec9b07b8ac17d94f2b196aab09c23643c467d387",
+  "implementation": "9b8fb7a0329fcd63de6d5a86be5c4a61105fae07",
+  "baseBranch": "codex/inha-world-client-migration-p0",
+  "builds": {
+    "node": "24.22.3",
+    "npm": "11.19.1",
+    "matchingServedFileSha256": {
+      "data/layout.bin": "74c0069ccf66aa51cba22a20e311ea6a722f18e04959f7e90744a3ad054a60b7",
+      "data/layout.json": "c4d8b9ba948c90c4f4d74663e8461bd91a4a26200392f6416702c0d88d9595ea",
+      "data/quests.json": "80292111b02a5c8c0c583c4e1d6545d3dd5effb96c1e9d386203363f8621c84b",
+      "data/rooms.json": "703722708eb53acda33298fa533780ef26ddf7ec7ececee2355fe8b477a039ec",
+      "index.html": "65eb1e8c7e15d825f013bf5e512c760148fa95f8e0f27612827a2cb75888e06b",
+      "public-config.js": "2a1c19a2a9778ecc122ef0d1cdfec786e8a7ca3623fb7ef6f02614d287eec628",
+      "src/api.js": "bfe4eb1fafc48d254cca42ea597f18169de6a38cfed6ea52cd0d441a7f334ba1",
+      "src/campus.js": "742da4942b09dae5fe0aad40da3793ea4501a9ad1c790584646e43fe57c9424b",
+      "src/config.js": "1c16dc172ee8322fe6cc17ae791b6dfbc554705b6027f43488b015ecaf581bb8",
+      "src/firebase-auth-client.js": "998db115d8581d767c65c571c14c532984e65204ec5a0880b706fd3d59126e27",
+      "src/main.js": "bb4a1bdbd2fa16014cc48ad1c2eec0acfbc9099c378bf3d3abf66fac3f46b350",
+      "src/map/polygon-collision.js": "2f844663afb6dcae6045dc704d12700cbc2a0ed540f6c8f7b324418fb0affcb4",
+      "src/map/spatial.js": "9f4ae7c1c83a5d6534d2ba4776ba6910184e98a71783571ac25c89517f179525",
+      "src/store.js": "d28625e43b0cd848c8685509980e78b8910c3525290e898d44357274207f6764",
+      "vendor/LICENSE": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+      "vendor/three.core.js": "613e370f76638fdef83926642bf256dc9615684922de1ce1f63a8583e5d78578",
+      "vendor/three.module.js": "104f56145899722094556490d787aae0617cc2fc3382f31df02d724ea1aee341"
+    }
+  },
+  "osmAndGeometry": {
+    "bakedGround": {
+      "p0": {
+        "sha": "c536c73a285ea77a62751419f1554fd9a60b166c",
+        "dryGroundInsideLakeWU2": 7.372060086802975,
+        "waterAreaWU2": 707.533688041603,
+        "sourceAreaWU2": 707.5337750710096,
+        "binaryBytes": 549456,
+        "jsonBytes": 121519,
+        "staticTriangles": 11447,
+        "trees": 60,
+        "colliders": 142
+      },
+      "baseline": {
+        "sha": "ec9b07b8ac17d94f2b196aab09c23643c467d387",
+        "dryGroundInsideLakeWU2": 0.00014146622234534334,
+        "waterAreaWU2": 707.5336189865841,
+        "sourceAreaWU2": 707.5337750710096,
+        "binaryBytes": 623712,
+        "jsonBytes": 127010,
+        "staticTriangles": 12994,
+        "trees": 68,
+        "colliders": 153
+      },
+      "field": {
+        "sha": "9b8fb7a0329fcd63de6d5a86be5c4a61105fae07",
+        "dryGroundInsideLakeWU2": 0.00016254011022809323,
+        "waterAreaWU2": 707.5336189865841,
+        "sourceAreaWU2": 707.5337750710096,
+        "binaryBytes": 713808,
+        "jsonBytes": 129589,
+        "staticTriangles": 14871,
+        "trees": 68,
+        "colliders": 155
+      }
+    },
+    "nodeDiagnostics": [
+      {
+        "lod": "near",
+        "waterAreaWU2": 707.5336189865841,
+        "dryInsideLakeWU2": 0.00016254011022809323,
+        "plazaFloorWU2": 149.76221936719202
+      },
+      {
+        "lod": "far",
+        "waterAreaWU2": 707.533688041603,
+        "dryInsideLakeWU2": 7.993996989341667e-05,
+        "plazaFloorWU2": 27.459711190786038
+      },
+      {
+        "edgeClearanceWU": [
+          0.6000099999999949,
+          0.6000099999999877,
+          0.6000100000000008,
+          0.6000099999999987,
+          0.6000099999999957,
+          0.600010000000001,
+          0.6000100000000024,
+          0.6000100000000002,
+          0.6000100000000017,
+          0.6000099999999955,
+          0.6000100000000017,
+          0.600009999999997,
+          0.6000099999999956
+        ]
+      }
+    ],
+    "independentMoaPort": {
+      "points": 174,
+      "independentPort": true,
+      "maxDeltaWU": 0,
+      "sweeps": 74,
+      "rooms": {
+        "main-gate": {
+          "spatialId": "lmk_main_gate",
+          "x": 0,
+          "z": -76,
+          "viewYaw": 3.141592653589793
+        },
+        "main-building": {
+          "spatialId": "bldg_01",
+          "x": 49.480531336502,
+          "z": -4.713956611688115,
+          "viewYaw": -2.6309469284025337
+        },
+        "library": {
+          "spatialId": "bldg_jungseok",
+          "x": -19.447742592800143,
+          "z": -3.9694703617483755,
+          "viewYaw": 2.075980010255096
+        }
+      },
+      "survey": {
+        "corridor_width_m": null,
+        "corridor_length_m": null,
+        "tree_spacing_m": null,
+        "lamp_spacing_m": null,
+        "plaza_dimensions_m": null,
+        "branch_angles_at_south_node": null
+      }
+    },
+    "originalCollidersIdentical": 153,
+    "newColliderIds": [
+      "bldg_02_south",
+      "bldg_07"
+    ],
+    "unchangedLayoutFields": [
+      "routes",
+      "trees",
+      "rooms",
+      "bounds",
+      "stairs",
+      "cells",
+      "spawn",
+      "walkwaySurvey"
+    ]
+  },
+  "browser": {
+    "chromiumInput": "151.0.7922.34",
+    "playwright": "1.62.0",
+    "pytest": "9.2.0",
+    "casesPassed": 20,
+    "failures": 0,
+    "cases": [
+      "tests.test_bank_replays::test_touch_bank_replay[320-568]",
+      "tests.test_bank_replays::test_touch_bank_replay[390-844]",
+      "tests.test_bank_replays::test_touch_bank_replay[891-411]",
+      "tests.test_boot::test_guest_world_survives_auth_failure[401]",
+      "tests.test_boot::test_guest_world_survives_auth_failure[503]",
+      "tests.test_contact::test_walls_camera_and_repeated_visits",
+      "tests.test_contact::test_glazed_entry_clearance",
+      "tests.test_p1a_walk::test_p1a_round_trip[1280-720]",
+      "tests.test_p1a_walk::test_p1a_round_trip[320-568]",
+      "tests.test_p1a_walk::test_p1a_round_trip[390-844]",
+      "tests.test_p1a_walk::test_p1a_round_trip[844-390]",
+      "tests.test_p1a_walk::test_p1a_round_trip[891-411]",
+      "tests.test_session::test_server_session_restore_and_retry",
+      "tests.test_session::test_logout_restored_session",
+      "tests.test_sync::test_sync_ownership_and_auth_denial",
+      "tests.test_world::test_world[1280-720]",
+      "tests.test_world::test_world[320-568]",
+      "tests.test_world::test_world[390-844]",
+      "tests.test_world::test_world[844-390]",
+      "tests.test_world::test_world[891-411]"
+    ],
+    "suiteSeconds": 421.688,
+    "guestAndSync": "local HTTP fixtures",
+    "walk": {
+      "1280x720": {
+        "buffer": [
+          940,
+          504
+        ],
+        "touch": false,
+        "returnXZ": [
+          0.0,
+          -98.0
+        ],
+        "water": {
+          "contact": [
+            124.6,
+            5.5
+          ],
+          "slide": [
+            126.7,
+            10.1
+          ],
+          "clearanceWU": 0.539
+        },
+        "inputs": 39,
+        "frames": 1492,
+        "maxFreeErrorWU": 0.1
+      },
+      "320x568": {
+        "buffer": [
+          320,
+          318
+        ],
+        "touch": true,
+        "returnXZ": [
+          -0.0,
+          -98.0
+        ],
+        "water": {
+          "contact": [
+            124.6,
+            5.5
+          ],
+          "slide": [
+            126.7,
+            10.0
+          ],
+          "clearanceWU": 0.582
+        },
+        "inputs": 39,
+        "frames": 1492,
+        "maxFreeErrorWU": 0.08
+      },
+      "390x844": {
+        "buffer": [
+          390,
+          473
+        ],
+        "touch": true,
+        "returnXZ": [
+          -0.0,
+          -98.0
+        ],
+        "water": {
+          "contact": [
+            124.6,
+            5.5
+          ],
+          "slide": [
+            126.7,
+            10.0
+          ],
+          "clearanceWU": 0.582
+        },
+        "inputs": 39,
+        "frames": 1492,
+        "maxFreeErrorWU": 0.08
+      },
+      "844x390": {
+        "buffer": [
+          844,
+          273
+        ],
+        "touch": true,
+        "returnXZ": [
+          -0.0,
+          -98.0
+        ],
+        "water": {
+          "contact": [
+            124.6,
+            5.5
+          ],
+          "slide": [
+            126.7,
+            10.0
+          ],
+          "clearanceWU": 0.582
+        },
+        "inputs": 39,
+        "frames": 1492,
+        "maxFreeErrorWU": 0.08
+      },
+      "891x411": {
+        "buffer": [
+          891,
+          288
+        ],
+        "touch": true,
+        "returnXZ": [
+          -0.0,
+          -98.0
+        ],
+        "water": {
+          "contact": [
+            124.6,
+            5.5
+          ],
+          "slide": [
+            126.7,
+            10.0
+          ],
+          "clearanceWU": 0.582
+        },
+        "inputs": 39,
+        "frames": 1492,
+        "maxFreeErrorWU": 0.08
+      }
+    },
+    "playableZipSmoke": {
+      "(1280, 720)": {
+        "start": "x 0.0 · z -98.0",
+        "end": "x -0.0 · z -97.6",
+        "clock": "normal requestAnimationFrame",
+        "touch": false,
+        "pageErrors": [],
+        "externalRequests": 0
+      },
+      "(891, 411)": {
+        "start": "x 0.0 · z -98.0",
+        "end": "x 0.0 · z -97.1",
+        "clock": "normal requestAnimationFrame",
+        "touch": true,
+        "pageErrors": [],
+        "externalRequests": 0
+      }
+    },
+    "rapidRelock": {
+      "baselineAndFinal": "Chrome 151 rejects the fifth immediate request with NotAllowedError after four successful lock/release cycles. Both accepted a fresh click after 35 seconds.",
+      "coverage": "additional stress, outside the 20-case suite"
+    }
+  },
+  "render": {
+    "chromium": "156.0.8078.79",
+    "backend": "ANGLE SwiftShader Vulkan",
+    "benchOrder": [
+      "before-1",
+      "after-1",
+      "after-2",
+      "before-2"
+    ],
+    "repeat": {
+      "pc": {
+        "before": {
+          "gpuBufferStoreBytes": 1423104,
+          "rendererGeometries": 5,
+          "rendererTextures": 1,
+          "webGLBuffers": 19,
+          "warmSwitches": 24,
+          "allNinePngsRepeatByteForByte": true
+        },
+        "after": {
+          "gpuBufferStoreBytes": 1356110,
+          "rendererGeometries": 5,
+          "rendererTextures": 1,
+          "webGLBuffers": 19,
+          "warmSwitches": 24,
+          "allNinePngsRepeatByteForByte": true
+        }
+      },
+      "mobile": {
+        "before": {
+          "gpuBufferStoreBytes": 1423104,
+          "rendererGeometries": 5,
+          "rendererTextures": 1,
+          "webGLBuffers": 19,
+          "warmSwitches": 24,
+          "allNinePngsRepeatByteForByte": true
+        },
+        "after": {
+          "gpuBufferStoreBytes": 1356110,
+          "rendererGeometries": 5,
+          "rendererTextures": 1,
+          "webGLBuffers": 19,
+          "warmSwitches": 24,
+          "allNinePngsRepeatByteForByte": true
+        }
+      }
+    }
+  },
+  "developmentRuns": {
+    "initialWetOverlapWU2": 6.321620792747286,
+    "firstFullInputSuite": {
+      "implementation": "29f084a",
+      "passes": 19,
+      "failures": 1,
+      "failedCase": "test_world[1280-720] waiting for pointer unlock after facade retreat"
+    },
+    "firstMaterial": "The first PBR build used more synchronized render time on SwiftShader. Final static geometry uses diffuse Lambert shading."
+  }
+}
