@@ -1,0 +1,124 @@
+{
+  "profiles": {
+    "very_low": {
+      "tier": "very_low",
+      "preference": "very_low",
+      "aa": false,
+      "samples": 0,
+      "css": [
+        940,
+        504
+      ],
+      "buffer": [
+        611,
+        327
+      ],
+      "calls": 4,
+      "triangles": 11828,
+      "sections": 0,
+      "crown": 60,
+      "base": true,
+      "water": true,
+      "lost": false,
+      "err": 0
+    },
+    "low": {
+      "tier": "low",
+      "preference": "low",
+      "aa": false,
+      "samples": 0,
+      "css": [
+        940,
+        504
+      ],
+      "buffer": [
+        752,
+        403
+      ],
+      "calls": 5,
+      "triangles": 11962,
+      "sections": 402,
+      "crown": 60,
+      "base": true,
+      "water": true,
+      "lost": false,
+      "err": 0
+    },
+    "medium": {
+      "tier": "medium",
+      "preference": "medium",
+      "aa": false,
+      "samples": 0,
+      "css": [
+        940,
+        504
+      ],
+      "buffer": [
+        1175,
+        630
+      ],
+      "calls": 7,
+      "triangles": 20778,
+      "sections": 7344,
+      "crown": 240,
+      "base": true,
+      "water": true,
+      "lost": false,
+      "err": 0
+    },
+    "high": {
+      "tier": "high",
+      "preference": "high",
+      "aa": true,
+      "samples": 4,
+      "css": [
+        940,
+        504
+      ],
+      "buffer": [
+        1880,
+        1008
+      ],
+      "calls": 8,
+      "triangles": 26061,
+      "sections": 17793,
+      "crown": 240,
+      "base": true,
+      "water": true,
+      "lost": false,
+      "err": 0
+    },
+    "ultra": {
+      "tier": "ultra",
+      "preference": "ultra",
+      "aa": true,
+      "samples": 4,
+      "css": [
+        940,
+        504
+      ],
+      "buffer": [
+        1880,
+        1008
+      ],
+      "calls": 9,
+      "triangles": 29129,
+      "sections": 22965,
+      "crown": 240,
+      "base": true,
+      "water": true,
+      "lost": false,
+      "err": 0
+    }
+  },
+  "shoreline": {
+    "lmk_inkyung_pond": 13,
+    "site_218220690": 4,
+    "bldg_lawschool": 22,
+    "bldg_06": 4,
+    "bldg_hawaii": 8,
+    "bldg_07": 32
+  },
+  "switchedWhileMoving": true,
+  "reload": "high"
+}

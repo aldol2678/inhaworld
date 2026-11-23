@@ -1,5 +1,7 @@
 // The two shoreline backdrops have named OSM footprints in the existing facility ledger.
 // Heights/floor spacing are its public-QA blockout values. The window treatment is illustrative.
+import agoraEntry from '../map-sources/data/reality/evidence/student-center-entrance.json' with { type: 'json' };
+import { geoToWorld } from '../map-sources/src/geo-coordinates.js';
 import { fillStudentDoor, fillStudentSpandrel } from './corridor-buildings.mjs';
 import { FACILITIES } from '../map-sources/src/campus-facilities.js';
 import { edgeFrame } from '../map-sources/src/roadview-layout.js';
@@ -39,7 +41,19 @@ export function fillInkyungBuildings(shared, near, solid, lake, sidewalk) {
       shell(shared, stone, ring, storey, height);
       shared.polygon('#b9b4a5', soffit, storey);
       solid(id, ground, 0, height);
-      fillStudentDoor(near, edgeFrame(ground, rearEdge));
+      const northDoor = edgeFrame(ground, rearEdge);
+      fillStudentDoor(near, northDoor);
+
+      // The second mapped node belongs to this wall only. Place the same
+      // closed facade door at the node; the existing ground solid owns contact.
+      const anchor = geoToWorld(agoraEntry.lat, agoraEntry.lon);
+      const index = ring.findIndex(p => Math.hypot(p.x - anchor.x, p.z - anchor.z) < 1e-5);
+      if (index < 0) throw Error('Student Center entrance 2 is missing from the facility ring');
+      const face = edgeFrame(ring, index);
+      fillStudentDoor(near, {
+        length: northDoor.length,
+        at: (u, out) => face.at(u - northDoor.length / 2, out),
+      });
     } else {
       shell(shared, stone, ring, 0, height);
       solid(id, ring, 0, height);

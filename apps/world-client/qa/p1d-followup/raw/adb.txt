@@ -1,0 +1,10 @@
+Android Debug Bridge version 1.0.41
+Version 37.0.3-16887417
+Installed as /workspace/scratch/inha-p1d-next/adb
+Running on Linux 6.18.57 (x86_64)
+* daemon not running; starting now at tcp:5042
+* daemon started successfully
+List of devices attached
+
+/dev/bus/usb absent
+/sys/bus/usb absent

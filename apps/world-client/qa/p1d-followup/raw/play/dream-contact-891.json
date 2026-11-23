@@ -1,0 +1,51 @@
+{
+  "tree": {
+    "x": 128.66820003824213,
+    "z": -17.406571499453474
+  },
+  "stoppedAt": [
+    127.8,
+    -17.1
+  ],
+  "uncertainGroundRoundTrip": [
+    {
+      "target": [
+        128.668,
+        -20.407
+      ],
+      "actual": [
+        127.8,
+        -17.1
+      ],
+      "frames": 16,
+      "error": 3.419,
+      "collision": true
+    },
+    {
+      "target": [
+        129,
+        -23
+      ],
+      "actual": [
+        129.0,
+        -23.0
+      ],
+      "frames": 19,
+      "error": 0.0,
+      "collision": false
+    },
+    {
+      "target": [
+        127,
+        -30
+      ],
+      "actual": [
+        127.0,
+        -30.0
+      ],
+      "frames": 19,
+      "error": 0.0,
+      "collision": false
+    }
+  ]
+}

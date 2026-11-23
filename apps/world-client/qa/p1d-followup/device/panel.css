@@ -1,0 +1,19 @@
+#field-recorder {
+  position: fixed; bottom: 8px; right: 8px; z-index: 5;
+  background: #203b3c; color: #fff; border: 1px solid #94bdb4;
+  border-radius: 4px; padding: 6px 12px; min-height: 36px; cursor: pointer;
+}
+#field-options {
+  background: #182929; color: #f0f5f3; border: 1px solid #789c90;
+  width: min(26rem, 86vw); max-height: 84dvh; box-sizing: border-box;
+  padding: 14px 18px; overflow-y: auto;
+}
+#field-options::backdrop { background: rgba(12, 21, 24, .65); }
+#field-options h2 { margin: 0 0 8px; font-size: 1.17rem; }
+#field-options label {
+  display: grid; grid-template-columns: 44% 1fr; align-items: center; gap: 6px; margin: 6px 0;
+}
+#field-options label, #field-status { font-size: .87rem; }
+#field-options :is(select, input, button) { font: inherit; min-width: 0; padding: 5px; }
+#field-options button { min-height: 36px; }
+#field-status { display: block; margin: 10px 0; }

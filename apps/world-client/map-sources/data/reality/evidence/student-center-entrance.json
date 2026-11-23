@@ -1,0 +1,13 @@
+{
+  "license": "© OpenStreetMap contributors, ODbL 1.0",
+  "retrieved": "2026-11-23",
+  "node": 9767122970,
+  "version": 1,
+  "lat": 37.4491754,
+  "lon": 126.6563578,
+  "tags": {"entrance": "yes", "ref": "비룡플라자 입구2"},
+  "facility": "bldg_07",
+  "sourceWay": 218038027,
+  "source": "https://www.openstreetmap.org/node/9767122970/history/1",
+  "surveyedWidthM": null
+}

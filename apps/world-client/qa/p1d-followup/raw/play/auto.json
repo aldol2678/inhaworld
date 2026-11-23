@@ -1,0 +1,12 @@
+{
+  "realLoadedRaf": [
+    "medium",
+    "low"
+  ],
+  "controlledFrameRecovery": [
+    "medium",
+    "low",
+    "medium"
+  ],
+  "manualReload": "ultra"
+}

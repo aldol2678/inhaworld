@@ -1,0 +1,9 @@
+{
+  "events": [
+    "hidden",
+    "visible"
+  ],
+  "afterReturn": "높음",
+  "sustained": "중간",
+  "browser": "Chrome/151.0.7922.34"
+}

@@ -1,0 +1,47 @@
+{
+  "buildFiles": 19,
+  "changedFiles": {
+    "data/layout.json": {
+      "before": "8ffaff295829ffeefaf643fa250829233ba93648949ee3be9005c040b97d6a5e",
+      "after": "207e995abdc6f816da0ba7dc65baa655eddd69045b815a99cf3652bc98305b0d"
+    },
+    "data/layout.bin": {
+      "before": "9ef23024bffd286e5450462b1c38fac8b8e028c1d55314c075ec19897770f2d3",
+      "after": "e78a054c747958f5034535852b5334947a1d53d4460bac23c1fed50563b30606"
+    }
+  },
+  "allOriginalVerticesByteIdentical": true,
+  "insertion": {
+    "range": "base near",
+    "vertex": 31059,
+    "vertices": 42,
+    "triangles": 14,
+    "bytes": 672
+  },
+  "unchangedLayoutKeys": [
+    "bounds",
+    "spawn",
+    "obstacles",
+    "stairs",
+    "cells",
+    "depressions",
+    "trees",
+    "p1aLod",
+    "detailZones",
+    "dreamSkyline",
+    "routes",
+    "roadIds",
+    "gateIds",
+    "rooms",
+    "walkwaySurvey"
+  ],
+  "unchangedCounts": {
+    "trees": 68,
+    "routes": 10,
+    "obstacles": 158,
+    "stairs": 32,
+    "cells": 213,
+    "rooms": 3,
+    "depressions": 2
+  }
+}
