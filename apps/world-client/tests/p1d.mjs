@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
+import {geoToWorld} from '../map-sources/src/geo-coordinates.js';
+import {edgeFrame} from '../map-sources/src/roadview-layout.js';
 import { FACILITIES } from '../map-sources/src/campus-facilities.js';
 import { intersectGround, signedArea } from '../map-sources/src/ground-clipping.js';
 import { createQuality, initialTier } from '../src/graphics-quality.js';
@@ -52,4 +54,30 @@ test('30 Hz PC retains high; suspension clears mixed windows and recovery takes 
   q.select('low');
   frames(2000,16);
   assert.equal(q.tier,'low');
+});
+
+test('the Agora-side Student Center door aligns with its mapped wall and retains exterior contact', () => {
+  const entry = JSON.parse(readFileSync(new URL('../map-sources/data/reality/evidence/student-center-entrance.json', import.meta.url)));
+  const anchor = geoToWorld(entry.lat, entry.lon);
+  const facility = FACILITIES.find(f => f.id === entry.facility);
+  assert.deepEqual(facility.sourceWays, [entry.sourceWay]);
+  const ring = facility.rings[0];
+  const wall = edgeFrame(ring, ring.findIndex(p => Math.hypot(p.x-anchor.x, p.z-anchor.z) < 1e-5));
+  const baked = readFileSync(new URL('../data/layout.bin', import.meta.url));
+  const panels = [];
+  const {offset, count} = layout.ranges.base;
+  for (let i = layout.p1aLod.farVertices + layout.p1aLod.sharedVertices; i < count; i++) {
+    const n = offset + i * 16;
+    if (baked.readUIntBE(n+12,3) !== 0x4d6567) continue;
+    const p = wall.local({x:baked.readFloatLE(n), z:baked.readFloatLE(n+8)});
+    if (Math.abs(p.u)<2 && Math.abs(p.out-.012)<.001) panels.push(p.u);
+  }
+  assert.equal(panels.length,6);
+  assert(Math.abs(Math.max(...panels)+Math.min(...panels))<1e-4);
+  const spatial = createSpatial(layout);
+  const start = wall.at(0,2), inside = wall.at(0,-2);
+  assert(spatial.canStand(start.x,start.z));
+  assert(!spatial.canStand(anchor.x,anchor.z));
+  const stopped = spatial.move(start.x,start.z,inside.x-start.x,inside.z-start.z);
+  assert(Math.abs(wall.local(stopped).out-.60)<.005);
 });
